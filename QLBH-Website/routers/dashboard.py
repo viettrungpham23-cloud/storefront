@@ -211,10 +211,10 @@ def inventory_summary(db: Session = Depends(get_db)):
         s[r.status] = r.c
     low = db.execute(text(
         "SELECT sku_type model, COUNT(*) available FROM inventory_items "
-        "WHERE status='available' GROUP BY sku_type HAVING available <= 5 ORDER BY available ASC LIMIT 10")).all()
+        "WHERE status='available' GROUP BY sku_type HAVING COUNT(*) <= 5 ORDER BY COUNT(*) ASC LIMIT 10")).all()
     top_avail = db.execute(text(
         "SELECT sku_type model, COUNT(*) available FROM inventory_items "
-        "WHERE status='available' GROUP BY sku_type ORDER BY available DESC LIMIT 8")).all()
+        "WHERE status='available' GROUP BY sku_type ORDER BY COUNT(*) DESC LIMIT 8")).all()
     return {
         "by_store": list(stores.values()),
         "low_stock": [{"model": r.model, "available": r.available} for r in low],
