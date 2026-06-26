@@ -934,9 +934,13 @@ async function openSalesSheet(onPick) {
       }
       const user = await GoogleAuth.signIn();
       if (user && user.email) {
-        toast('Đăng nhập Google thành công: ' + user.email);
         let match = data.sales.find(s => s.email.toLowerCase() === user.email.toLowerCase());
-        if (!match) match = data.sales[0]; // fallback nếu không khớp email
+        if (!match) {
+          toast('LỖI: Email ' + user.email + ' chưa được cấp quyền truy cập hệ thống!');
+          await GoogleAuth.signOut(); // Đăng xuất luôn để họ có thể chọn tài khoản khác
+          return;
+        }
+        toast('Đăng nhập thành công: ' + match.name);
         setSales(match.id);
         if (onPick) onPick();
         return;
