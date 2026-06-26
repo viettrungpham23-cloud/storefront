@@ -267,9 +267,9 @@ def notifications(sales_id, limit=24):
 
 def _next_seq(conn, table, col, prefix):
     row = conn.execute(
-        f"SELECT {col} FROM {table} WHERE {col} GLOB ? "
+        f"SELECT {col} FROM {table} WHERE {col} LIKE ? "
         f"ORDER BY CAST(substr({col}, ?) AS INTEGER) DESC LIMIT 1",
-        (prefix + "[0-9]*", len(prefix) + 1)).fetchone()
+        (prefix + "%", len(prefix) + 1)).fetchone()
     n = (int(row[0][len(prefix):]) + 1) if row else 1
     return n
 
