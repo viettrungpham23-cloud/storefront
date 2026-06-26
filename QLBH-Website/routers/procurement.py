@@ -38,10 +38,10 @@ def _po_rows(db: Session, source="all", goods_type="all", status="all", q=""):
         f"SELECT po.po_no, po.source_type, po.supplier_code, po.supplier_name, po.goods_type, "
         f"po.approved_date, po.status, po.deliver_to_unit, po.note, "
         f"ol.part_no, ol.description, ol.sku_type, ol.color, ol.unit, ol.ordered_qty, ol.unit_price, "
-        f"(SELECT COUNT(*) FROM goods_receipt_items ri WHERE ri.po_no=po.po_no) received_qty, "
-        f"(SELECT COUNT(*) FROM goods_receipts gr WHERE gr.po_no=po.po_no) batches, "
-        f"CAST(julianday('now') - julianday(po.approved_date) AS INT) age_days "
-        f"FROM purchase_orders po LEFT JOIN purchase_order_lines ol ON ol.po_no=po.po_no "
+        "(SELECT COUNT(*) FROM goods_receipt_items ri WHERE ri.po_no=po.po_no) received_qty, "
+        "(SELECT COUNT(*) FROM goods_receipts gr WHERE gr.po_no=po.po_no) batches, "
+        "CAST(NOW() AS DATE) - CAST(po.approved_date AS DATE) age_days "
+        "FROM purchase_orders po LEFT JOIN purchase_order_lines ol ON ol.po_no=po.po_no "
         f"WHERE {w} ORDER BY po.approved_date DESC"), params).all()
 
     out = []

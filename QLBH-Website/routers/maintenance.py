@@ -43,7 +43,7 @@ def _counts(db: Session) -> dict:
 def _issues(db: Session) -> dict:
     q = lambda s: db.execute(text(s)).scalar() or 0
     return {
-        "future_orders": q("SELECT COUNT(*) FROM orders WHERE substr(created_at,1,10) > date('now')"),
+        "future_orders": q("SELECT COUNT(*) FROM orders WHERE CAST(created_at AS DATE) > CURRENT_DATE"),
         "orphan_details": q("SELECT COUNT(*) FROM order_details WHERE order_id NOT IN (SELECT order_id FROM orders)"),
         "orphan_payments": q("SELECT COUNT(*) FROM payments WHERE order_id NOT IN (SELECT order_id FROM orders)"),
         "orphan_recon": q("SELECT COUNT(*) FROM reconciliation_logs WHERE payment_id NOT IN (SELECT payment_id FROM payments)"),
@@ -87,7 +87,7 @@ def clean(req: CleanRequest, db: Session = Depends(get_db)):
 
     # ---- Xóa đơn ngày tương lai (nhiễu date_out), trả xe về kho ----
     if action == "remove_future":
-        sub = "(SELECT order_id FROM orders WHERE substr(created_at,1,10) > date('now'))"
+        sub = "(SELECT order_id FROM orders WHERE CAST(created_at AS DATE) > CURRENT_DATE)"
         n_orders = db.execute(text(f"SELECT COUNT(*) FROM orders WHERE order_id IN {sub}")).scalar()
         db.execute(text(
             "UPDATE inventory_items SET status='available', export_time=NULL "

@@ -106,11 +106,11 @@ def revenue_timeseries(months: int = Query(12, ge=1, le=36), period: str = "all"
         params["s"] = start
 
     if period == "day":
-        grp = "substr(created_at,1,13) || char(58) || '00'"
+        grp = "TO_CHAR(created_at, 'YYYY-MM-DD HH24:00')"
     elif period in ["week", "month"]:
-        grp = "substr(created_at,1,10)"
+        grp = "TO_CHAR(created_at, 'YYYY-MM-DD')"
     else:
-        grp = "substr(created_at,1,7)"
+        grp = "TO_CHAR(created_at, 'YYYY-MM')"
 
     rows = db.execute(text(
         f"SELECT {grp} period, COUNT(*) orders, COALESCE(SUM(total),0) revenue "

@@ -21,7 +21,7 @@ import base64
 import mimetypes
 import boto3
 from dotenv import load_dotenv
-load_dotenv(os.path.join(QLBH_DIR, ".env"))
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "QLBH-Website", ".env"))
 
 from datetime import datetime
 
