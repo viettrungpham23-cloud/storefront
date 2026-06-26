@@ -19,6 +19,15 @@ class Store(Base):
     address = Column(String(200))
     is_warehouse = Column(Integer, default=0)
 
+# 0.1 Nhân sự / Users (cho phân quyền và quản lý nhân viên)
+class User(Base):
+    __tablename__ = "users"
+    email = Column(String(100), primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    role = Column(String(50), default="sales") # e.g., admin, sales
+    unit_code = Column(String(20)) # e.g., TA1, TA2
+    is_active = Column(Integer, default=1)
+
 
 # 1. Khách hàng
 class Customer(Base):

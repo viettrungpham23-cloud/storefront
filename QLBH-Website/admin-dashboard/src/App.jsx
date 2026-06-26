@@ -11,6 +11,7 @@ import Customers from './pages/Customers'
 import Reconciliation from './pages/Reconciliation'
 import Maintenance from './pages/Maintenance'
 import Procurement from './pages/Procurement'
+import UsersPage from './pages/Users'
 import { api } from './api'
 
 const NAV = [
@@ -21,6 +22,7 @@ const NAV = [
   { key: 'reconcile', label: 'Đối soát & Duyệt', icon: ScanLine, group: 'Vận hành', badge: true },
   { key: 'inventory', label: 'Quản lý kho', icon: Package, group: 'Vận hành' },
   { key: 'customers', label: 'Khách hàng', icon: Users, group: 'Dữ liệu' },
+  { key: 'users', label: 'Nhân sự', icon: Users, group: 'Hệ thống' },
   { key: 'maintenance', label: 'Quản trị CSDL', icon: Database, group: 'Hệ thống' },
 ]
 
@@ -32,13 +34,14 @@ const TITLES = {
   reconcile: ['Đối soát & Duyệt xuất kho', 'Kiểm tra số khung và xác minh dòng tiền'],
   inventory: ['Quản lý kho', 'Sổ kho theo số khung (VIN) đa cơ sở'],
   customers: ['Khách hàng', 'Hồ sơ và lịch sử mua của khách'],
+  users: ['Quản lý nhân sự', 'Thêm email, phân quyền và khóa tài khoản'],
   maintenance: ['Quản trị CSDL', 'Dọn dẹp & bảo trì cơ sở dữ liệu localhost'],
 }
 
 const PAGES = {
   overview: Overview, report: SalesReport, procurement: Procurement, orders: Orders,
   inventory: Inventory, customers: Customers, reconcile: Reconciliation,
-  maintenance: Maintenance,
+  users: UsersPage, maintenance: Maintenance,
 }
 
 function Dropdown({ trigger, children, right = false }) {
@@ -112,6 +115,8 @@ export default function App({ user, onLogout }) {
           <div key={g}>
             <div className="nav-label">{g}</div>
             {NAV.filter((n) => n.group === g).map((n) => {
+              if (n.key === 'users' && user.role !== 'admin') return null;
+              if (n.key === 'maintenance' && user.role !== 'admin') return null;
               const Icon = n.icon
               return (
                 <div key={n.key} data-key={n.key} className={`nav-item ${tab === n.key ? 'active' : ''}`} onClick={() => setTab(n.key)}>

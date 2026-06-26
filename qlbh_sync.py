@@ -121,13 +121,52 @@ STATUS_LABEL = {"pending": "Chờ duyệt", "vin_verified": "Đã đối soát V
 
 
 # ── Nhân viên sales (đơn vị A/B/C × 1/2/3) ─────────────────────────────────
+def _get_db_sales():
+    if not available_db() or not _ref:
+        return _ref.SALES if _ref else []
+    conn = _conn()
+    try:
+        users = conn.execute("SELECT email, name, role, unit_code, is_active FROM users WHERE is_active=1").fetchall()
+        if not users:
+            return _ref.SALES if _ref else []
+            
+        db_sales = []
+        for u in users:
+            ucode = u["unit_code"] or "A"
+            unit = next((x for x in _ref.UNITS if x["code"] == ucode), _ref.UNITS[0])
+            
+            db_sales.append({
+                "id": u["email"],  # Sử dụng email làm ID nhân viên
+                "name": u["name"],
+                "seq": 1,
+                "unit": unit["code"], 
+                "unit_name": unit["name"],
+                "store": unit["store"], 
+                "store_name": unit["store_name"],
+                "role": u["role"],
+                "phone": "",
+                "email": u["email"],
+                "target": 30
+            })
+        return db_sales
+    except Exception as e:
+        print("Lỗi lấy danh sách nhân sự từ DB:", e)
+        return _ref.SALES if _ref else []
+    finally:
+        conn.close()
+
 def sales_list():
     if not _ref:
         return {"units": [], "sales": []}
-    return {"units": _ref.UNITS, "sales": _ref.SALES}
+    return {"units": _ref.UNITS, "sales": _get_db_sales()}
 
 
 def sales_get(sid):
+    sales = _get_db_sales()
+    for s in sales:
+        if s["id"] == sid:
+            return s
+    # Fallback to ref if needed
     return _ref.SALES_BY_ID.get(sid) if _ref else None
 
 
