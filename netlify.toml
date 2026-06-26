@@ -1,0 +1,10 @@
+[build]
+  # Thư mục gốc cho Netlify (có thể để mặc định là root)
+  base = "QLBH-Website/admin-dashboard"
+  command = "npm install && npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
