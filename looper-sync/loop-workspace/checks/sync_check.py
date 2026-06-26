@@ -69,7 +69,8 @@ except Exception as e:
     step("Đồng bộ tồn kho", False, str(e))
 
 print("── 3. Đặt đơn trên App → ghi vào Web ──")
-order_no = None
+web_order_no = None
+app_order_no = None
 try:
     post(APP, "/api/cart/items", {"slug": "evo", "color": "Đen", "option": "buy", "qty": 1},
          {"X-Cart-Token": TOK})
@@ -77,21 +78,22 @@ try:
                 {"name": "KH Sync Check", "phone": PHONE, "address": "Hà Nội",
                  "payment": "vnpay", "sales_id": SALES}, {"X-Cart-Token": TOK})
     sync = o.get("sync", {})
+    app_order_no = o.get("order_no")
     step("App tạo đơn + đồng bộ ok", bool(sync.get("ok") and sync.get("orders")))
     if sync.get("orders"):
-        order_no = sync["orders"][0]["order_no"]
-        print(f"      → đơn Web: {order_no} (sales {sync['orders'][0].get('sales_id')})")
+        web_order_no = sync["orders"][0]["order_no"]
+        print(f"      → đơn Web: {web_order_no} (sales {sync['orders'][0].get('sales_id')})")
 except Exception as e:
     step("Đặt đơn App", False, str(e))
 
 print("── 4. Web Admin thấy đơn (FastAPI :8000) ──")
-if order_no:
+if web_order_no:
     try:
         _, pend = get(WEB + "/api/v1/admin/pending-orders")
-        found = next((x for x in pend if x["order_no"] == order_no), None)
+        found = next((x for x in pend if x["order_no"] == web_order_no), None)
         step("Hiện ở 'Đối soát & Duyệt'", found is not None,
              f"channel={found['channel']}" if found else "không thấy")
-        _, det = get(WEB + f"/api/v1/orders/{order_no}")
+        _, det = get(WEB + f"/api/v1/orders/{web_order_no}")
         step("Chi tiết: channel=App, pending",
              det.get("channel") == "App" and det.get("admin_status") == "pending")
     except Exception as e:
@@ -100,12 +102,12 @@ else:
     step("Web admin thấy đơn", False, "không có mã đơn")
 
 print("── 5. App phản ánh ngược (thông báo + đơn của tôi) ──")
-if order_no:
+if web_order_no and app_order_no:
     try:
         _, nt = get(APP + f"/api/notifications?sales_id={SALES}")
-        step("Thông báo (sales) có đơn mới", any(n["order_no"] == order_no for n in nt["items"]))
+        step("Thông báo (sales) có đơn mới", any(n["order_no"] == web_order_no for n in nt["items"]))
         _, mine = get(APP + f"/api/orders/mine?phone={PHONE}")
-        step("'Đơn hàng của tôi' có đơn", any(m["order_no"] == order_no for m in mine["orders"]))
+        step("'Đơn hàng của tôi' có đơn", any(m["order_no"] == app_order_no for m in mine["orders"]))
     except Exception as e:
         step("App phản ánh ngược", False, str(e))
 else:

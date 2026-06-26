@@ -73,6 +73,7 @@ def main():
             "payment": "vnpay"})
     except Exception as e:
         fail(f"Tạo đơn lỗi: {e}")
+    app_order_no = (order or {}).get("order_no")
     sync = (order or {}).get("sync") or {}
     if not sync.get("ok"):
         fail(f"Đơn không đồng bộ được sang Website: sync={sync}")
@@ -92,9 +93,9 @@ def main():
     items = mine.get("orders") if isinstance(mine, dict) else mine
     if not items:
         fail("/api/orders/mine trả rỗng cho khách vừa đặt.")
-    found = next((o for o in items if o.get("order_no") == dh), None)
+    found = next((o for o in items if o.get("order_no") == app_order_no), None)
     if not found:
-        fail(f"Không thấy đơn {dh} trong /api/orders/mine.")
+        fail(f"Không thấy đơn {app_order_no} (web: {dh}) trong /api/orders/mine.")
     if not found.get("status") and not found.get("admin_status"):
         fail(f"Đơn {dh} thiếu trường trạng thái.")
     print(f"OK: /api/orders/mine trả {len(items)} đơn; {dh} trạng thái "

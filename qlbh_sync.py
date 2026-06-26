@@ -14,12 +14,10 @@ Nếu không tìm thấy DB Website, mọi hàm trả về rỗng (App vẫn ch�
 """
 import os
 import sys
-import os
 import urllib.parse
 import uuid
 import base64
 import mimetypes
-import boto3
 
 from datetime import datetime
 
@@ -27,8 +25,11 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 QLBH_DIR = os.path.join(ROOT, "QLBH-Website")
 QLBH_DB = os.environ.get("QLBH_DB", os.path.join(QLBH_DIR, "xe_dien_thu_anh.db"))
 
-from dotenv import load_dotenv
-load_dotenv(os.path.join(QLBH_DIR, ".env"))
+try:
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(QLBH_DIR, ".env"))
+except ImportError:
+    pass  # dotenv không bắt buộc — dùng biến môi trường trực tiếp
 
 # Mirror hồ sơ khách ra thư mục riêng của Website (nếu import được)
 if QLBH_DIR not in sys.path:
@@ -86,7 +87,26 @@ def _conn():
     dsn = os.environ.get("DATABASE_URL")
     if not dsn:
         raise Exception("Missing DATABASE_URL")
-    return DBWrapper(dsn)
+    # psycopg2 không parse được `?options=-c search_path=...` trong URI →
+    # tách ra và áp search_path bằng SQL SET sau khi connect.
+    search_path = None
+    if "?" in dsn:
+        base, qs = dsn.split("?", 1)
+        params = urllib.parse.parse_qs(qs)
+        opts = params.pop("options", [None])[0]
+        if opts:
+            # opts dạng "-c search_path=public"
+            for part in opts.split("-c"):
+                part = part.strip()
+                if part.startswith("search_path"):
+                    search_path = part.split("=", 1)[1].strip()
+        remaining = urllib.parse.urlencode({k: v[0] for k, v in params.items()})
+        dsn = base + ("?" + remaining if remaining else "")
+    wrapper = DBWrapper(dsn)
+    if search_path:
+        wrapper.execute(f"SET search_path TO {search_path}")
+    return wrapper
+
 
 
 _avail_cache = {}
@@ -310,8 +330,8 @@ def notifications(sales_id, limit=24):
             "SELECT o.order_no, o.admin_status, o.total, o.created_at, c.full_name, MAX(od.sku_type) AS sku_type, o.vin_code, o.store_id "
             "FROM orders o JOIN customers c ON c.customer_id=o.customer_id "
             "LEFT JOIN order_details od ON od.order_id=o.order_id "
-            "WHERE o.sales_id=? AND substr(o.created_at,1,10) <= date('now','+1 day') "
-            "GROUP BY o.order_id ORDER BY o.created_at DESC LIMIT ?", (sales_id, limit)).fetchall()
+            "WHERE o.sales_id=? AND o.created_at::date <= (CURRENT_DATE + INTERVAL '1 day') "
+            "GROUP BY o.order_id, o.order_no, o.admin_status, o.total, o.created_at, c.full_name, o.vin_code, o.store_id ORDER BY o.created_at DESC LIMIT ?", (sales_id, limit)).fetchall()
         out = []
         for r in rows:
             t, icon, title, sub = meta.get(r["admin_status"], ("info", "📦", "Cập nhật đơn", ""))
@@ -385,6 +405,7 @@ def _save_images(cid, images):
     s3_client = None
     if r2_endpoint and r2_bucket and r2_access_key and r2_secret_key:
         try:
+            import boto3
             s3_client = boto3.client('s3',
                 endpoint_url=r2_endpoint,
                 aws_access_key_id=r2_access_key,

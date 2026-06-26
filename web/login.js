@@ -53,7 +53,7 @@ SCREENS.login = (entry) => {
 
 async function handleLoginToken(token) {
   try {
-    const res = await fetch(API_BASE + '/api/v1/auth/google', {
+    const res = await fetch(ADMIN_API_BASE + '/api/v1/auth/google', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token })

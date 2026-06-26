@@ -13,6 +13,7 @@ if (!cartToken) {
   localStorage.setItem(TOKEN_KEY, cartToken);
 }
 const API_BASE = (window.TA_CONFIG && window.TA_CONFIG.apiBase) || '';
+const ADMIN_API_BASE = (window.TA_CONFIG && window.TA_CONFIG.adminApiBase) || (window.location.protocol + '//' + window.location.hostname + ':8000');
 async function api(path, opts = {}) {
   const r = await fetch(API_BASE + '/api' + path, {
     ...opts,
@@ -1561,7 +1562,7 @@ SCREENS.login = (entry) => {
 
 async function handleLoginToken(token) {
   try {
-    const res = await fetch(API_BASE + '/api/v1/auth/google', {
+    const res = await fetch(ADMIN_API_BASE + '/api/v1/auth/google', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token })

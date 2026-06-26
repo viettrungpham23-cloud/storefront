@@ -54,7 +54,7 @@ jobs:
       working-directory: ./mobile
       run: |
         npm install
-        API_BASE="http://34.21.152.227:8810" npm run sync
+        API_BASE="http://34.21.152.227:8810" ADMIN_API_BASE="http://34.21.152.227:8000" npm run sync
 
     - name: Build APK
       working-directory: ./mobile/android

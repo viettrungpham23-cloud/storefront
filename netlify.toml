@@ -3,6 +3,9 @@
   command = "npm install && npm run build"
   publish = "dist"
 
+[build.environment]
+  VITE_GOOGLE_CLIENT_ID = "239161131679-j7kajmb1lsnlkei9bsofqrom5a16kekd.apps.googleusercontent.com"
+
 [[redirects]]
   from = "/api/*"
   to = "http://34.21.152.227:8000/api/:splat"
