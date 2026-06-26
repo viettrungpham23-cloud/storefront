@@ -1,0 +1,131 @@
+version: 1
+meta:
+  name: app-quickbuy-orders
+  description: >
+    Thêm nút "Mua ngay" trên mọi thẻ xe (Trang chủ / Danh mục / So sánh) cho
+    phép tạo đơn nhanh, và màn "Đơn hàng của tôi" quản lý đơn theo trạng thái
+    đồng bộ với Website QLBH.
+  author: vetc
+  created: 2026-06-24
+
+goal:
+  statement: >
+    Ứng dụng khách (storefront/web) có (1) nút "Mua ngay" một chạm trên MỌI thẻ
+    sản phẩm ở Trang chủ, Danh mục và So sánh — thêm xe rồi vào thẳng thanh toán;
+    và (2) màn "Đơn hàng của tôi" liệt kê đơn của khách (theo SĐT/cart-token)
+    kèm trạng thái realtime lấy từ backend (chờ duyệt / đã đối soát / hoàn tất),
+    đồng bộ với DB Website QLBH (xe_dien_thu_anh.db).
+  context_sources:
+    - file: ../web/app.js
+    - file: ../web/styles.css
+    - file: ../web/index.html
+    - file: ../server.py
+    - file: ../qlbh_sync.py
+    - file: ../README.md
+  definition_of_done: >
+    Nút "Mua ngay" hiển thị & hoạt động trên thẻ ở cả 3 màn; bấm tạo đơn đồng bộ
+    (đơn App trạng thái pending trong Website); màn "Đơn hàng của tôi" liệt kê >=1
+    đơn kèm trạng thái lấy từ endpoint backend mới; `node --check web/app.js` pass;
+    không có lỗi console trên preview; Judge chấm đạt rubric; người ký duyệt bằng ảnh.
+  verification:
+    - id: js-syntax
+      type: programmatic
+      check: ["node", "--check", "web/app.js"]
+      expect: exit_zero
+    - id: order-flow
+      type: programmatic
+      check: ["python3", "looper-output/loop-workspace/checks/order_flow.py"]
+      expect: exit_zero
+    - id: feature-complete
+      type: judge
+      rubric: >
+        Chấm theo từng chiều, trả JSON verdict. PASS chỉ khi tất cả đạt:
+        (1) Nút "Mua ngay" có mặt và bấm được trên thẻ xe ở CẢ Trang chủ, Danh
+        mục và So sánh; (2) Bấm "Mua ngay" thêm đúng xe và đi tới checkout (hoặc
+        tạo đơn nhanh) — không phá luồng giỏ hàng/so sánh hiện có; (3) Có màn
+        "Đơn hàng của tôi" liệt kê đơn của khách kèm trạng thái lấy từ backend
+        (không hardcode); (4) Đơn tạo từ App đồng bộ sang Website (pending,
+        channel App) — không tạo khách trùng; (5) Tồn kho/hết hàng vẫn khóa mua
+        đúng; (6) Giao diện nhất quán phong cách iOS sẵn có (token màu, .btn,
+        spacing). Liệt kê blocking_issues nếu thiếu bất kỳ chiều nào.
+    - id: visual-signoff
+      type: human
+      prompt: >
+        Xem ảnh chụp 3 màn (Trang chủ/Danh mục/So sánh) có nút Mua ngay và màn
+        Đơn hàng của tôi. Xác nhận hoạt động đúng và đúng thẩm mỹ.
+
+host:
+  cli: claude
+  model: default
+  invoke: ["claude", "-p"]
+  timeout_sec: 900
+
+council:
+  - id: reviewer-1
+    role: judge
+    cli: claude
+    model: default
+    invoke: ["claude", "-p"]
+    timeout_sec: 900
+    scope: [plan, delivery]
+    local: true   # cùng máy + cùng nhà cung cấp (Anthropic) → không egress chéo vendor
+
+gates:
+  plan_gate:
+    when: after_plan
+    members: [reviewer-1]
+    verdict_policy: revise_until_clean
+    verdict_source: reviewer-1
+    criteria: [feature-complete]
+    max_revisions: 3
+  delivery_gate:
+    when: after_each_delivery
+    members: [reviewer-1]
+    verdict_policy: revise_until_clean
+    verdict_source: reviewer-1
+    criteria: [js-syntax, order-flow, feature-complete]
+    max_revisions: 3
+
+loop_control:
+  max_iterations: 10
+  budget:
+    wall_clock_min: 45
+    tokens: 3000000
+  no_progress:
+    max_stalled_iterations: 2
+    signals:
+      - cùng một blocking issue lặp lại
+      - delivery không thay đổi đáng kể
+      - kết quả check không đổi
+    action: stop
+  human_checkpoints:
+    - "Sau khi plan đạt gate: người duyệt plan vì loop sửa trực tiếp app đang chạy"
+    - "Trước khi kết thúc: người ký duyệt bằng ảnh chụp (visual-signoff)"
+  stop_conditions:
+    - tất cả delivery qua gate sạch + visual-signoff đạt
+    - max_iterations đạt 10
+    - cùng blocker lặp 2 vòng (no-progress)
+    - vượt bất kỳ trần ngân sách nào
+
+execution:
+  mode: in_session
+  isolation: current_workspace   # gốc thực thi = thư mục storefront/
+  side_effects:
+    requires_approval: false      # chỉ sửa file web/ + server.py trong workspace dev
+    duplicate_action_check: true  # smoke test tạo đơn thật vào DB → tránh nhân bản khi chạy lại
+
+observability:
+  state_file: state.json
+  run_log: run-log.md
+  checkpoint_granularity: gate
+
+privacy:
+  egress:
+    - to: reviewer-1
+      sends: [plan, deliveries]
+      redact: [".env", ".env.*", "secrets/**", "**/*.key"]
+      consent: required
+
+workspace:
+  dir: ./loop-workspace
+  layout: [plan.md, "delivery-{n}.md", "review-{n}.md", state.json, run-log.md]

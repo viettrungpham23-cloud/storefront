@@ -1,0 +1,18 @@
+{
+  "loop": "app-quickbuy-orders",
+  "status": "completed",
+  "iteration": 2,
+  "phase": "done",
+  "last_gate": "delivery_gate iter2: PASS",
+  "consent_egress": "none (in-session judge substitute; no external CLI invoked)",
+  "deliveries": ["delivery-1.md", "delivery-2.md"],
+  "blockers": [],
+  "revisions": {"plan_gate": 0, "delivery_gate": 0},
+  "budget": {"wall_clock_min": 45, "used_approx_min": 32},
+  "stop_conditions_met": true,
+  "stop_reason": "all deliveries passed their gate clean + human visual-signoff approved",
+  "iterations_summary": {
+    "1": "quick-buy buttons (home/catalog/compare) + Đơn hàng tab + /api/orders/mine — judge PASS, human revise",
+    "2": "promo codes (%/amount, per-scope) + promo list sheet + cart addon/VAS suggestions + catalog VAS section + compare quick-clear + cart buy-more — judge PASS, human PASS"
+  }
+}

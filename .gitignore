@@ -1,0 +1,45 @@
+# ── Bí mật & dữ liệu cá nhân (KHÔNG commit) ───────────────────────
+.env
+.env.*
+secrets/
+**/*.key
+
+# Cơ sở dữ liệu (dữ liệu sinh ra / có PII)
+*.db
+*.sqlite
+*.sqlite3
+
+# Hồ sơ khách (CCCD, ảnh giấy tờ — NHẠY CẢM)
+QLBH-Website/customer_db/
+
+# ── Sinh tự động / build ──────────────────────────────────────────
+__pycache__/
+*.pyc
+node_modules/
+dist/
+build/
+.vite/
+
+# Bản web đã đóng gói + build native (sinh lại từ web/)
+mobile/www/
+mobile/android/app/build/
+mobile/android/.gradle/
+mobile/ios/App/build/
+mobile/ios/App/Pods/
+
+# ── Hệ điều hành / công cụ ────────────────────────────────────────
+.DS_Store
+*.log
+.impeccable/
+node_modules/
+venv/
+__pycache__/
+*.db
+*.db.bak
+*.db-journal
+*.log
+.DS_Store
+.env
+dist/
+build/
+.impeccable/

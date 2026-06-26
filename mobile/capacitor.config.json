@@ -1,0 +1,14 @@
+{
+  "appId": "vn.tainnovation.store",
+  "appName": "TA innovation",
+  "webDir": "www",
+  "backgroundColor": "#f5f8fd",
+  "android": {
+    "allowMixedContent": true
+  },
+  "server": {
+    "androidScheme": "http",
+    "iosScheme": "http",
+    "cleartext": true
+  }
+}
