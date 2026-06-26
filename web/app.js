@@ -1510,7 +1510,7 @@ window.addEventListener('orientationchange', fitPhone);
 SCREENS.login = (entry) => {
   const s = el(`<section class="screen login-screen" style="background:#0f172a;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px;text-align:center;">
     <div style="background:#fff;padding:36px 24px;border-radius:24px;width:100%;max-width:400px;box-shadow:0 20px 40px rgba(0,0,0,.2);">
-      <img src="assets/icon.png" style="width:72px;height:72px;margin-bottom:16px;border-radius:18px;">
+      <img src="assets/icon-192.png" style="width:72px;height:72px;margin-bottom:16px;border-radius:18px;">
       <h2 style="margin:0 0 8px;font-size:22px;color:#0f172a;">Đăng nhập hệ thống</h2>
       <p style="margin:0 0 32px;font-size:14px;color:#64748b;">Dành riêng cho nhân sự VinFast Thu Anh</p>
       
