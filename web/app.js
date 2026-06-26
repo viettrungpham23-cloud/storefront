@@ -299,7 +299,7 @@ function cardHTML(p) {
       <div class="sp spec-line">${p.speed} km/h · ${p.range_km} km</div>
       ${stockLine}
       <div class="pr">${priceBlock}</div>
-      ${out ? `<button class="card-buy off" disabled>Hết hàng</button>` : `<button class="card-buy" data-buy="${p.slug}">Mua ngay</button>`}
+      ${out ? `<button class="card-buy off" disabled>Hết hàng</button>` : `<div style="display:flex;gap:6px;"><button class="card-buy" data-addcart="${p.slug}" style="flex:0 0 38px;background:#f8fafc;color:var(--brand);border:1.5px solid var(--brand);padding:0;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></button><button class="card-buy" data-buy="${p.slug}" style="flex:1;">Mua ngay</button></div>`}
     </div></div>`;
 }
 function addonCardHTML(a) {
@@ -314,7 +314,7 @@ function addonCardHTML(a) {
 function bindCards(root) {
   root.querySelectorAll('.card[data-slug]').forEach(card => {
     card.addEventListener('click', e => {
-      if (e.target.closest('[data-cmp]') || e.target.closest('[data-buy]')) return;
+      if (e.target.closest('[data-cmp]') || e.target.closest('[data-buy]') || e.target.closest('[data-addcart]')) return;
       push('detail', { slug: card.dataset.slug });
     });
   });
@@ -324,6 +324,16 @@ function bindCards(root) {
   root.querySelectorAll('[data-buy]').forEach(btn => {
     btn.addEventListener('click', e => { e.stopPropagation(); quickBuy(btn.dataset.buy); });
   });
+  root.querySelectorAll('[data-addcart]').forEach(btn => {
+    btn.addEventListener('click', e => { e.stopPropagation(); quickAddCart(btn.dataset.addcart); });
+  });
+}
+async function quickAddCart(slug) {
+  const p = await loadProduct(slug);
+  if (!p) return;
+  const ci = p.colors.findIndex(c => c.photo); const imgIdx = ci >= 0 ? ci : 0;
+  await addToCart(p.slug, p.colors[imgIdx].name, p.has_rent ? 'rent' : 'buy');
+  toast('Đã thêm vào giỏ hàng');
 }
 async function quickBuy(slug) {
   const p = await loadProduct(slug);
