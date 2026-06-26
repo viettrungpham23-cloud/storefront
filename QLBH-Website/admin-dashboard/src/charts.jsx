@@ -99,21 +99,22 @@ export function Donut({ data, size = 180, thickness = 26, centerLabel, centerSub
   const r = (size - thickness) / 2
   const cx = size / 2, cy = size / 2
   const C = 2 * Math.PI * r
-  let off = 0
+  const arcs = data.reduce(({ offset, items }, d, i) => {
+    const frac = d.value / total
+    const dash = frac * C
+    return {
+      offset: offset + dash,
+      items: [...items, { d, i, dash, offset }],
+    }
+  }, { offset: 0, items: [] }).items
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 22, flexWrap: 'wrap' }}>
       <svg viewBox={`0 0 ${size} ${size}`} width={size} height={size} role="img" style={{ transform: 'rotate(-90deg)' }}>
         <circle cx={cx} cy={cy} r={r} fill="none" stroke="#eef2f7" strokeWidth={thickness} />
-        {data.map((d, i) => {
-          const frac = d.value / total
-          const dash = frac * C
-          const el = (
-            <circle key={i} cx={cx} cy={cy} r={r} fill="none" stroke={d.color} strokeWidth={thickness}
-              strokeDasharray={`${dash} ${C - dash}`} strokeDashoffset={-off} strokeLinecap="butt" />
-          )
-          off += dash
-          return el
-        })}
+        {arcs.map(({ d, i, dash, offset }) => (
+          <circle key={i} cx={cx} cy={cy} r={r} fill="none" stroke={d.color} strokeWidth={thickness}
+            strokeDasharray={`${dash} ${C - dash}`} strokeDashoffset={-offset} strokeLinecap="butt" />
+        ))}
         {centerLabel && (
           <g style={{ transform: 'rotate(90deg)', transformOrigin: 'center' }}>
             <text x={cx} y={cy - 2} textAnchor="middle" fontSize="20" fontWeight="800" fill="#0f172a">{centerLabel}</text>

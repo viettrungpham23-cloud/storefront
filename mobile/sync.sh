@@ -9,7 +9,7 @@ set -e
 cd "$(dirname "$0")"
 
 API_BASE="${API_BASE:-}"
-ADMIN_API_BASE="${ADMIN_API_BASE:-http://34.21.152.227:8000}"
+ADMIN_API_BASE="${ADMIN_API_BASE:-}"
 
 rm -rf www && mkdir -p www
 cp -R ../web/* www/

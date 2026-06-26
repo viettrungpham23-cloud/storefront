@@ -1,3 +1,2 @@
-/api/* http://34.21.152.227:8000/api/:splat 200!
-/customer-files/* http://34.21.152.227:8000/customer-files/:splat 200!
+/* /index.html 200
 /* /index.html 200

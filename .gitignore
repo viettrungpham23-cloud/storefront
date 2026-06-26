@@ -3,6 +3,8 @@
 .env.*
 secrets/
 **/*.key
+*.keystore
+google-services.json
 
 # Cơ sở dữ liệu (dữ liệu sinh ra / có PII)
 *.db
@@ -48,4 +50,5 @@ temp_append.js
 *.log
 .impeccable/
 venv/
+.venv/
 .claude/

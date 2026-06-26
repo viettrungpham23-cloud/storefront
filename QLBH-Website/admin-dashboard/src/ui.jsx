@@ -51,6 +51,52 @@ export function Status({ value }) {
   return <span className={`badge ${tone}`}><span className="d" />{label}</span>
 }
 
+export function Badge({ variant = 'neutral', children }) {
+  const tone = {
+    success: 'green',
+    danger: 'red',
+    warning: 'amber',
+    info: 'blue',
+    neutral: 'gray',
+  }[variant] || variant
+  return <span className={`badge ${tone}`}><span className="d" />{children}</span>
+}
+
+export function Button({ variant = 'outline', size, className = '', children, ...props }) {
+  const cls = [
+    'btn',
+    variant === 'primary' ? 'btn-primary' : '',
+    variant === 'ghost' ? 'btn-ghost' : '',
+    size === 'sm' ? 'btn-sm' : '',
+    className,
+  ].filter(Boolean).join(' ')
+  return <button className={cls} {...props}>{children}</button>
+}
+
+export function Input({ className = '', ...props }) {
+  return <input className={['input', className].filter(Boolean).join(' ')} {...props} />
+}
+
+export function Select({ className = '', children, ...props }) {
+  return <select className={['select', className].filter(Boolean).join(' ')} {...props}>{children}</select>
+}
+
+export function Table({ headers, data, loading, renderRow }) {
+  if (loading) return <Loading />
+  return (
+    <table className="data-table">
+      <thead>
+        <tr>{headers.map((h) => <th key={h}>{h}</th>)}</tr>
+      </thead>
+      <tbody>
+        {data.length ? data.map(renderRow) : (
+          <tr><td colSpan={headers.length} className="empty-cell">Không có dữ liệu</td></tr>
+        )}
+      </tbody>
+    </table>
+  )
+}
+
 export function Pager({ page, pageSize, total, onPage }) {
   const pages = Math.max(1, Math.ceil(total / pageSize))
   const from = total === 0 ? 0 : (page - 1) * pageSize + 1

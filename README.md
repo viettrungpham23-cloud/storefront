@@ -148,8 +148,8 @@ App đã là PWA (manifest + service worker + icon). Host `server.py` ở URL HT
 
 ### 8.2 — APK (Android, file cài thật)
 
-Dự án đã được thiết lập quy trình tự động hoá **CI/CD qua GitHub Actions**. Bạn chỉ cần push code lên nhánh `main`, hệ thống sẽ tự động build file APK và cung cấp link tải ở mục **Actions**.
-File APK đã được tự động ký (signed) với `release.keystore` và cấu hình sẵn Client ID bảo mật để tương thích hoàn toàn với tính năng **Đăng nhập Google**.
+Dự án đã được thiết lập quy trình tự động hoá **CI/CD qua GitHub Actions**. Bạn chỉ cần push code lên nhánh `main`, hệ thống sẽ tự động build file APK debug và cung cấp link tải ở mục **Actions**.
+File APK release cần ký bằng keystore lưu trong secret/biến môi trường CI, không commit trực tiếp keystore vào repository.
 
 **Cách B — Không cài toolchain: PWABuilder.** Host PWA (§8.1) → vào **https://www.pwabuilder.com**,
 dán URL → **Android → Generate** → tải **APK đã ký** + bản **AAB** cho CH Play.
@@ -190,7 +190,7 @@ appId/appName/màu nền sửa trong [`mobile/capacitor.config.json`](mobile/cap
 - **PWA cache**: service worker `web/sw.js` (`ta-store-v18`) — *network-first* cho mã nguồn (`app.js/styles.css`)
   nên đổi code là cập nhật ngay; **bump số version** khi sửa để chắc chắn không phục vụ bản cũ.
 - **Python backend**: `server.py` chỉ dùng thư viện chuẩn (chạy mọi `python3`). Website QLBH cần FastAPI/uvicorn —
-  dùng venv: `source ~/venv/bin/activate` rồi `uvicorn main:app` (hoặc `QLBH-Website/start.sh` tự dò).
+  dùng venv: `source ~/venv/bin/activate`, `pip install -r QLBH-Website/requirements.txt`, rồi `uvicorn main:app`.
 - **Dữ liệu sạch**: muốn xoá đơn/khách kiểm thử → Website → **Quản trị CSDL → Khôi phục dữ liệu gốc**.
 
 ## 10. Nhật ký cập nhật (Phiên làm việc gần nhất)
@@ -204,6 +204,6 @@ appId/appName/màu nền sửa trong [`mobile/capacitor.config.json`](mobile/cap
   - Hỗ trợ 100% mọi dòng máy Android (kể cả máy đời cũ/khoá hàm mặc định), tốc độ quét siêu mượt.
 - **Hệ thống & Tự động hoá**:
   - Di chuyển thành công 100% database lên **Supabase (PostgreSQL)**, loại bỏ giới hạn *database locked* của SQLite.
-  - Setup quy trình **GitHub Actions** tự động biên dịch App Android ra file `.apk` mỗi khi push code lên nhánh chính, cấu hình chứng chỉ Android (`release.keystore`) đầy đủ để ký APK.
+  - Setup quy trình **GitHub Actions** tự động biên dịch App Android ra file `.apk` mỗi khi push code lên nhánh chính; chứng chỉ ký release cần được cấp qua secret/biến môi trường CI.
 - **Báo cáo bán hàng**: Khắc phục các lỗi biểu đồ (tràn biểu đồ khi số quá lớn, crash logic do thiếu component).
 - **Giao diện Đối soát kho & Quản lý sản phẩm**: Tách luồng điều chỉnh chuyên biệt, thêm widget popup thao tác siêu nhanh, bổ sung bộ lọc màu thực tế.

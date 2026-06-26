@@ -1,4 +1,4 @@
-import { vnd, dateTimeVN } from '../format'
+import { vnd } from '../format'
 import { api } from '../api'
 
 export async function printReceipt(orderSummary) {
@@ -6,7 +6,7 @@ export async function printReceipt(orderSummary) {
   let order = {}
   try {
     order = await api.orderDetail(orderSummary.order_no)
-  } catch (e) {
+  } catch {
     alert("Lỗi không thể tải chi tiết đơn hàng để in!")
     return
   }

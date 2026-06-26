@@ -1,5 +1,5 @@
-import { useEffect, useState, useMemo } from 'react'
-import { ScanLine, CheckCircle2, XCircle, ShieldCheck, Bike, User, Hash, Search, Printer, CreditCard } from 'lucide-react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { ScanLine, CheckCircle2, XCircle, ShieldCheck, Bike, User, Hash, Search, Printer } from 'lucide-react'
 
 const STATUSES = [['all', 'Tất cả trạng thái'], ['pending', 'Chờ duyệt'], ['vin_verified', 'Đã đối soát']]
 const STORES = [['all', 'Mọi cơ sở'], ['TA1', 'TA1'], ['TA2', 'TA2'], ['TA3', 'TA3']]
@@ -11,10 +11,11 @@ import { printReceipt } from '../utils/print'
 import CustomerDetail from './CustomerDetail'
 import { X } from 'lucide-react'
 
-export default function Reconciliation({ setTab }) {
+export default function Reconciliation() {
   const [orders, setOrders] = useState(null)
   const [recon, setRecon] = useState([])
   const [sel, setSel] = useState(null)
+  const selRef = useRef(null)
   const [frame, setFrame] = useState('')
   const [msg, setMsg] = useState(null)
   const [busy, setBusy] = useState(false)
@@ -54,30 +55,32 @@ export default function Reconciliation({ setTab }) {
     return arr
   }, [orders, status, store, q, sortDir])
 
-  const load = () => {
+  const pick = useCallback((o) => {
+    selRef.current = o || null
+    setSel(o); setFrame(''); setMsg(null); setSelVin('');
+    setPaymentMethod('Chuyển khoản');
+  }, [])
+
+  const load = useCallback(() => {
     api.pendingOrders().then((o) => { 
+      const current = selRef.current
       setOrders(o)
-      if (o.length > 0 && !sel) pick(o[0]) 
-      else if (sel) {
-        const upd = o.find(x => x.order_no === sel.order_no)
+      if (o.length > 0 && !current) pick(o[0])
+      else if (current) {
+        const upd = o.find(x => x.order_no === current.order_no)
         if (upd) pick(upd)
         else pick(o[0])
       }
     }).catch((e) => setErr(e.message))
     api.reconciliation().then(setRecon).catch(() => {})
-  }
-  useEffect(load, [])
+  }, [pick])
+  useEffect(() => { load() }, [load])
 
   useEffect(() => {
     if (sel && !sel.vin_code) {
       api.getAvailableVins(sel.model).then(setAvailVins).catch(() => setAvailVins([]))
     }
-  }, [sel?.order_no, sel?.vin_code])
-
-  const pick = (o) => { 
-    setSel(o); setFrame(''); setMsg(null); setSelVin(''); 
-    setPaymentMethod('Chuyển khoản');
-  }
+  }, [sel])
 
   const verify = async () => {
     if (!sel || !frame.trim()) return
@@ -284,7 +287,6 @@ export default function Reconciliation({ setTab }) {
       
       {showVehicleWidget && (
         <SelectVehicleModal 
-          currentStore={sel?.store} 
           onClose={() => setShowVehicleWidget(false)} 
           onSelect={async (vin) => {
             setBusy(true); setMsg(null);
@@ -304,7 +306,7 @@ export default function Reconciliation({ setTab }) {
   )
 }
 
-function SelectVehicleModal({ currentStore, onClose, onSelect }) {
+function SelectVehicleModal({ onClose, onSelect }) {
   const [data, setData] = useState(null)
   const [q, setQ] = useState('')
   const [models, setModels] = useState([])

@@ -1,12 +1,13 @@
-import urllib.parse
+import os
 from sqlalchemy import create_engine
 import sys
 
-password = "FvB%3!$Z6%ay$xk"
-encoded_password = urllib.parse.quote_plus(password)
-db_url = f"postgresql://postgres:{encoded_password}@db.tdlslaqugjpnywmwtwmk.supabase.co:5432/postgres"
+db_url = os.environ.get("DATABASE_URL")
+if not db_url:
+    print("Missing DATABASE_URL")
+    sys.exit(2)
 
-print("Testing connection to:", db_url.replace(encoded_password, "***"))
+print("Testing connection to configured DATABASE_URL")
 try:
     engine = create_engine(db_url)
     with engine.connect() as conn:

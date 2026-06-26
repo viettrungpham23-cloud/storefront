@@ -7,6 +7,8 @@ riêng customer_db/, định dạng SVG, chia nhóm). Hồ sơ tự động ghi 
 khi tạo/cập nhật.
 """
 from typing import Optional
+import base64
+import os
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy import text
@@ -132,7 +134,17 @@ def services(cid: str, db: Session = Depends(get_db)):
 
 @router.get("/{cid}/images")
 def images(cid: str):
-    return customer_store.list_images(cid)
+    groups = customer_store.list_images(cid)
+    base = os.path.abspath(customer_store.BASE)
+    for group in groups:
+        for image in group["images"]:
+            rel = image["url"].removeprefix("/customer-files/")
+            full = os.path.abspath(os.path.join(base, rel))
+            if full.startswith(base + os.sep) and os.path.isfile(full):
+                with open(full, "rb") as f:
+                    encoded = base64.b64encode(f.read()).decode("ascii")
+                image["data_url"] = f"data:image/svg+xml;base64,{encoded}"
+    return groups
 
 
 class ImageIn(BaseModel):

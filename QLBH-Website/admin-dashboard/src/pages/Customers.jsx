@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Search, Eye } from 'lucide-react'
 import { api } from '../api'
-import { vnd, dateVN, num } from '../format'
+import { vnd, num } from '../format'
 import { Card, Pager, Loading, Avatar } from '../ui'
 import { ApiError } from './Overview'
 import CustomerDetail from './CustomerDetail'
@@ -18,12 +18,14 @@ export default function Customers() {
   const [err, setErr] = useState(null)
   const [detailId, setDetailId] = useState(null)
 
-  const reload = () =>
-    api.customers({ group, q, page, page_size: 12 }).then(setData).catch((e) => setErr(e.message))
+  const reload = useCallback(() =>
+    api.customers({ group, q, page, page_size: 12 }).then(setData).catch((e) => setErr(e.message)),
+    [group, q, page],
+  )
   useEffect(() => {
     const t = setTimeout(reload, q ? 280 : 0)
     return () => clearTimeout(t)
-  }, [group, q, page])
+  }, [reload, q])
 
   if (err) return <ApiError msg={err} />
 

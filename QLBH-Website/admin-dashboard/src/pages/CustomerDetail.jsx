@@ -1,4 +1,4 @@
-import { useEffect, useState, Fragment } from 'react'
+import { useEffect, useState, Fragment, useCallback } from 'react'
 import {
   X, Pencil, Save, IdCard, ShoppingBag, Wrench, Package, Images, Upload,
   History, Factory, Truck, Warehouse, ShoppingCart, Bike, CheckCircle2,
@@ -280,8 +280,8 @@ function ImagesTab({ cid }) {
   const [group, setGroup] = useState('CCCD')
   const [busy, setBusy] = useState(false)
   const [msg, setMsg] = useState(null)
-  const load = () => api.customerImages(cid).then(setGroups)
-  useEffect(() => { load() }, [cid])
+  const load = useCallback(() => api.customerImages(cid).then(setGroups), [cid])
+  useEffect(() => { load() }, [load])
 
   const onFile = (e) => {
     const file = e.target.files?.[0]
@@ -293,7 +293,7 @@ function ImagesTab({ cid }) {
         await api.customerUploadImage(cid, { group, filename: file.name, data_url: reader.result })
         setMsg({ ok: true, text: 'Đã lưu ảnh (định dạng SVG) vào customer_db/' })
         load()
-      } catch (er) { setMsg({ ok: false, text: 'Lỗi upload ảnh' }) }
+      } catch { setMsg({ ok: false, text: 'Lỗi upload ảnh' }) }
       setBusy(false)
     }
     reader.readAsDataURL(file)
@@ -329,7 +329,9 @@ function ImagesTab({ cid }) {
             <div className="gallery">
               {g.images.map((im) => (
                 <div className="ph" key={im.name}>
-                  <a href={API_BASE + im.url} target="_blank" rel="noreferrer"><img src={API_BASE + im.url} alt={im.name} /></a>
+                  <a href={im.data_url || API_BASE + im.url} target="_blank" rel="noreferrer">
+                    <img src={im.data_url || API_BASE + im.url} alt={im.name} />
+                  </a>
                   <div className="cap">{im.name}</div>
                 </div>
               ))}

@@ -4,8 +4,8 @@ import {
   Bike, Wrench, Gift, X, FileDown, ChevronRight, CheckCircle2, Boxes,
 } from 'lucide-react'
 import { api } from '../api'
-import { vnd, vndShort, num, dateVN } from '../format'
-import { Card, Status, Loading } from '../ui'
+import { vndShort, num, dateVN } from '../format'
+import { Card, Loading } from '../ui'
 import { ApiError } from './Overview'
 
 const GOODS = [['all', 'Tất cả loại'], ['vehicle', 'Xe'], ['vehicle_part', 'Linh kiện xe'], ['accessory', 'Phụ kiện đại lý']]

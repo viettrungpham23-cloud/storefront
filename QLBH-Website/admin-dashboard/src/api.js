@@ -17,6 +17,8 @@ http.interceptors.request.use((config) => {
 const get = (url, params) => http.get(url, { params }).then((r) => r.data)
 const post = (url, data) => http.post(url, data).then((r) => r.data)
 const patch = (url, data) => http.patch(url, data).then((r) => r.data)
+const put = (url, data) => http.put(url, data).then((r) => r.data)
+const del = (url) => http.delete(url).then((r) => r.data)
 
 export const api = {
   setToken: (token) => {
@@ -45,6 +47,11 @@ export const api = {
   inventoryColors: () => get('/api/v1/inventory/colors'),
   customers: (p) => get('/api/v1/customers', p),
   pendingOrders: () => get('/api/v1/admin/pending-orders'),
+
+  users: () => get('/api/v1/users/'),
+  userCreate: (body) => post('/api/v1/users/', body),
+  userUpdate: (email, body) => put(`/api/v1/users/${encodeURIComponent(email)}`, body),
+  userDelete: (email) => del(`/api/v1/users/${encodeURIComponent(email)}`),
 
   customerDetail: (cid) => get(`/api/v1/customers/${cid}`),
   customerUpdate: (cid, body) => http.put(`/api/v1/customers/${cid}`, body).then((r) => r.data),

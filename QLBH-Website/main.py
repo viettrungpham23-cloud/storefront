@@ -1,7 +1,7 @@
 import os
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from database import engine, Base, SessionLocal
 import models
 import customer_store
@@ -43,11 +43,25 @@ app.add_middleware(
     allow_methods=["*"], allow_headers=["*"],
 )
 
-# Đã bổ sung reconciliation vào vòng lặp nạp router
-for r in (auth, dashboard, orders, inventory, customers, admin, payments, maintenance, procurement, reconciliation, users):
-    app.include_router(r.router)
+app.include_router(auth.router)
 
-app.mount("/customer-files", StaticFiles(directory=customer_store.BASE), name="customer-files")
+for r in (dashboard, orders, inventory, customers, payments, procurement, reconciliation):
+    app.include_router(r.router, dependencies=[Depends(auth.get_current_user)])
+
+for r in (admin, maintenance, users):
+    app.include_router(r.router, dependencies=[Depends(auth.require_admin)])
+
+
+@app.get("/customer-files/{file_path:path}")
+def protected_customer_file(
+    file_path: str,
+    _current_user: dict = Depends(auth.get_current_user),
+):
+    full = os.path.abspath(os.path.join(customer_store.BASE, file_path))
+    base = os.path.abspath(customer_store.BASE)
+    if not full.startswith(base + os.sep) or not os.path.isfile(full):
+        raise HTTPException(status_code=404, detail="Không tìm thấy tệp")
+    return FileResponse(full)
 
 @app.get("/")
 def health_check():

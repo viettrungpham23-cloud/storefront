@@ -2,7 +2,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import text
 from sqlalchemy.orm import Session
-from models import InventoryItem, Order
+from models import Customer, InventoryItem, Order
 from database import get_db
 
 router = APIRouter(prefix="/api/v1/admin", tags=["Quản trị viên"])

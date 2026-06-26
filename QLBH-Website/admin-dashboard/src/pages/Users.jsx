@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { api } from '../api';
 import { Badge, Table, Button, Input, Select } from '../ui';
 
@@ -12,26 +12,30 @@ export default function Users() {
   const [role, setRole] = useState('sales');
   const [unitCode, setUnitCode] = useState('TA1');
 
-  useEffect(() => { loadUsers(); }, []);
-
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await api('/users');
+      const data = await api.users();
       setUsers(data);
     } catch (e) {
       alert("Lỗi tải danh sách người dùng: " + e.message);
     }
     setLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    let ignore = false;
+    api.users()
+      .then((data) => { if (!ignore) setUsers(data); })
+      .catch((e) => { if (!ignore) alert("Lỗi tải danh sách người dùng: " + e.message); })
+      .finally(() => { if (!ignore) setLoading(false); });
+    return () => { ignore = true; };
+  }, []);
 
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      await api('/users', {
-        method: 'POST',
-        body: JSON.stringify({ email, name, role, unit_code: unitCode })
-      });
+      await api.userCreate({ email, name, role, unit_code: unitCode });
       setEmail(''); setName('');
       loadUsers();
     } catch (e) {
@@ -41,20 +45,14 @@ export default function Users() {
 
   const toggleActive = async (u) => {
     try {
-      await api(`/users/${u.email}`, {
-        method: 'PUT',
-        body: JSON.stringify({ is_active: u.is_active ? 0 : 1 })
-      });
+      await api.userUpdate(u.email, { is_active: u.is_active ? 0 : 1 });
       loadUsers();
     } catch (e) { alert(e.message); }
   };
 
   const updateRole = async (u, newRole) => {
     try {
-      await api(`/users/${u.email}`, {
-        method: 'PUT',
-        body: JSON.stringify({ role: newRole })
-      });
+      await api.userUpdate(u.email, { role: newRole });
       loadUsers();
     } catch (e) { alert(e.message); }
   };

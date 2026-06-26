@@ -4,7 +4,7 @@ import {
   ShieldCheck, AlertTriangle, Store, Maximize2, X,
 } from 'lucide-react'
 import { api } from '../api'
-import { vnd, vndShort, num, dateTimeVN, ago } from '../format'
+import { vnd, vndShort, num, ago } from '../format'
 import { AreaLineChart, BarChart, Donut } from '../charts'
 import { Card, Kpi, Status, Loading, Avatar } from '../ui'
 
@@ -90,6 +90,7 @@ export default function Overview() {
   const [topData, setTopData] = useState(null)
   const [widget, setWidget] = useState(null)
   const [err, setErr] = useState(null)
+  const [nowMs] = useState(() => Date.now())
 
   // Fetch independently
   useEffect(() => { api.summary(globalPeriod).then(setKpi).catch(e => setErr(e.message)) }, [globalPeriod])
@@ -105,7 +106,7 @@ export default function Overview() {
   if (err) return <ApiError msg={err} />
 
   const s = kpi
-  const refMs = actData?.[0] ? new Date(actData[0].created_at.replace(' ', 'T')).getTime() : Date.now()
+  const refMs = actData?.[0] ? new Date(actData[0].created_at.replace(' ', 'T')).getTime() : nowMs
   const reconMatched = reconData?.find((r) => r.status === 'matched')?.amount || 0
   const reconTotal = reconData?.reduce((a, r) => a + r.amount, 0) || 1
   const revTotal = revData ? revData.reduce((a, r) => a + r.revenue, 0) : 0

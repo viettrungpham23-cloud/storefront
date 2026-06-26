@@ -52,9 +52,14 @@ jobs:
 
     - name: Install dependencies and build web
       working-directory: ./mobile
+      env:
+        API_BASE: ${{ vars.STOREFRONT_API_BASE }}
+        ADMIN_API_BASE: ${{ vars.ADMIN_API_BASE }}
       run: |
-        npm install
-        API_BASE="http://34.21.152.227:8810" ADMIN_API_BASE="http://34.21.152.227:8000" npm run sync
+        test -n "$API_BASE" || { echo "Missing repository variable STOREFRONT_API_BASE"; exit 1; }
+        test -n "$ADMIN_API_BASE" || { echo "Missing repository variable ADMIN_API_BASE"; exit 1; }
+        npm ci
+        npm run sync
 
     - name: Build APK
       working-directory: ./mobile/android
