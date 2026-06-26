@@ -1,9 +1,9 @@
 # TA innovation — App bán hàng xe điện (VinFast Thu Anh)
 
 Ứng dụng **bán hàng kiểu iOS** cho nhân viên sales đại lý: duyệt xe → tư vấn →
-lập đơn cho khách (quét CCCD, chụp ảnh hồ sơ) → **đồng bộ thẳng lên Website quản trị (QLBH)**.
-Front-end SPA thuần (HTML/CSS/JS, chuyển màn mượt) + back-end Python stdlib + SQLite — **không cần cài gì thêm**.
-Là **PWA**, đóng gói được thành **APK (Android)** và **IPA (iPhone)** bằng Capacitor (xem [§ Đóng gói](#-đóng-gói-lên-điện-thoại-apk--ipa)).
+lập đơn cho khách (quét CCCD bằng jsQR siêu mượt, chụp ảnh hồ sơ) → **đồng bộ thẳng lên Website quản trị (QLBH)**.
+Front-end SPA thuần (HTML/CSS/JS, chuyển màn mượt) + back-end Python stdlib kết nối **Supabase (PostgreSQL)**.
+Là **PWA**, đóng gói được thành **APK (Android)** và **IPA (iPhone)** bằng Capacitor (tích hợp luồng Đăng nhập Google Auth bảo mật).
 
 ---
 
@@ -11,19 +11,20 @@ Là **PWA**, đóng gói được thành **APK (Android)** và **IPA (iPhone)** 
 
 - **Mua sắm**: trang chủ ưu đãi (cập nhật động theo tháng), danh mục theo phân khúc + **tab Dịch vụ & Phụ kiện**, chi tiết xe (chọn màu, thuê pin/mua đứt), so sánh tối đa 3 xe (tích hợp nút tắt ✕ nhanh thanh so sánh), **tồn kho realtime** (hết hàng → khoá mua).
 - **Giỏ hàng**: tính toán ngày giao hàng linh động (thực tế từ hôm nay), tự áp `HOCSINH16` −16%; linh kiện kèm theo; gợi ý mua kèm; mã ưu đãi; **Mua thêm + Thanh toán** (pin đáy).
-- **Lập đơn (3 bước)**: Giỏ → **Thanh toán** (biểu mẫu khách + **quét QR CCCD** tự điền + **chụp/đính ảnh hồ sơ** + thanh "Hồ sơ %") → **Hoàn tất**.
+- **Lập đơn (3 bước)**: Giỏ → **Thanh toán** (biểu mẫu khách + **quét QR CCCD bằng jsQR độc lập** tự điền + **chụp/đính ảnh hồ sơ** + thanh "Hồ sơ %") → **Hoàn tất**.
 - **Đồng bộ Website**: đơn đặt trên App tạo **Khách hàng + mở Đơn (chờ duyệt)** trong DB Website, **khoá VIN**, quy về **nhân viên/đơn vị**.
 - **Đơn hàng của tôi** + **Thông báo**: quản lý theo vòng đời (mở → duyệt → hoàn tất). **Click** vào từng đơn hàng hoặc thông báo để xem trực tiếp **chi tiết trạng thái, danh sách sản phẩm và tổng tiền**.
-- **Cài đặt & Hồ sơ nhân viên Sales**: 3 đơn vị **A/B/C** × 3 sales, hồ sơ + chỉ tiêu + doanh thu realtime.
+- **Cài đặt & Hồ sơ nhân viên Sales**: Đăng nhập qua **Google Auth** (chỉ cho phép các email được uỷ quyền), hồ sơ + chỉ tiêu + doanh thu realtime.
 
 ---
 
 ## 2. Chạy nhanh (localhost)
 
-App là Python thuần — chỉ cần Python 3:
+App sử dụng Python để chạy API và kết nối với Supabase (PostgreSQL):
 
 ```bash
 cd storefront
+# Đảm bảo bạn đã cấu hình DATABASE_URL trong .env
 python3 server.py            # → http://localhost:8810   (đổi cổng: PORT=9000 python3 server.py)
 ```
 Hoặc double-click **`start.command`** (tự mở trình duyệt). DB `store.db` (giỏ hàng) tự tạo lần đầu.
@@ -35,10 +36,8 @@ Hoặc double-click **`start.command`** (tự mở trình duyệt). DB `store.db
 cd storefront                            cd storefront/QLBH-Website
 python3 server.py    # :8810             ./start.sh        # FastAPI :8000 + React :5173
 ```
-App và Website **đọc/ghi chung** `QLBH-Website/xe_dien_thu_anh.db` → đơn từ App hiện ngay ở
-màn **"Đối soát & Duyệt"** của Admin. (Banner khi khởi động App báo `⇄ Đồng bộ Website: BẬT/TẮT`.)
-
-> Kiểm tra đồng bộ tự động: `python3 looper-sync/loop-workspace/checks/sync_check.py` (cần cả 2 máy chủ bật).
+App và Website **đọc/ghi chung cơ sở dữ liệu Supabase PostgreSQL** → đơn từ App hiện ngay ở
+màn **"Đối soát & Duyệt"** của Admin. Mọi thay đổi về tồn kho, đơn hàng diễn ra theo thời gian thực.
 
 ---
 
@@ -51,11 +50,11 @@ màn **"Đối soát & Duyệt"** của Admin. (Banner khi khởi động App b�
 | 3 | **Chi tiết** | Gallery, chọn màu, thuê pin/mua đứt, thông số, trạng thái tồn kho. |
 | 4 | **So sánh** | Tối đa 3 xe cạnh nhau + Mua ngay mỗi cột. |
 | 5 | **Giỏ hàng** | Hiển thị ngày nhận hàng dự kiến động; tự áp `HOCSINH16` −16%; linh kiện kèm theo; gợi ý mua kèm; mã ưu đãi; **Mua thêm + Thanh toán** (pin đáy). |
-| 6 | **Thanh toán (02)** | Thông tin khách (họ tên/SĐT/CCCD/ngày sinh/giới tính/địa chỉ/email), **quét QR CCCD**, **chụp ảnh hồ sơ**, thanh **Hồ sơ %**, phương thức (Visa/VNPay/trả góp 0%), nút **"Đặt hàng →" (Bước 3)**. |
+| 6 | **Thanh toán (02)** | Thông tin khách (họ tên/SĐT/CCCD/ngày sinh/giới tính/địa chỉ/email), **quét QR CCCD (jsQR mượt mà 100% dòng máy)**, **chụp ảnh hồ sơ**, thanh **Hồ sơ %**, phương thức (Visa/VNPay/trả góp 0%), nút **"Đặt hàng →" (Bước 3)**. |
 | 7 | **Hoàn tất (03)** | "Đặt hàng thành công", mã đơn App + **mã đơn đại lý** đã đồng bộ, VIN đã khoá. |
 | + | **Đơn hàng của tôi** | Đơn theo SĐT + trạng thái realtime. **(Click vào xem chi tiết)** |
 | + | **Thông báo** (🔔) | Đơn mở · được duyệt · hoàn tất. **(Click vào xem chi tiết đơn)** |
-| + | **Cài đặt / Hồ sơ** (⚙️) | Hồ sơ nhân viên sales, đổi nhân viên, chỉ tiêu/doanh thu. |
+| + | **Cài đặt / Hồ sơ** (⚙️) | Đăng nhập an toàn qua **Google Auth**, hồ sơ nhân viên sales, chỉ tiêu/doanh thu. |
 
 Chuyển cảnh kiểu iOS (push/pop trượt phải, vuốt mép trái để back, cross-fade đổi tab, sheet trượt đáy); tab bar tự ẩn ở các luồng đẩy; tôn trọng `prefers-reduced-motion`.
 
@@ -63,7 +62,7 @@ Chuyển cảnh kiểu iOS (push/pop trượt phải, vuốt mép trái để ba
 
 ## 4. Đồng bộ App ↔ Website QLBH
 
-Chung một CSDL `QLBH-Website/xe_dien_thu_anh.db`, cầu nối qua [`qlbh_sync.py`](qlbh_sync.py) (chỉ `sqlite3`):
+Chung một CSDL **Supabase (PostgreSQL)**, cầu nối qua [`qlbh_sync.py`](qlbh_sync.py):
 
 - **Tồn kho realtime** — `/api/catalog` & `/api/products/<slug>` lấy `stock` từ `inventory_items` (status `available`) của Website.
 - **Đặt hàng → Website** — `POST /api/orders` tự: tạo **Khách hàng** (trùng CCCD/SĐT thì dùng lại) + ghi hồ sơ ra `customer_db/`; **khoá VIN** (`available→reserved`); tạo **Đơn** `channel=App`, `pending`, gắn `sales_id` + cơ sở. Ảnh đính kèm lưu `.svg` chia nhóm.
@@ -77,14 +76,13 @@ Không có DB Website → App vẫn chạy độc lập (sync tự tắt).
 
 ```
 storefront/
-├── server.py        # HTTP (stdlib) + SQLite + REST API + phục vụ web/  (App :8810)
-├── qlbh_sync.py     # CẦU NỐI đồng bộ App ↔ Website (dùng chung DB)
+├── server.py        # HTTP (stdlib) + REST API + kết nối Supabase (App :8810)
+├── qlbh_sync.py     # CẦU NỐI đồng bộ App ↔ Website (dùng chung Supabase DB)
 ├── catalog.py       # sản phẩm, mã ưu đãi (PROMOS), linh kiện/VAS (ADDONS)
-├── store.db         # SQLite cục bộ của App (giỏ hàng)
+├── store.db         # SQLite cục bộ của App (chỉ lưu giỏ hàng tạm)
 ├── start.command    # launcher double-click
 ├── PACKAGING.md     # (tham khảo) bản chi tiết đóng gói APK/IPA
 ├── QLBH-Website/    # Website quản trị (FastAPI + React) — DB & nhân viên dùng chung
-│   └── xe_dien_thu_anh.db   # ← App & Website đọc/ghi CHUNG
 ├── web/             # FRONT-END App (nguồn đóng gói mobile)
 │   ├── config.js    # apiBase: "" (local) | URL backend public (đóng gói)
 │   ├── index.html · styles.css · app.js
@@ -136,9 +134,7 @@ HOST=0.0.0.0 PORT=8810 python3 server.py    # nhận kết nối ngoài
 ```
 Gợi ý host (có HTTPS sẵn): **Render.com / Railway.app / Fly.io** (start command `python3 server.py`,
 đặt `HOST=0.0.0.0`, để nền tảng tự cấp `PORT`) — hoặc **VPS** sau nginx/Caddy.
-CORS đã mở (`Access-Control-Allow-Origin: *`). SQLite là file → gắn **volume** nếu nền tảng xoá ổ đĩa khi restart.
-
-> Có DB Website? Deploy kèm `QLBH-Website/` hoặc trỏ `qlbh_sync` tới DB chung để giữ đồng bộ.
+CORS đã mở (`Access-Control-Allow-Origin: *`). Database đã được đưa lên **Supabase**.
 
 Sau khi có URL (vd `https://api-tainnovation.onrender.com`), dùng cho các bước dưới.
 
@@ -152,18 +148,8 @@ App đã là PWA (manifest + service worker + icon). Host `server.py` ở URL HT
 
 ### 8.2 — APK (Android, file cài thật)
 
-**Cách A — Build tại máy (Capacitor, đã scaffold sẵn trong `mobile/`).** Cần **JDK 17** + **Android SDK** (qua Android Studio).
-
-```bash
-cd storefront/mobile
-npm install                                              # lần đầu
-API_BASE="https://api-cua-ban.example.com" npm run sync  # copy web/→www/ + nhúng apiBase + cap sync
-npx @capacitor/assets generate --android                 # (tuỳ chọn) icon/splash từ assets/
-npm run apk                                               # gradle assembleDebug
-#   → mobile/android/app/build/outputs/apk/debug/app-debug.apk
-```
-Chép `app-debug.apk` sang điện thoại (USB/Drive/Zalo) → bật **Cài từ nguồn không xác định** → cài.
-Bản release đã ký (chia sẻ rộng / CH Play): tạo keystore rồi `npm run apk:release` (xem docs Android signing).
+Dự án đã được thiết lập quy trình tự động hoá **CI/CD qua GitHub Actions**. Bạn chỉ cần push code lên nhánh `main`, hệ thống sẽ tự động build file APK và cung cấp link tải ở mục **Actions**.
+File APK đã được tự động ký (signed) với `release.keystore` và cấu hình sẵn Client ID bảo mật để tương thích hoàn toàn với tính năng **Đăng nhập Google**.
 
 **Cách B — Không cài toolchain: PWABuilder.** Host PWA (§8.1) → vào **https://www.pwabuilder.com**,
 dán URL → **Android → Generate** → tải **APK đã ký** + bản **AAB** cho CH Play.
@@ -209,13 +195,15 @@ appId/appName/màu nền sửa trong [`mobile/capacitor.config.json`](mobile/cap
 
 ## 10. Nhật ký cập nhật (Phiên làm việc gần nhất)
 
-- **Báo cáo bán hàng**: 
-  - Khắc phục lỗi crash do sai sót import component biểu đồ.
-  - Tinh chỉnh biểu đồ Doanh thu thuần: loại bỏ thông tin "Số đơn" để tập trung đúng mục tiêu.
-  - Khắc phục lỗi các cột biểu đồ chọc thủng khung giới hạn khi doanh thu vượt quá 2 tỷ (trục Y tự động co giãn).
-- **Quản lý kho**: 
-  - Bổ sung bộ lọc màu sắc, tự động lấy danh sách màu xe từ dữ liệu thực tế.
-- **Đối soát & Duyệt xuất kho**:
-  - Gỡ bỏ form sửa nhanh, phân rã thành **2 luồng thao tác rõ ràng**:
-    - **Thay đổi thông tin KH**: Gọi bảng (drawer) hồ sơ chi tiết để sửa chuyên nghiệp.
-    - **Thay đổi thông tin xe**: Chạy một **Widget (Popup) độc lập** hiển thị trực tiếp catalog các xe đang có sẵn trong kho ngay tại màn hình, cho phép lọc/tìm xe và chọn đổi xe nhanh chóng thay vì điều hướng đi trang khác.
+- **Tích hợp Đăng nhập Google (Google Auth)**:
+  - Tích hợp chuẩn Google Login cho Capacitor Android và Web.
+  - Tự động map ID nhân viên (SA1, SA2...) qua email. Nếu email không được uỷ quyền (không có trong danh sách file `reference.py`), App sẽ báo lỗi "Chưa được cấp quyền" và tự động đăng xuất để bảo vệ dữ liệu nội bộ.
+  - Android sử dụng Native Auth thông qua Play Services đảm bảo an toàn tuyệt đối.
+- **Nâng cấp Camera & Quét CCCD**:
+  - Tích hợp thành công thư viện `jsQR` độc lập thay thế cho `BarcodeDetector`.
+  - Hỗ trợ 100% mọi dòng máy Android (kể cả máy đời cũ/khoá hàm mặc định), tốc độ quét siêu mượt.
+- **Hệ thống & Tự động hoá**:
+  - Di chuyển thành công 100% database lên **Supabase (PostgreSQL)**, loại bỏ giới hạn *database locked* của SQLite.
+  - Setup quy trình **GitHub Actions** tự động biên dịch App Android ra file `.apk` mỗi khi push code lên nhánh chính, cấu hình chứng chỉ Android (`release.keystore`) đầy đủ để ký APK.
+- **Báo cáo bán hàng**: Khắc phục các lỗi biểu đồ (tràn biểu đồ khi số quá lớn, crash logic do thiếu component).
+- **Giao diện Đối soát kho & Quản lý sản phẩm**: Tách luồng điều chỉnh chuyên biệt, thêm widget popup thao tác siêu nhanh, bổ sung bộ lọc màu thực tế.

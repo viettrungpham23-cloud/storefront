@@ -1,7 +1,7 @@
 # Tài liệu Bàn giao — Hệ sinh thái bán hàng xe điện VinFast Thu Anh
 
 > Phạm vi: **nội bộ đại lý** (nhân viên sales + quản trị). Bàn giao trước khi đóng giai đoạn build.
-> Trạng thái hiện tại: **POC/Dev hoàn chỉnh chức năng**, chạy localhost với SQLite, chưa có xác thực.
+> Trạng thái hiện tại: **Hoàn chỉnh chức năng**, chạy với Supabase, có xác thực Google Auth cho App.
 > Tài liệu này: (1) rà soát cấu trúc lưu file, (2) logic database, (3) bảo mật, (4) định hướng triển khai
 > server ổn định, (5) deploy app CH Play/iOS, (6) checklist việc còn lại.
 
@@ -82,7 +82,7 @@ Toàn bộ dữ liệu của hệ thống hiện đã được di chuyển thàn
 
 | # | Lỗ hổng hiện tại | Mức | Khắc phục |
 |---|---|---|---|
-| 1 | **Không có xác thực** — App định danh sales bằng `localStorage`; Website admin mở công khai | Cao | Thêm đăng nhập (sales + admin), JWT/session; tối thiểu HTTP Basic + HTTPS cho nội bộ |
+| 1 | **Không có xác thực website admin** | Cao | Thêm đăng nhập (admin), JWT/session; tối thiểu HTTP Basic + HTTPS cho nội bộ (App đã được tích hợp Google Auth) |
 | 2 | **CCCD + ảnh giấy tờ lưu plaintext** (DB + `customer_db/media`) | Cao | Mã hoá ở tầng lưu trữ (disk encryption / cột mã hoá), siết quyền thư mục (`chmod 700`), object storage có ACL |
 | 3 | `.env` **không** trong `.gitignore`; chưa có quản lý secret | Cao | Thêm `.gitignore`; dùng biến môi trường/secret manager; đổi mọi credential trước prod |
 | 4 | `CORS allow_origins=["*"]` (web) + `Access-Control-Allow-Origin: *` (app) | TB | Giới hạn origin theo domain nội bộ khi lên prod |
@@ -176,9 +176,7 @@ hệ; song song chuẩn bị **TestFlight** (iOS) + **Internal testing CH Play**
 - [ ] Giới hạn **CORS** theo domain nội bộ.
 
 **Nên làm (ổn định/mở rộng):**
-- [ ] **Chuyển SQLite → PostgreSQL** (1 nguồn dữ liệu, hết khoá file); App thành client.
 - [ ] systemd + nginx/Caddy + gunicorn workers; build admin tĩnh (`npm run build`).
-- [ ] **Backup hằng đêm** DB + `customer_db/` (off-site) + giám sát uptime.
 - [ ] Đưa ảnh lên **object storage** (S3/MinIO) thay thư mục cục bộ.
 
 **Dọn dẹp bàn giao:**
