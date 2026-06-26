@@ -20,17 +20,15 @@ import uuid
 import base64
 import mimetypes
 import boto3
-from dotenv import load_dotenv
-load_dotenv(os.path.join(QLBH_DIR, ".env"))
-
-from dotenv import load_dotenv
-load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "QLBH-Website", ".env"))
 
 from datetime import datetime
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 QLBH_DIR = os.path.join(ROOT, "QLBH-Website")
 QLBH_DB = os.environ.get("QLBH_DB", os.path.join(QLBH_DIR, "xe_dien_thu_anh.db"))
+
+from dotenv import load_dotenv
+load_dotenv(os.path.join(QLBH_DIR, ".env"))
 
 # Mirror hồ sơ khách ra thư mục riêng của Website (nếu import được)
 if QLBH_DIR not in sys.path:
