@@ -28,6 +28,28 @@ jobs:
         distribution: 'zulu'
         java-version: '17'
 
+    - name: Pre-build Sanity Checks
+      working-directory: ./
+      run: |
+        echo "=== BẮT ĐẦU RÀ SOÁT LỖI TỰ ĐỘNG ==="
+        
+        # 1. Kiểm tra cú pháp JavaScript
+        echo "1. Kiểm tra cú pháp JavaScript..."
+        find web -name "*.js" -exec node -c {} \; || { echo "❌ LỖI: Có lỗi cú pháp JavaScript trong thư mục web!"; exit 1; }
+        
+        # 2. Kiểm tra khai báo Capacitor Plugins (Android)
+        echo "2. Kiểm tra khai báo Native Android..."
+        if grep -q "@codetrix-studio/capacitor-google-auth" mobile/package.json; then
+          if ! grep -q "registerPlugin(GoogleAuth.class)" mobile/android/app/src/main/java/vn/tainnovation/store/MainActivity.java; then
+            echo "❌ LỖI: Thiếu đăng ký GoogleAuth.class trong MainActivity.java!"; exit 1;
+          fi
+          if ! grep -q "server_client_id" mobile/android/app/src/main/res/values/strings.xml; then
+            echo "❌ LỖI: Thiếu server_client_id trong strings.xml!"; exit 1;
+          fi
+        fi
+        
+        echo "✅ HOÀN TẤT RÀ SOÁT! MÃ NGUỒN SẠCH."
+
     - name: Install dependencies and build web
       working-directory: ./mobile
       run: |
