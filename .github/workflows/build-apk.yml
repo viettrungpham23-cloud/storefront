@@ -32,6 +32,7 @@ jobs:
       working-directory: ./mobile
       run: |
         npm install
+        npx cap add android
         npm run sync
 
     - name: Build APK
