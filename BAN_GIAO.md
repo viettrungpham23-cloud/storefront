@@ -11,10 +11,10 @@
 
 | Cấu phần | Công nghệ | Cổng | Lệnh chạy |
 |---|---|---|---|
-| **App** (sales/khách) | Python stdlib + SPA `web/` | 8810 | `python3 server.py` |
-| **Website QLBH** (quản trị) | FastAPI + React/Vite | 8000 / 5173 | `QLBH-Website/start.sh` |
+| **App** (sales/khách) | Python stdlib + SPA `web/` | 8810 | Chạy tự động qua `systemd` (`storefront-app.service`) |
+| **Website QLBH** (quản trị) | FastAPI + React/Vite | 8000 / 5173 | Chạy tự động qua `systemd` (`storefront-admin.service`) |
 
-Hai cấu phần **dùng chung 1 file DB** `QLBH-Website/xe_dien_thu_anh.db`. Cầu nối: [`qlbh_sync.py`](qlbh_sync.py).
+Cả hai ứng dụng đều kết nối thẳng vào cùng một **cơ sở dữ liệu PostgreSQL (Supabase)**. Cầu nối đồng bộ: [`qlbh_sync.py`](qlbh_sync.py).
 
 ---
 
@@ -23,7 +23,7 @@ Hai cấu phần **dùng chung 1 file DB** `QLBH-Website/xe_dien_thu_anh.db`. C�
 ```
 storefront/
 ├── server.py · qlbh_sync.py · catalog.py     # MÃ NGUỒN App (Python stdlib)
-├── store.db                                   # DỮ LIỆU App: chỉ giỏ hàng (ephemeral, 60 KB)
+├── store.db                                   # DỮ LIỆU App: chỉ giỏ hàng tạm thời, bị xóa khi chốt đơn
 ├── start.command · run-preview.sh             # launcher
 ├── README.md · PACKAGING.md · BAN_GIAO.md     # tài liệu
 ├── web/                                        # FRONT-END App (nguồn đóng gói mobile)
@@ -44,11 +44,7 @@ storefront/
 │   ├── seed.py · procurement_seed.py           # nạp dữ liệu từ kho thật
 │   ├── customer_store.py                       # kho file hồ sơ khách
 │   ├── data/inventory.json                     # KHO THẬT 2.998 VIN (nguồn seed)
-│   ├── xe_dien_thu_anh.db   ★                   # DỮ LIỆU CHÍNH (4.9 MB) — App+Web ghi chung
-│   ├── customer_db/         ★                   # HỒ SƠ KHÁCH (file riêng)
-│   │   ├── profiles/<id>.json   (2.352 file)    #   thông tin khách (mirror SQLite)
-│   │   └── media/<id>/<nhóm>/*.svg              #   ẢNH CCCD/xe/hợp đồng (NHẠY CẢM)
-│   ├── .env                ⚠                    # DATABASE_URL (cần bảo vệ — xem §3)
+│   ├── .env                ⚠                    # DATABASE_URL (URL kết nối Supabase)
 │   ├── admin-dashboard/    (React/Vite SPA)     # giao diện quản trị
 │   └── start.sh
 └── looper-output/ · looper-sync/               # log kiểm thử (Looper) — không cần khi deploy
@@ -70,24 +66,10 @@ storefront/
 
 ## 2. Logic lưu trữ database
 
-### 2.1 Ba kho dữ liệu
-1. **`store.db`** (App, SQLite) — chỉ **giỏ hàng tạm** (cart_items, cart_addons). Mất không sao.
-2. **`xe_dien_thu_anh.db`** (CHÍNH, SQLite) — **20 bảng**: kho/VIN, khách, đơn, thanh toán, đối soát,
-   công nợ, khuyến mãi, mua hàng (PO/nhập kho), bảo dưỡng, linh kiện, **nhân viên gắn vào đơn** (`sales_id`).
-   Cả App (`qlbh_sync.py` qua `sqlite3`) lẫn Website (FastAPI qua SQLAlchemy) đọc/ghi **chung file này**.
-3. **`customer_db/`** (file-based) — hồ sơ khách dạng `profiles/<id>.json` + ảnh `media/<id>/<nhóm>/*.svg`.
-   Là **bản mirror** của bảng `customers`, tự ghi khi tạo/cập nhật khách. Phục vụ tĩnh tại `/customer-files`.
-
-### 2.2 Luồng ghi khi đặt đơn (App → Website)
-`POST /api/orders` → `qlbh_sync.push_order()`:
-tạo/khớp **Khách** (dedup theo CCCD/SĐT) → ghi `customer_db/` → **khoá VIN** (`available→reserved`)
-→ tạo **Đơn** `channel=App, pending`, gắn `sales_id` + cơ sở → lưu ảnh đính kèm.
-
-### 2.3 Rủi ro & khuyến nghị (QUAN TRỌNG cho production)
-- ⚠ **SQLite 1-writer**: 2 tiến trình (App + Web) ghi cùng file chỉ ổn ở mức tải thấp/dev.
-  Nhiều sales đặt đơn đồng thời → nguy cơ *database is locked*.
-  → **Khuyến nghị: chuyển sang PostgreSQL** (thiết kế gốc `qlbh-database.md` đã viết sẵn DDL PostgreSQL).
-  Cả App lẫn Website thành **client của 1 PostgreSQL** → bỏ kiểu "ghi chung file".
+### 2.1 Kiến trúc Cơ sở Dữ liệu
+Toàn bộ dữ liệu của hệ thống hiện đã được di chuyển thành công lên **PostgreSQL (Supabase)**. Không còn sử dụng SQLite lưu file cục bộ (ngoại trừ giỏ hàng tạm `store.db` của App).
+- Việc sử dụng PostgreSQL giải quyết triệt để rủi ro nghẽn cổ chai (*database locked*) khi có hàng chục nhân viên lên đơn cùng lúc.
+- App và Web Admin giao tiếp trực tiếp với Supabase thông qua biến môi trường `DATABASE_URL`.
 - **Mã hoá/đồng nhất**: khi lên Postgres, hợp nhất hồ sơ khách vào DB (giữ `customer_db/` chỉ cho ảnh),
   hoặc đưa ảnh lên **object storage** (S3/MinIO) thay vì thư mục cục bộ.
 - **Backup**: hiện chỉ là file → cần lịch backup (xem §4.4).
