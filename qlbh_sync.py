@@ -47,11 +47,21 @@ def available_db():
     return bool(os.environ.get("DATABASE_URL"))
 
 
+import time
+
+_pool = None
+def _get_pool(dsn):
+    global _pool
+    if _pool is None:
+        import psycopg2.pool
+        _pool = psycopg2.pool.SimpleConnectionPool(1, 10, dsn)
+    return _pool
+
 class DBWrapper:
     def __init__(self, dsn):
-        import psycopg2
         import psycopg2.extras
-        self.conn = psycopg2.connect(dsn)
+        self.pool = _get_pool(dsn)
+        self.conn = self.pool.getconn()
         self.conn.autocommit = False
 
     def execute(self, query, params=None):
@@ -68,7 +78,9 @@ class DBWrapper:
         self.conn.rollback()
 
     def close(self):
-        self.conn.close()
+        if hasattr(self, 'conn') and self.conn:
+            self.pool.putconn(self.conn)
+            self.conn = None
 
 def _conn():
     dsn = os.environ.get("DATABASE_URL")
@@ -77,19 +89,29 @@ def _conn():
     return DBWrapper(dsn)
 
 
+_avail_cache = {}
+_avail_cache_time = 0
+
 def available():
     """{ MODEL_UPPER: số xe sẵn sàng } từ kho Website."""
+    global _avail_cache, _avail_cache_time
     if not available_db():
         return {}
+        
+    if time.time() - _avail_cache_time < 60:
+        return _avail_cache
+        
     conn = _conn()
     try:
         rows = conn.execute(
             "SELECT UPPER(sku_type) m, COUNT(*) n FROM inventory_items "
             "WHERE status='available' AND sku_type IS NOT NULL GROUP BY UPPER(sku_type)").fetchall()
-        return {r["m"]: r["n"] for r in rows}
+        _avail_cache = {r["m"]: r["n"] for r in rows}
+        _avail_cache_time = time.time()
+        return _avail_cache
     except Exception as e:
         print("⚠️  QLBH available() lỗi:", e)
-        return {}
+        return _avail_cache
     finally:
         conn.close()
 
