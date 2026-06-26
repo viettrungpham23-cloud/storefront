@@ -6,11 +6,16 @@ secrets/
 
 # Cơ sở dữ liệu (dữ liệu sinh ra / có PII)
 *.db
+*.db.bak
+*.db-journal
 *.sqlite
 *.sqlite3
 
 # Hồ sơ khách (CCCD, ảnh giấy tờ — NHẠY CẢM)
 QLBH-Website/customer_db/
+
+# SQL dumps (có thể chứa PII)
+old_db_dump.sql
 
 # ── Sinh tự động / build ──────────────────────────────────────────
 __pycache__/
@@ -27,19 +32,20 @@ mobile/android/.gradle/
 mobile/ios/App/build/
 mobile/ios/App/Pods/
 
+# File đóng gói / binary lớn — không thuộc source code
+*.apk
+*.aab
+*.ipa
+*.tar.gz
+deploy.tar.gz
+qlbh-deploy.tar.gz
+
+# File tạm
+temp_append.js
+
 # ── Hệ điều hành / công cụ ────────────────────────────────────────
 .DS_Store
 *.log
 .impeccable/
-node_modules/
 venv/
-__pycache__/
-*.db
-*.db.bak
-*.db-journal
-*.log
-.DS_Store
-.env
-dist/
-build/
-.impeccable/
+.claude/
