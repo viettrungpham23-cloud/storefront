@@ -924,8 +924,32 @@ function setSales(id) { state.salesId = id; localStorage.setItem('ta_sales_id', 
 async function openSalesSheet(onPick) {
   let data;
   try { data = await ensureSales(); } catch (e) { toast('Không tải được nhân viên'); return; }
+
+  let GoogleAuth = window.Capacitor && window.Capacitor.Plugins ? window.Capacitor.Plugins.GoogleAuth : null;
+  if (GoogleAuth) {
+    try {
+      if (!window.__googleAuthInit) {
+        GoogleAuth.initialize();
+        window.__googleAuthInit = true;
+      }
+      const user = await GoogleAuth.signIn();
+      if (user && user.email) {
+        toast('Đăng nhập Google thành công: ' + user.email);
+        let match = data.sales.find(s => s.email.toLowerCase() === user.email.toLowerCase());
+        if (!match) match = data.sales[0]; // fallback nếu không khớp email
+        setSales(match.id);
+        if (onPick) onPick();
+        return;
+      }
+    } catch (err) {
+      console.log('Google Auth Error', err);
+      toast('Lỗi Đăng nhập Google, quay lại cách thủ công.');
+    }
+  }
+
+  // Fallback / Cách thủ công
   const inner = `<div class="sales-sheet">
-    <div class="ps-head"><h3>Chọn nhân viên sales</h3><p>Đơn vị A · B · C — mỗi đơn vị 3 nhân viên</p></div>
+    <div class="ps-head"><h3>Đăng nhập / Chọn nhân viên</h3><p>Google Login hoặc chọn thủ công bên dưới</p></div>
     <div class="su-list">${data.units.map(u => `<div class="su-group"><div class="su-label">${esc(u.name)} · ${esc(u.store_name)}</div>
       ${data.sales.filter(x => x.unit === u.code).map(x => `<button class="su-item ${x.id === state.salesId ? 'on' : ''}" data-sid="${esc(x.id)}">
         <div class="su-av">${initials(x.name)}</div>
@@ -1141,47 +1165,65 @@ function parseCCCD(raw) {
 function openCCCDScanner(onResult) {
   const inner = `<div class="qr-sheet">
     <div class="qr-head"><h3>${I.scan}Quét QR trên CCCD</h3><p>Đưa mã QR ở mặt trước thẻ căn cước vào khung</p></div>
-    <div class="qr-stage" id="qr-stage"><video id="qr-video" playsinline muted></video><div class="qr-frame"></div>
-      <div class="qr-status" id="qr-status">Đang mở camera…</div></div>
+    <div class="qr-stage" id="qr-stage">
+      <video id="qr-video" playsinline muted style="width:100%;height:100%;object-fit:cover;"></video>
+      <canvas id="qr-canvas" hidden></canvas>
+      <div class="qr-frame"></div>
+      <div class="qr-status" id="qr-status">Đang mở camera…</div>
+    </div>
     <div class="qr-alts">
       <label class="btn btn-line btn-sm" style="flex:1">Tải ảnh QR<input id="qr-file" type="file" accept="image/*" hidden></label>
       <button class="btn btn-line btn-sm" id="qr-paste" style="flex:1">Dán nội dung</button>
       <button class="btn btn-primary btn-sm" id="qr-demo" style="flex:1">Dữ liệu mẫu</button>
     </div></div>`;
-  let stream = null, raf = null, closed = false, detector = null;
+  let stream = null, raf = null, closed = false;
   const cleanup = () => { closed = true; if (raf) cancelAnimationFrame(raf); if (stream) stream.getTracks().forEach(t => t.stop()); };
   const closeSheet = openSheet(inner, (root) => {
     const video = root.querySelector('#qr-video');
+    const canvasElement = root.querySelector('#qr-canvas');
+    const canvas = canvasElement.getContext('2d', { willReadFrequently: true });
     const status = root.querySelector('#qr-status');
-    const hasBD = ('BarcodeDetector' in window);
     const finish = raw => {
       const data = parseCCCD(raw);
       if (!data || !data.cccd) { status.textContent = 'Mã QR không đúng định dạng CCCD.'; return; }
       cleanup(); closeSheet(); onResult(data);
     };
     root.querySelector('.backdrop').addEventListener('click', cleanup, { once: true });
-    if (hasBD && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      detector = new BarcodeDetector({ formats: ['qr_code'] });
+    
+    if (typeof jsQR !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }).then(st => {
         stream = st; video.srcObject = st; video.play(); status.textContent = 'Đang quét…';
-        const loop = async () => {
+        const loop = () => {
           if (closed) return;
-          try { const codes = await detector.detect(video); if (codes.length) return finish(codes[0].rawValue); } catch (e) {}
+          if (video.readyState === video.HAVE_ENOUGH_DATA) {
+            canvasElement.height = video.videoHeight;
+            canvasElement.width = video.videoWidth;
+            canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+            const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+            const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'dontInvert' });
+            if (code && code.data) return finish(code.data);
+          }
           raf = requestAnimationFrame(loop);
-        }; loop();
+        };
+        requestAnimationFrame(loop);
       }).catch(() => { status.textContent = 'Không mở được camera — dùng nút bên dưới.'; root.querySelector('#qr-stage').classList.add('nocam'); });
     } else {
       status.textContent = 'Dùng "Tải ảnh QR" / "Dán nội dung" / "Dữ liệu mẫu" bên dưới.';
       root.querySelector('#qr-stage').classList.add('nocam');
     }
+
     root.querySelector('#qr-file').onchange = async e => {
       const f = e.target.files[0]; if (!f) return;
       status.textContent = 'Đang đọc ảnh…';
       try {
-        const det = detector || (('BarcodeDetector' in window) ? new BarcodeDetector({ formats: ['qr_code'] }) : null);
-        if (!det) return (status.textContent = 'Thiết bị không hỗ trợ đọc QR từ ảnh.');
-        const codes = await det.detect(await createImageBitmap(f));
-        if (codes.length) finish(codes[0].rawValue); else status.textContent = 'Không tìm thấy QR trong ảnh.';
+        if (typeof jsQR === 'undefined') return (status.textContent = 'Hệ thống chưa tải xong jsQR.');
+        const bmp = await createImageBitmap(f);
+        canvasElement.width = bmp.width;
+        canvasElement.height = bmp.height;
+        canvas.drawImage(bmp, 0, 0);
+        const imageData = canvas.getImageData(0, 0, bmp.width, bmp.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'dontInvert' });
+        if (code && code.data) finish(code.data); else status.textContent = 'Không tìm thấy QR trong ảnh.';
       } catch (er) { status.textContent = 'Không đọc được ảnh.'; }
     };
     root.querySelector('#qr-paste').onclick = () => {

@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">TA innovation</string>
+    <string name="title_activity_main">TA innovation</string>
+    <string name="package_name">vn.tainnovation.store</string>
+    <string name="custom_url_scheme">vn.tainnovation.store</string>
+    <string name="server_client_id">239161131679-80dq6difq624m6hnjf2g2opkdbq4tvp3r.apps.googleusercontent.com</string>
+</resources>

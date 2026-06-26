@@ -32,7 +32,6 @@ jobs:
       working-directory: ./mobile
       run: |
         npm install
-        npx cap add android
         API_BASE="http://34.21.152.227:8810" npm run sync
 
     - name: Build APK

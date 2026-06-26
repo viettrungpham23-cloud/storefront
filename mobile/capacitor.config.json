@@ -10,5 +10,12 @@
     "androidScheme": "http",
     "iosScheme": "http",
     "cleartext": true
+  },
+  "plugins": {
+    "GoogleAuth": {
+      "scopes": ["profile", "email"],
+      "serverClientId": "239161131679-80dq6difq624m6hnjf2g2opkdbq4tvp3r.apps.googleusercontent.com",
+      "forceCodeForRefreshToken": true
+    }
   }
 }
