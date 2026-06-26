@@ -14,11 +14,15 @@ Nếu không tìm thấy DB Website, mọi hàm trả về rỗng (App vẫn ch�
 """
 import os
 import sys
-import sqlite3
+import os
+import urllib.parse
 import uuid
 import base64
 import mimetypes
 import boto3
+from dotenv import load_dotenv
+load_dotenv(os.path.join(QLBH_DIR, ".env"))
+
 from datetime import datetime
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -39,7 +43,7 @@ except Exception:
 
 
 def available_db():
-    return os.path.exists(QLBH_DB)
+    return bool(os.environ.get("DATABASE_URL"))
 
 
 def _conn():
