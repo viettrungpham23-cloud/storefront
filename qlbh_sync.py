@@ -47,11 +47,34 @@ def available_db():
     return bool(os.environ.get("DATABASE_URL"))
 
 
+class DBWrapper:
+    def __init__(self, dsn):
+        import psycopg2
+        import psycopg2.extras
+        self.conn = psycopg2.connect(dsn)
+        self.conn.autocommit = False
+
+    def execute(self, query, params=None):
+        import psycopg2.extras
+        cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        q = query.replace("?", "%s")
+        cur.execute(q, params or ())
+        return cur
+    
+    def commit(self):
+        self.conn.commit()
+    
+    def rollback(self):
+        self.conn.rollback()
+
+    def close(self):
+        self.conn.close()
+
 def _conn():
-    conn = sqlite3.connect(QLBH_DB, timeout=5)
-    conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA busy_timeout=5000")
-    return conn
+    dsn = os.environ.get("DATABASE_URL")
+    if not dsn:
+        raise Exception("Missing DATABASE_URL")
+    return DBWrapper(dsn)
 
 
 def available():
