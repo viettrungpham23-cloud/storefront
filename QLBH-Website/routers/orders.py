@@ -31,7 +31,7 @@ def list_orders(
     w = " AND ".join(where)
 
     total = db.execute(text(
-        f"SELECT COUNT(*) FROM orders o JOIN customers c ON c.customer_id=o.customer_id WHERE {w}"),
+        f"SELECT COUNT(*) FROM orders o LEFT JOIN customers c ON c.customer_id=o.customer_id WHERE {w}"),
         params).scalar()
     params2 = dict(params, lim=page_size, off=(page - 1) * page_size)
     sort_clause = "DESC" if sort_dir.lower() == "desc" else "ASC"
@@ -39,16 +39,20 @@ def list_orders(
     rows = db.execute(text(
         f"SELECT o.order_no, o.total, o.subtotal, o.discount, o.vas_total, o.channel, "
         f"o.store_id, o.admin_status, o.payment_status, o.invoice_number, o.created_at, "
-        f"o.vin_code, c.full_name, c.phone, MAX(od.sku_type) as sku_type "
-        f"FROM orders o JOIN customers c ON c.customer_id=o.customer_id "
-        f"LEFT JOIN order_details od ON od.order_id=o.order_id "
-        f"WHERE {w} GROUP BY o.order_id ORDER BY o.created_at {sort_clause} LIMIT :lim OFFSET :off"), params2).all()
+        f"o.vin_code, c.full_name, c.phone, od.sku_type "
+        f"FROM orders o LEFT JOIN customers c ON c.customer_id=o.customer_id "
+        f"LEFT JOIN ("
+        f"    SELECT order_id, MAX(sku_type) AS sku_type "
+        f"    FROM order_details "
+        f"    GROUP BY order_id"
+        f") od ON od.order_id=o.order_id "
+        f"WHERE {w} ORDER BY o.created_at {sort_clause} LIMIT :lim OFFSET :off"), params2).all()
     items = [{
         "order_no": r.order_no, "total": r.total, "subtotal": r.subtotal,
         "discount": r.discount, "vas_total": r.vas_total, "channel": r.channel,
         "store": r.store_id, "admin_status": r.admin_status, "payment_status": r.payment_status,
         "invoice_number": r.invoice_number, "created_at": r.created_at,
-        "vin_code": r.vin_code, "customer": r.full_name, "phone": r.phone, "model": r.sku_type,
+        "vin_code": r.vin_code, "customer": r.full_name or "Chưa có thông tin", "phone": r.phone or "", "model": r.sku_type,
     } for r in rows]
     return {"total": total, "page": page, "page_size": page_size, "items": items}
 
