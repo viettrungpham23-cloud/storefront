@@ -34,6 +34,10 @@ mobile/android/.gradle/
 mobile/ios/App/build/
 mobile/ios/App/Pods/
 
+# Tài liệu/artefact thử nghiệm không thuộc runtime
+looper-*/
+mobile/Reference/
+
 # File đóng gói / binary lớn — không thuộc source code
 *.apk
 *.aab

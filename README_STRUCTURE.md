@@ -151,7 +151,6 @@ web/app.js
 | `src/charts.jsx` | Component chart/visualization dùng trong dashboard. |
 | `src/format.js` | Helper format tiền, số, ngày hoặc text. |
 | `src/assets/hero.png` | Asset ảnh hero/dashboard. |
-| `src/assets/react.svg`, `src/assets/vite.svg` | Asset mặc định scaffold, ít quan trọng. |
 | `src/pages/Overview.jsx` | Trang tổng quan điều hành. |
 | `src/pages/SalesReport.jsx` | Trang báo cáo bán hàng. |
 | `src/pages/Orders.jsx` | Trang quản lý đơn hàng. |
@@ -174,8 +173,6 @@ web/app.js
 | `mobile/sync.sh` | Copy `web/` sang `mobile/www`, ghi config API theo env, chạy Capacitor sync. |
 | `mobile/.gitignore` | Ignore riêng của mobile. |
 | `mobile/assets/*` | Nguồn icon/splash để generate asset Android/iOS. |
-| `mobile/Reference/README.md` | Ghi chú reference app/UI ban đầu. |
-| `mobile/Reference/_extract/*` | Bộ file trích xuất từ reference/prototype; dùng tham khảo UI, không phải runtime chính. |
 
 ### Android: `mobile/android/`
 
@@ -220,17 +217,15 @@ web/app.js
 | `mobile/ios/App/App/Assets.xcassets/Splash.imageset/*` | Splash images iOS, light/dark, 1x/2x/3x. |
 | `mobile/ios/App/App/Assets.xcassets/Contents.json` | Asset catalog metadata. |
 
-## 8. Looper/test artifact folders
+## 8. Artifact đã loại khỏi GitHub
 
-| File/thư mục | Vai trò |
+| File/thư mục | Lý do loại khỏi repo |
 |---|---|
-| `looper-close/loop-workspace/checks/close_check.py` | Script kiểm tra closeout từng được scaffold, chưa phải production code. |
-| `looper-output/` | Kết quả một vòng kiểm thử/đánh giá app trước đó: plan, review, delivery, state, run loop. |
-| `looper-output/loop-workspace/checks/order_flow.py` | Check luồng đặt hàng. |
-| `looper-sync/` | Kết quả/check đồng bộ App ↔ Website. |
-| `looper-sync/loop-workspace/checks/sync_check.py` | Script kiểm thử sync. |
+| `looper-close/`, `looper-output/`, `looper-sync/` | Artifact kiểm thử/đánh giá tạm thời, không cần để chạy production. |
+| `mobile/Reference/` | Bộ prototype/reference trích xuất, không được runtime import. |
+| `QLBH-Website/admin-dashboard/src/assets/react.svg`, `vite.svg` | Asset mặc định của Vite/React scaffold, không dùng trong UI hiện tại. |
 
-Các thư mục `looper-*` là artifact kiểm thử/bàn giao, không cần chạy ở production.
+Các nhóm trên đã được thêm vào `.gitignore` để không quay lại GitHub trong các lần commit sau.
 
 ## 9. File test thủ công ở root
 
@@ -298,4 +293,3 @@ python3 -m py_compile QLBH-Website/routers/auth.py server.py qlbh_sync.py catalo
 curl http://34.21.152.227:8000/
 curl http://34.21.152.227:8810/
 ```
-

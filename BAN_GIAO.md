@@ -47,7 +47,7 @@ storefront/
 │   ├── .env                ⚠                    # DATABASE_URL (URL kết nối Supabase)
 │   ├── admin-dashboard/    (React/Vite SPA)     # giao diện quản trị
 │   └── start.sh
-└── looper-output/ · looper-sync/               # log kiểm thử (Looper) — không cần khi deploy
+└── README_STRUCTURE.md                         # bản đồ cấu trúc file và vai trò từng nhóm
 ```
 
 **Phân loại để quản lý:**
@@ -182,7 +182,7 @@ hệ; song song chuẩn bị **TestFlight** (iOS) + **Internal testing CH Play**
 **Dọn dẹp bàn giao:**
 - [ ] **Reseed dữ liệu sạch** trước khi go-live: Website → **Quản trị CSDL → Khôi phục dữ liệu gốc**
       (xoá các đơn/khách kiểm thử `DH0256x`, "KH Test/Sync…").
-- [ ] Xoá thư mục test `looper-output/`, `looper-sync/`, `__pycache__/` nếu không cần.
+- [x] Xoá thư mục test `looper-output/`, `looper-sync/`, `looper-close/` khỏi GitHub.
 - [ ] Đặt `web/config.js` & `mobile` `apiBase` = URL production.
 
 ---
@@ -194,8 +194,9 @@ hệ; song song chuẩn bị **TestFlight** (iOS) + **Internal testing CH Play**
 python3 server.py                       # App   :8810
 cd QLBH-Website && ./start.sh            # Web    :8000 + admin :5173
 
-# Kiểm tra đồng bộ App↔Web
-python3 looper-sync/loop-workspace/checks/sync_check.py     # cần cả 2 server bật
+# Kiểm tra service đang sống
+curl http://34.21.152.227:8810/
+curl http://34.21.152.227:8000/
 
 # Làm mới dữ liệu từ kho thật (2.998 VIN)
 ~/venv/bin/python QLBH-Website/seed.py
