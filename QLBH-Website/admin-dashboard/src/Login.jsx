@@ -8,6 +8,9 @@ export default function Login({ onLogin }) {
 
   const handleSuccess = async (credentialResponse) => {
     try {
+      if (!credentialResponse?.credential) {
+        throw new Error('Google không trả credential đăng nhập. Kiểm tra OAuth Authorized JavaScript origins cho domain đang dùng.');
+      }
       const decoded = jwtDecode(credentialResponse.credential);
       console.log('Google login success:', decoded);
       // Send token to backend to verify and get our own JWT or session
@@ -16,8 +19,19 @@ export default function Login({ onLogin }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: credentialResponse.credential })
       });
-      if (!res.ok) throw new Error('Backend verification failed');
-      const data = await res.json();
+      const raw = await res.text();
+      let data = {};
+      try {
+        data = raw ? JSON.parse(raw) : {};
+      } catch {
+        data = {};
+      }
+      if (!res.ok) {
+        throw new Error(data.detail || raw || `Backend verification failed (${res.status})`);
+      }
+      if (!data.access_token || !data.user) {
+        throw new Error('Backend không trả phiên đăng nhập hợp lệ.');
+      }
       
       // Save our internal token and user info
       localStorage.setItem('qlbh_token', data.access_token);
@@ -28,7 +42,7 @@ export default function Login({ onLogin }) {
       onLogin(data.user);
     } catch (err) {
       console.error(err);
-      setError('Đăng nhập thất bại. ' + err.message);
+      setError('Đăng nhập thất bại: ' + (err?.message || err));
     }
   };
 
