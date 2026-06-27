@@ -12,7 +12,7 @@ import models
 
 router = APIRouter(prefix="/api/v1/auth", tags=["Xác thực"])
 
-GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "239161131679-j7kajmb1lsnlkei9bsofqrom5a16kekd.apps.googleusercontent.com")
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "239161131679-80dq6dfq624m6hnjf2g2opkdbq4tvp3r.apps.googleusercontent.com")
 JWT_SECRET = os.getenv("JWT_SECRET", "vinfast_thu_anh_super_secret_key")
 JWT_ALGORITHM = "HS256"
 JWT_TTL_HOURS = int(os.getenv("JWT_TTL_HOURS", "12"))
