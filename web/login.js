@@ -31,8 +31,10 @@ SCREENS.login = (entry) => {
           const user = await GoogleAuth.signIn();
           if (user && user.authentication && user.authentication.idToken) {
             await handleLoginToken(user.authentication.idToken);
+          } else {
+            throw new Error('Google không trả ID token. APK có thể chưa được ký bằng khóa đã đăng ký OAuth.');
           }
-        } catch (e) { toast('Lỗi đăng nhập: ' + e); }
+        } catch (e) { toast('Lỗi đăng nhập: ' + (e && e.message ? e.message : e)); }
       };
     } else if (window.google && google.accounts) {
       google.accounts.id.initialize({
