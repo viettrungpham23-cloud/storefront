@@ -36,6 +36,8 @@ const ACTIONS = [
     desc: 'Xóa đơn / thanh toán / khách; GIỮ kho & dữ liệu tham chiếu.' },
   { key: 'reseed', icon: RefreshCw, tone: '#ef4444', title: 'Khôi phục dữ liệu gốc', destructive: true,
     desc: 'Dựng lại toàn bộ từ kho thật (2.998 xe). Mất dữ liệu hiện tại.' },
+  { key: 'uat_stock', icon: Eraser, tone: '#f59e0b', title: 'Dọn kho UAT (20 xe/mẫu)', destructive: true,
+    desc: 'Chỉ giữ lại đúng 20 xe mỗi mẫu (trạng thái available) cho UAT, xóa phần dư.' },
   { key: 'wipe_all', icon: Trash2, tone: '#ef4444', title: 'Làm trống toàn bộ', destructive: true,
     desc: 'Drop & tạo lại mọi bảng — CSDL rỗng hoàn toàn.' },
 ]

@@ -182,6 +182,7 @@ hệ; song song chuẩn bị **TestFlight** (iOS) + **Internal testing CH Play**
 **Dọn dẹp bàn giao:**
 - [x] **Reseed dữ liệu sạch** trước khi go-live: Website → **Quản trị CSDL → Khôi phục dữ liệu gốc**
       (xoá các đơn/khách kiểm thử `DH0256x`, "KH Test/Sync…").
+- [x] **Dọn kho UAT**: Tích hợp tính năng làm sạch kho giữ 20 xe/mẫu tại Website → **Quản trị CSDL → Dọn kho UAT**.
 - [x] Xoá thư mục test `looper-output/`, `looper-sync/`, `looper-close/` khỏi GitHub.
 - [ ] Đặt `web/config.js` & `mobile` `apiBase` = URL production.
 

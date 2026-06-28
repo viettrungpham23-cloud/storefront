@@ -10,6 +10,7 @@ from pydantic import BaseModel
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from database import get_db, engine, Base, SessionLocal
+import stock_refresh
 
 ADMIN_API_KEY = os.getenv("ADMIN_API_KEY")
 
@@ -34,7 +35,7 @@ TABLES = [
 ]
 
 # Các thao tác cần xác nhận (hành động khó hoàn tác)
-DESTRUCTIVE = {"wipe_transactions", "wipe_all", "reseed"}
+DESTRUCTIVE = {"wipe_transactions", "wipe_all", "reseed", "uat_stock"}
 
 
 class CleanRequest(BaseModel):
@@ -145,6 +146,11 @@ def clean(req: CleanRequest, db: Session = Depends(get_db)):
         res = _result(ndb, "Đã khôi phục dữ liệu gốc từ kho thật (2.998 xe).", {})
         ndb.close()
         return res
+
+    # ---- Dọn kho cho môi trường UAT ----
+    if action == "uat_stock":
+        n = stock_refresh.clean_inventory_for_uat(db, 20)
+        return _result(db, f"Đã dọn dẹp kho UAT, xóa {n} xe dư thừa, giữ lại tối đa 20 xe/mẫu.", {"deleted": n})
 
     # ---- Tối ưu / nén file (VACUUM) ----
     if action == "vacuum":
