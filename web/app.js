@@ -929,7 +929,7 @@ SCREENS.profile = (entry) => {
 async function renderProfile(s) {
   const scroll = s.querySelector('#prof-scroll');
   let d;
-  try { d = await api('/sales/' + state.salesId + '/stats'); } catch (e) { scroll.innerHTML = '<div class="empty" style="padding-top:60px">Không tải được hồ sơ.</div>'; return; }
+  try { d = await api('/sales/' + encodeURIComponent(state.salesId) + '/stats'); } catch (e) { scroll.innerHTML = '<div class="empty" style="padding-top:60px">Không tải được hồ sơ.</div>'; return; }
   const sp = d.sales;
   const pct = Math.min(100, Math.round((d.month_orders / (d.target || 30)) * 100));
   scroll.innerHTML = `

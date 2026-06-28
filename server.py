@@ -29,7 +29,7 @@ Tĩnh:  / , /app.js , /styles.css , /assets/*  (thư mục web/)
 """
 import json, os, re, sqlite3, time, uuid, mimetypes
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import urlparse, parse_qs, unquote
 
 import catalog
 import qlbh_sync  # cầu nối đồng bộ với DB Website (QLBH)
@@ -530,12 +530,12 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json({"items": qlbh_sync.notifications(sid)})
             if path == "/api/sales":
                 return self._json(qlbh_sync.sales_list())
-            ms = re.match(r"^/api/sales/([\w-]+)/stats$", path)
+            ms = re.match(r"^/api/sales/([^/]+)/stats$", path)
             if ms:
-                return self._json(qlbh_sync.sales_stats(ms.group(1)))
-            ms = re.match(r"^/api/sales/([\w-]+)$", path)
+                return self._json(qlbh_sync.sales_stats(unquote(ms.group(1))))
+            ms = re.match(r"^/api/sales/([^/]+)$", path)
             if ms:
-                s = qlbh_sync.sales_get(ms.group(1))
+                s = qlbh_sync.sales_get(unquote(ms.group(1)))
                 return self._json(s) if s else self._json({"error": "not_found"}, 404)
             m = re.match(r"^/api/orders/([\w-]+)$", path)
             if m:
