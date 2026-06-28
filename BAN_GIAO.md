@@ -41,9 +41,9 @@ storefront/
 │   ├── routers/   (dashboard, orders, inventory, customers, admin,
 │   │              payments, procurement, maintenance, reconciliation)
 │   ├── reference.py · catalog data             # đơn vị A/B/C + 9 sales, bảng giá
-│   ├── seed.py · procurement_seed.py           # nạp dữ liệu từ kho thật
+│   ├── seed.py · procurement_seed.py           # nạp dữ liệu từ kho seed/vận hành
 │   ├── customer_store.py                       # kho file hồ sơ khách
-│   ├── data/inventory.json                     # KHO THẬT 2.998 VIN (nguồn seed)
+│   ├── data/inventory.json                     # KHO SEED 3.054 VIN (nguồn seed)
 │   ├── .env                ⚠                    # DATABASE_URL (URL kết nối Supabase)
 │   ├── admin-dashboard/    (React/Vite SPA)     # giao diện quản trị
 │   └── start.sh
@@ -198,7 +198,7 @@ cd QLBH-Website && ./start.sh            # Web    :8000 + admin :5173
 curl http://34.21.152.227:8810/
 curl http://34.21.152.227:8000/
 
-# Làm mới dữ liệu từ kho thật (2.998 VIN)
+# Làm mới dữ liệu từ kho seed (3.054 VIN)
 ~/venv/bin/python QLBH-Website/seed.py
 
 # Đóng gói mobile (xem README §8)

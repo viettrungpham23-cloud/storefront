@@ -45,7 +45,7 @@ màn **"Đối soát & Duyệt"** của Admin. Mọi thay đổi về tồn kho,
 
 | # | Màn | Nội dung |
 |---|---|---|
-| 1 | **Trang chủ** | Banner ưu đãi, chip phân khúc, "Đề xuất", popup −16% (đếm ngược). |
+| 1 | **Trang chủ** | Banner ưu đãi, bảng tin ưu đãi, chip phân khúc, "Đề xuất". |
 | 2 | **Danh mục** | Lọc phân khúc (Đổi pin/Kèm pin/Học sinh) + tab **🛠️ Dịch vụ & Phụ kiện**; tồn kho "Còn N xe"; nút **Mua ngay** mỗi thẻ; xoá nhanh danh sách so sánh. |
 | 3 | **Chi tiết** | Gallery, chọn màu, thuê pin/mua đứt, thông số, trạng thái tồn kho. |
 | 4 | **So sánh** | Tối đa 3 xe cạnh nhau + Mua ngay mỗi cột. |
@@ -116,7 +116,8 @@ storefront/
 12 mẫu xe theo file `BangGia_PhanTich_VinFast_ThuAnh.xlsx`: Feliz II, Evo Max, Viper, Evo Lite,
 Flazz Max, Feliz 2025, Evo Grand, VeroX, Flazz, Zgoo, Evo Grand Lite, Amio S.
 Nhóm **Đổi pin** có 2 giá `Thuê pin` và `Mua đứt pin`; nhóm **Kèm pin** và **Học sinh**
-hiển thị trọn giá kèm pin. Tồn kho lấy từ kho thật Website (`app/inventory_clean.json` — 2.998 VIN)
+hiển thị trọn giá kèm pin. Tồn kho lấy từ Website QLBH (`QLBH-Website/data/inventory.json` — 3.054 VIN,
+trong đó Amio S, Evo Grand Lite, Evo Grand và VeroX/VERO X đã chuẩn hóa còn 20 xe/mẫu)
 khi bật đồng bộ. Ưu đãi tự động theo mức KM trong bảng giá (8%/16%); mã ưu đãi áp tay & linh kiện/VAS khai báo trong [`catalog.py`](catalog.py).
 
 ---
