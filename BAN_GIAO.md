@@ -180,7 +180,7 @@ hệ; song song chuẩn bị **TestFlight** (iOS) + **Internal testing CH Play**
 - [ ] Đưa ảnh lên **object storage** (S3/MinIO) thay thư mục cục bộ.
 
 **Dọn dẹp bàn giao:**
-- [ ] **Reseed dữ liệu sạch** trước khi go-live: Website → **Quản trị CSDL → Khôi phục dữ liệu gốc**
+- [x] **Reseed dữ liệu sạch** trước khi go-live: Website → **Quản trị CSDL → Khôi phục dữ liệu gốc**
       (xoá các đơn/khách kiểm thử `DH0256x`, "KH Test/Sync…").
 - [x] Xoá thư mục test `looper-output/`, `looper-sync/`, `looper-close/` khỏi GitHub.
 - [ ] Đặt `web/config.js` & `mobile` `apiBase` = URL production.
