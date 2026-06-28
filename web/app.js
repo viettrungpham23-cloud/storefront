@@ -30,7 +30,6 @@ const state = {
   productCache: {},
   cart: { items: [], count: 0, subtotal: 0, discount: 0, shipping: 0, total: 0, promo: null },
   compare: JSON.parse(localStorage.getItem('ta_compare') || '[]'),
-  promoSeen: false,
   checkoutPay: 'visa',
   checkout: { name: '', phone: '', cccd: '', dob: '', gender: '', address: '', email: '', images: [] },
   salesId: localStorage.getItem('ta_sales_id') || 'SA1',
@@ -54,6 +53,55 @@ const el = (html) => { const t = document.createElement('template'); t.innerHTML
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const deliveryRange = () => { const a = new Date(); a.setDate(a.getDate() + 2); const b = new Date(); b.setDate(b.getDate() + 4); const d = n => n.getDate(); const m = n => 'tháng ' + (n.getMonth() + 1); return a.getMonth() === b.getMonth() ? `${d(a)}–${d(b)} ${m(a)}` : `${d(a)} ${m(a)}–${d(b)} ${m(b)}`; };
 const curMonth = () => { const n = new Date(); return 'Tháng ' + (n.getMonth() + 1); };
+const lowestDisplayBase = p => Math.min(...[p.price_rent, p.price_buy, p.price_base].filter(Boolean));
+const catalogPriceHTML = p => {
+  const base = lowestDisplayBase(p);
+  const sale = saleOf(base, p.promo_pct);
+  return `<div class="card-price">
+    <div class="price-row"><span class="price">${fmt(sale)}</span><span class="price-note">Ưu đãi</span></div>
+    ${p.promo_pct ? `<span class="price-old">${fmt(base)} niêm yết</span>` : ''}
+  </div>`;
+};
+const textHash = s => String(s || '').split('').reduce((h, ch) => ((h << 5) - h + ch.charCodeAt(0)) | 0, 0);
+const isBlackColor = c => /(^|[\s-])(đen|den|black)([\s-]|$)/i.test(`${c.name || ''} ${c.color_slug || ''} ${c.asset_slug || ''}`) || ['#111827', '#1f2937', '#000000'].includes(String(c.hex || '').toLowerCase());
+const cardColorIndex = p => {
+  const colors = p.colors || [];
+  if (!colors.length) return 0;
+  const candidates = colors.map((c, i) => ({ c, i })).filter(x => x.c.photo || x.c.thumb);
+  const pool = candidates.length ? candidates : colors.map((c, i) => ({ c, i }));
+  let picked = pool[Math.abs(textHash(p.slug + ':' + p.name)) % pool.length];
+  if (pool.length > 1 && isBlackColor(picked.c)) {
+    picked = pool.find(x => !isBlackColor(x.c)) || picked;
+  }
+  return picked.i;
+};
+const promoScopeLabel = scope => ({ all: 'Mọi dòng xe', doi_pin: 'Dòng đổi pin', kem_pin: 'Dòng kèm pin', hoc_sinh: 'Xe học sinh', addon: 'Phụ kiện / Dịch vụ' }[scope] || scope || 'Ưu đãi');
+const promoValueLabel = p => p.kind === 'percent' ? `-${p.value}%` : `-${vndShort(p.value)}`;
+function offerBoardHTML(activePromo, promos = []) {
+  const offers = [];
+  if (activePromo) {
+    offers.push({
+      code: activePromo.code,
+      name: activePromo.title,
+      note: activePromo.subtitle || activePromo.detail,
+      tag: `-${activePromo.pct}%`,
+      scope: activePromo.segment,
+      type: 'auto',
+    });
+  }
+  promos.forEach(p => offers.push({
+    code: p.code,
+    name: p.name,
+    note: p.note,
+    tag: promoValueLabel(p),
+    scope: p.scope,
+    type: p.kind,
+  }));
+  return offers.slice(0, 6).map(o => `<button class="offer-item" data-offer-scope="${esc(o.scope || '')}">
+    <span class="offer-tag ${esc(o.type)}">${esc(o.tag)}</span>
+    <span class="offer-copy"><b>${esc(o.name)}</b><small>${esc(o.code)} · ${esc(promoScopeLabel(o.scope))}</small>${o.note ? `<em>${esc(o.note)}</em>` : ''}</span>
+  </button>`).join('');
+}
 
 // ── Parametric scooter illustration (from the design SVG) ────
 let svgN = 0;
@@ -266,6 +314,11 @@ SCREENS.home = (entry) => {
         <div class="glyph">${I.bolt}</div>
       </div>
     </div>
+    <div class="section-head offer-head"><h2>Bảng tin ưu đãi</h2><span>Đang áp dụng</span></div>
+    <div class="offer-board" id="home-offers">
+      <div class="offer-item skel" style="height:58px"></div>
+      <div class="offer-item skel" style="height:58px"></div>
+    </div>
     <div class="chips sticky" id="home-chips"></div>
     <div class="section-head"><h2>Đề xuất cho bạn</h2><a data-go-catalog>Xem tất cả →</a></div>
     <div class="h-scroll" id="home-featured"><div class="card" style="width:172px"><div class="thumb skel" style="aspect-ratio:1.18/1"></div><div class="body"><div class="skel" style="height:14px;width:70%"></div><div class="skel" style="height:11px;width:50%;margin-top:8px"></div></div></div></div>
@@ -287,7 +340,18 @@ SCREENS.home = (entry) => {
     // best (grid) — first 4
     s.querySelector('#home-best').innerHTML = c.products.slice(0, 4).map(p => cardHTML(p)).join('');
     bindCards(s);
-    if (!state.promoSeen) { state.promoSeen = true; setTimeout(showPromoPopup, 550); }
+    ensurePromos().then(promos => {
+      const box = s.querySelector('#home-offers');
+      box.innerHTML = offerBoardHTML(c.promo, promos);
+      box.querySelectorAll('[data-offer-scope]').forEach(b => b.onclick = () => {
+        const scope = b.dataset.offerScope;
+        if (scope === 'addon') { state.catalogSeg = 'addon'; navTab('catalog'); return; }
+        state.catalogSeg = ['doi_pin', 'kem_pin', 'hoc_sinh'].includes(scope) ? scope : 'all';
+        navTab('catalog');
+      });
+    }).catch(() => {
+      s.querySelector('#home-offers').innerHTML = c.promo ? offerBoardHTML(c.promo, []) : '';
+    });
   });
   return s;
 };
@@ -295,17 +359,11 @@ SCREENS.home = (entry) => {
 // ---- product card ----
 function cardHTML(p) {
   const badgeCls = p.sellable === false ? 'off' : p.segment === 'hoc_sinh' ? 'green' : p.badge === 'MỚI' ? 'new' : 'blue';
-  const ci = p.colors.findIndex(c => c.photo); const imgIdx = ci >= 0 ? ci : 0;
+  const imgIdx = cardColorIndex(p);
   const cmpOn = state.compare.includes(p.slug);
-  const priceBlock = `${priceWithPromo(p.price_base, p.promo_pct)}<span class="spec-line">${p.has_rent ? 'từ giá thuê pin' : 'trọn giá kèm pin'}</span>`;
-  const optionPrices = p.has_rent
-    ? `<div class="price-options"><span>Thuê ${fmt(saleOf(p.price_rent, p.promo_pct))}</span><span>Mua ${fmt(saleOf(p.price_buy, p.promo_pct))}</span></div>`
-    : `<div class="price-options"><span>Kèm pin ${fmt(saleOf(p.price_buy, p.promo_pct))}</span></div>`;
   const stk = p.stock;
   const out = isUnavailable(p);
   const statusLine = p.sellable === false ? p.status : (stk == null ? (p.status || '') : '');
-  const stockLine = stk == null ? '' :
-    `<div class="stk ${out ? 'out' : stk <= 5 ? 'low' : ''}"><i></i>${out ? esc(statusLine || 'Hết hàng') : 'Còn ' + stk + ' xe'}</div>`;
   return `<div class="card ${out ? 'is-out' : ''}" data-slug="${p.slug}">
     <div class="thumb">
       <span class="badge ${badgeCls}">${esc(p.badge)}</span>
@@ -315,11 +373,9 @@ function cardHTML(p) {
     </div>
     <div class="body">
       <div class="nm">${esc(p.name)}</div>
-      <div class="sp spec-line">${esc(p.category_label || p.tagline)} · ${p.speed} km/h · ${p.range_km} km</div>
-      ${stockLine}
-      <div class="pr">${priceBlock}</div>
-      ${optionPrices}
-      ${out ? `<button class="card-buy off" disabled>${esc(statusLine || 'Hết hàng')}</button>` : `<div style="display:flex;gap:6px;"><button class="card-buy" data-addcart="${p.slug}" style="flex:0 0 38px;background:#f8fafc;color:var(--brand);border:1.5px solid var(--brand);padding:0;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></button><button class="card-buy" data-buy="${p.slug}" style="flex:1;">Mua ngay</button></div>`}
+      <div class="sp spec-line"><span>${esc(p.category_label || p.tagline)}</span><i></i><span>${p.speed} km/h</span></div>
+      <div class="pr">${catalogPriceHTML(p)}</div>
+      ${out ? `<button class="card-buy off" disabled>${esc(statusLine || 'Hết hàng')}</button>` : `<div style="display:flex;gap:6px;"><button class="card-buy" data-addcart="${p.slug}" data-ci="${imgIdx}" style="flex:0 0 38px;background:#f8fafc;color:var(--brand);border:1.5px solid var(--brand);padding:0;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></button><button class="card-buy" data-buy="${p.slug}" data-ci="${imgIdx}" style="flex:1;">Mua ngay</button></div>`}
     </div></div>`;
 }
 function addonCardHTML(a) {
@@ -342,24 +398,24 @@ function bindCards(root) {
     btn.addEventListener('click', e => { e.stopPropagation(); toggleCompare(btn.dataset.cmp); });
   });
   root.querySelectorAll('[data-buy]').forEach(btn => {
-    btn.addEventListener('click', e => { e.stopPropagation(); quickBuy(btn.dataset.buy); });
+    btn.addEventListener('click', e => { e.stopPropagation(); quickBuy(btn.dataset.buy, Number(btn.dataset.ci)); });
   });
   root.querySelectorAll('[data-addcart]').forEach(btn => {
-    btn.addEventListener('click', e => { e.stopPropagation(); quickAddCart(btn.dataset.addcart); });
+    btn.addEventListener('click', e => { e.stopPropagation(); quickAddCart(btn.dataset.addcart, Number(btn.dataset.ci)); });
   });
 }
-async function quickAddCart(slug) {
+async function quickAddCart(slug, ciHint) {
   const p = await loadProduct(slug);
   if (!p) return;
   if (isUnavailable(p)) { toast(p.sellable === false ? 'Mẫu xe đang ngừng kinh doanh' : 'Xe tạm hết hàng'); return; }
-  const ci = p.colors.findIndex(c => c.photo); const imgIdx = ci >= 0 ? ci : 0;
+  const imgIdx = Number.isFinite(ciHint) ? ciHint : cardColorIndex(p);
   await addToCart(p.slug, p.colors[imgIdx].name, p.has_rent ? 'rent' : 'buy');
   toast('Đã thêm vào giỏ hàng');
 }
-async function quickBuy(slug) {
+async function quickBuy(slug, ciHint) {
   const p = await loadProduct(slug);
   if (isUnavailable(p)) { toast(p.sellable === false ? 'Mẫu xe đang ngừng kinh doanh' : 'Xe tạm hết hàng'); return; }
-  let ci = p.colors.findIndex(c => c.photo); if (ci < 0) ci = 0;
+  let ci = Number.isFinite(ciHint) ? ciHint : cardColorIndex(p);
   const option = p.has_rent ? 'rent' : 'buy';
   await addToCart(p.slug, p.colors[ci].name, option);
   toast('Đã thêm — tới thanh toán');
@@ -463,7 +519,7 @@ SCREENS.detail = (entry) => {
   s.querySelector('[data-back]').onclick = pop;
 
   loadProduct(entry.params.slug).then(p => {
-    let ci = p.colors.findIndex(c => c.photo); if (ci < 0) ci = 0;
+    let ci = cardColorIndex(p);
     let option = p.has_rent ? 'rent' : 'buy';
     const scroll = s.querySelector('#d-scroll');
 
@@ -494,13 +550,16 @@ SCREENS.detail = (entry) => {
         : `<div class="opt-row"><button class="opt on" style="flex:1"><div class="k">${p.promo_pct ? 'Trọn giá kèm pin · KM ' + p.promo_pct + '%' : 'Trọn giá kèm pin'}</div><div class="v">${priceWithPromo(p.price_buy, p.promo_pct)}</div></button></div>`;
 
       scroll.innerHTML = `
-        <div class="gallery"><div class="dot-grid"></div>${prodImg(p, ci)}
+        <div class="gallery"><div class="dot-grid"></div>
+          <div class="gallery-strip" data-gallery-strip>
+            ${p.colors.map((_, i) => `<div class="gallery-slide">${prodImg(p, i)}</div>`).join('')}
+          </div>
           <div class="pager">${p.colors.map((_, i) => `<i class="${i === ci ? 'on' : ''}"></i>`).join('')}</div>
         </div>
         <div class="detail-body">
           <span class="badge ${badgeCls}">${esc(p.badge)}</span>
           <div class="ttl-row">
-            <div><h1>${esc(p.name)}</h1><div class="meta">${esc(p.tagline)} · ${esc(c.name)}</div></div>
+            <div><h1>${esc(p.name)}</h1><div class="meta">${esc(p.tagline)} · <span data-color-name>${esc(c.name)}</span></div></div>
             <span class="rating">${I.star}${p.rating}</span>
           </div>
           <div class="detail-tags"><span>${esc(p.category_label || p.badge)}</span>${p.promo_pct ? `<span>KM ${p.promo_pct}%</span>` : ''}<span>${esc(p.status || 'Đang bán')}</span></div>
@@ -515,7 +574,28 @@ SCREENS.detail = (entry) => {
           <div style="height:96px"></div>
         </div>`;
       scroll.querySelectorAll('[data-opt]').forEach(b => b.onclick = () => { option = b.dataset.opt; render(); });
-      scroll.querySelectorAll('[data-ci]').forEach(b => b.onclick = () => { ci = +b.dataset.ci; render(); });
+      const strip = scroll.querySelector('[data-gallery-strip]');
+      const syncColor = (next, moveStrip) => {
+        ci = Math.max(0, Math.min(p.colors.length - 1, next));
+        const col = p.colors[ci];
+        const name = scroll.querySelector('[data-color-name]');
+        if (name) name.textContent = col.name;
+        scroll.querySelectorAll('.pager i').forEach((dot, i) => dot.classList.toggle('on', i === ci));
+        scroll.querySelectorAll('[data-ci]').forEach(sw => sw.classList.toggle('on', Number(sw.dataset.ci) === ci));
+        if (moveStrip && strip) strip.scrollTo({ left: ci * strip.clientWidth, behavior: 'smooth' });
+      };
+      if (strip) {
+        requestAnimationFrame(() => { strip.scrollLeft = ci * strip.clientWidth; });
+        let raf = 0;
+        strip.addEventListener('scroll', () => {
+          cancelAnimationFrame(raf);
+          raf = requestAnimationFrame(() => {
+            const next = Math.round(strip.scrollLeft / Math.max(1, strip.clientWidth));
+            if (next !== ci) syncColor(next, false);
+          });
+        }, { passive: true });
+      }
+      scroll.querySelectorAll('[data-ci]').forEach(b => b.onclick = () => syncColor(Number(b.dataset.ci), true));
     };
     render();
 
@@ -1336,44 +1416,6 @@ function openSheet(innerHTML, onMount) {
   return close;
 }
 
-let promoTimer = null;
-function showPromoPopup() {
-  const promo = state.catalog && state.catalog.promo; if (!promo) return;
-  const amio = state.catalog.products.find(p => p.slug === 'amio-s') || state.catalog.products.find(p => /amio/i.test(p.name));
-  const saveEx = amio ? Math.round(amio.price_base * promo.pct / 100) : 2224000;
-  const close = openSheet(`<div class="promo-pop">
-    <div class="grab"></div>
-    <span class="live"><i class="blink"></i>LIVE · CHỈ HÔM NAY</span>
-    <div class="pct">-16<span>%</span></div>
-    <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--brand)">TOÀN BỘ DÒNG XE KHÔNG CẦN BẰNG LÁI</div>
-    <h2>${esc(promo.title)}</h2>
-    <p class="desc">${esc(promo.detail)}</p>
-    <div class="meta">
-      <div class="box"><div class="k">Còn lại</div><div class="v" id="promo-cd">--:--:--</div></div>
-      <div class="box save"><div class="k">Tiết kiệm</div><div class="v">~${fmt(saveEx)}</div></div>
-    </div>
-    <div class="code">Mã: <b>${esc(promo.code)}</b> · Áp dụng tự động khi thanh toán</div>
-    <button class="btn btn-primary" style="margin-top:16px" id="promo-cta">Nhận ưu đãi ngay →</button>
-    <button class="btn btn-ghost btn-sm" style="margin-top:8px" id="promo-close">Để sau</button>
-  </div>`, (root, close) => {
-    const cd = root.querySelector('#promo-cd');
-    const tick = () => {
-      const now = new Date();
-      const end = new Date(now); end.setHours(23, 59, 59, 999);
-      let d = Math.max(0, Math.floor((end - now) / 1000));
-      const h = String(Math.floor(d / 3600)).padStart(2, '0');
-      const m = String(Math.floor((d % 3600) / 60)).padStart(2, '0');
-      const sec = String(d % 60).padStart(2, '0');
-      cd.textContent = `${h} : ${m} : ${sec}`;
-    };
-    tick(); clearInterval(promoTimer); promoTimer = setInterval(tick, 1000);
-    root.querySelector('#promo-close').onclick = () => { clearInterval(promoTimer); close(); };
-    root.querySelector('#promo-cta').onclick = () => {
-      clearInterval(promoTimer); close(); state.catalogSeg = 'hoc_sinh'; navTab('catalog');
-    };
-  });
-}
-
 function showAddSheet(p, color, option) {
   openSheet(`<div style="text-align:center">
     <div class="grab"></div>
@@ -1548,9 +1590,9 @@ window.addEventListener('orientationchange', fitPhone);
 
 // Đoạn code nhúng vào cuối app.js
 SCREENS.login = (entry) => {
-  const s = el(`<section class="screen login-screen" style="background:#0f172a;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px;text-align:center;">
-    <div style="background:#fff;padding:36px 24px;border-radius:24px;width:100%;max-width:400px;box-shadow:0 20px 40px rgba(0,0,0,.2);">
-      <img src="/assets/logo.png" style="height:80px;width:auto;margin-bottom:20px;">
+  const s = el(`<section class="screen login-screen">
+    <div class="login-card">
+      <img class="login-logo" src="/assets/logo.png" alt="VinFast Thu Anh">
       <h2 style="margin:0 0 8px;font-size:22px;color:#0f172a;">Đăng nhập hệ thống</h2>
       <p style="margin:0 0 32px;font-size:14px;color:#64748b;">Dành riêng cho nhân sự VinFast Thu Anh</p>
       

@@ -32,10 +32,12 @@ const ACTIONS = [
     desc: 'Đưa xe trạng thái "reserved" về "available".' },
   { key: 'vacuum', icon: Gauge, tone: '#10b981', title: 'Tối ưu & nén (VACUUM)',
     desc: 'Dọn khoảng trống, thu nhỏ kích thước file CSDL.' },
+  { key: 'refresh_target_stock', icon: RefreshCw, tone: '#f59e0b', title: 'Chuẩn hóa tồn kho 20 xe/mẫu', destructive: true,
+    desc: 'Cập nhật Amio S, Evo Grand Lite, Evo Grand, VeroX theo seed mới; giữ đơn đã gắn VIN.' },
   { key: 'wipe_transactions', icon: Eraser, tone: '#ef4444', title: 'Xóa dữ liệu giao dịch', destructive: true,
     desc: 'Xóa đơn / thanh toán / khách; GIỮ kho & dữ liệu tham chiếu.' },
   { key: 'reseed', icon: RefreshCw, tone: '#ef4444', title: 'Khôi phục dữ liệu gốc', destructive: true,
-    desc: 'Dựng lại toàn bộ từ kho thật (2.998 xe). Mất dữ liệu hiện tại.' },
+    desc: 'Dựng lại toàn bộ từ kho seed (3.054 xe). Mất dữ liệu hiện tại.' },
   { key: 'wipe_all', icon: Trash2, tone: '#ef4444', title: 'Làm trống toàn bộ', destructive: true,
     desc: 'Drop & tạo lại mọi bảng — CSDL rỗng hoàn toàn.' },
 ]

@@ -199,7 +199,7 @@ PRODUCTS = [
         "tagline": "Kèm pin · đi xa", "needs_license": "Cần bằng (A1)",
         "speed": 70, "range_km": 134, "battery": "2.4 kWh", "charge": "6h30p",
         "battery_warranty": "5 năm", "warranty": "3 năm",
-        "rating": 4.7, "reviews": 322, "stock": 42,
+        "rating": 4.7, "reviews": 322, "stock": 20,
         "price_buy": 23_900_000, "price_rent": None, "promo_pct": 8,
         "badge": "KÈM PIN", "status": "Đang bán", "featured": True,
         "inventory_names": ["EVO GRAND"],
@@ -222,21 +222,22 @@ PRODUCTS = [
         "tagline": "Kèm pin · đã ngừng kinh doanh", "needs_license": "Cần bằng (A1)",
         "speed": 70, "range_km": 134, "battery": "2.4 kWh", "charge": "6h30p",
         "battery_warranty": "5 năm", "warranty": "3 năm",
-        "rating": 4.5, "reviews": 58, "stock": 0,
+        "rating": 4.5, "reviews": 58, "stock": 20,
         "price_buy": 34_900_000, "price_rent": None, "promo_pct": 8,
-        "badge": "NGỪNG KD", "status": "Ngừng KD",
+        "badge": "KÈM PIN", "status": "Đang bán",
         "inventory_names": ["VEROX", "VERO X"],
         "colors": [
-            {"name": "Xám Titan", "hex": "#6b7280"},
             {"name": "Đen", "hex": "#1f2937"},
             {"name": "Trắng", "hex": "#e8eaed"},
+            {"name": "Xanh Oliu", "hex": "#6f7a52"},
+            {"name": "Xanh Rêu", "hex": "#8fae9b"},
         ],
         "specs": {
             "aux_battery": "Có", "esim": "Không", "pedal": "Không",
             "motor_type": "Inhub", "lock_type": "Khoá cơ", "weight": "100kg",
             "power": "2250W", "dimensions": "1858 x 690 x 1100 mm",
         },
-        "highlights": ["Trọn giá kèm pin", "Pin 2.4 kWh", "Ngừng kinh doanh"],
+        "highlights": ["Trọn giá kèm pin", "Pin 2.4 kWh", "Sẵn xe tại 3 cơ sở"],
         "description": "Dòng xe máy điện dung tích pin lớn 2.4kWh, có khả năng nâng cấp pin phụ nâng tổng quãng đường đi được ~200km.",
     },
 
@@ -293,7 +294,7 @@ PRODUCTS = [
         "tagline": "Học sinh · đi học hằng ngày", "needs_license": "Không cần",
         "speed": 49, "range_km": 70, "battery": "1.2 kWh", "charge": "6h30p",
         "battery_warranty": "3 năm", "warranty": "3 năm",
-        "rating": 4.7, "reviews": 76, "stock": 18,
+        "rating": 4.7, "reviews": 76, "stock": 20,
         "price_buy": 19_900_000, "price_rent": None, "promo_pct": 16,
         "badge": "HỌC SINH", "status": "Đang bán",
         "inventory_names": ["EVO GRAND LITE"],
@@ -316,14 +317,15 @@ PRODUCTS = [
         "tagline": "Học sinh · không bằng lái", "needs_license": "Không",
         "speed": 32, "range_km": 65, "battery": "1.024 kWh", "charge": "4h30p",
         "battery_warranty": "3 năm", "warranty": "3 năm",
-        "rating": 4.7, "reviews": 188, "stock": 30,
+        "rating": 4.7, "reviews": 188, "stock": 20,
         "price_buy": 13_900_000, "price_rent": None, "promo_pct": 16,
         "badge": "HỌC SINH", "status": "Đang bán", "featured": True,
         "inventory_names": ["AMIO S", "AMIO"],
         "colors": [
-            {"name": "Đen Obsidian", "hex": "#1f2937"},
+            {"name": "Đỏ", "hex": "#d23b3b"},
             {"name": "Trắng",        "hex": "#e8eaed"},
-            {"name": "Xanh Rêu",     "hex": "#8fae9b"},
+            {"name": "Xanh Oliu",    "hex": "#6f7a52"},
+            {"name": "Đen",          "hex": "#1f2937"},
         ],
         "specs": {
             "aux_battery": "Không", "esim": "Không", "pedal": "Có",
@@ -336,7 +338,24 @@ PRODUCTS = [
 ]
 
 _ROOT = Path(__file__).resolve().parent
-_VEHICLE_IMAGE_MANIFEST = _ROOT / "web" / "assets" / "vehicles" / "manifest" / "product-images.json"
+_VEHICLE_DIR = _ROOT / "web" / "assets" / "vehicles"
+_VEHICLE_IMAGE_MANIFEST = _VEHICLE_DIR / "manifest" / "product-images.json"
+
+_MODEL_IMAGE_SLUGS = {
+    "amio-s": (
+        "amio-s-do", "amio-s-trang", "amio-s-xanh-oliu", "amio-s-den",
+    ),
+    "evo-grand-lite": (
+        "evo-grand-lite-trang", "evo-grand-lite-vang", "evo-grand-lite-den",
+    ),
+    "evo-grand": (
+        "evo-grand-do", "evo-grand-tim-lavender", "evo-grand-trang",
+        "evo-grand-vang", "evo-grand-xanh-oliu", "evo-grand-den",
+    ),
+    "verox": (
+        "verox-trang", "verox-xanh-oliu", "verox-xanh-reu", "verox-den",
+    ),
+}
 
 _COLOR_META = {
     "den": ("Đen", "#1f2937"),
@@ -354,8 +373,26 @@ _COLOR_META = {
 _COLOR_ORDER = tuple(_COLOR_META.keys())
 
 
-def _asset_path(kind, image_slug):
+def _asset_path(kind, image_slug, ext="webp"):
+    if ext == "svg":
+        return f"vehicles/{image_slug}.svg"
     return f"vehicles/{kind}/{image_slug}.webp"
+
+
+def _image_entry(model_slug, image_slug, ext="webp"):
+    color_slug = image_slug[len(f"{model_slug}-"):]
+    label, hex_code = _COLOR_META.get(
+        color_slug,
+        (color_slug.replace("-", " ").title(), "#6b7280"),
+    )
+    return {
+        "name": label,
+        "hex": hex_code,
+        "photo": _asset_path("webp", image_slug, ext),
+        "thumb": _asset_path("thumb", image_slug, ext),
+        "asset_slug": image_slug,
+        "color_slug": color_slug,
+    }
 
 
 def _vehicle_image_map():
@@ -370,25 +407,26 @@ def _vehicle_image_map():
 
     model_slugs = sorted((p["slug"] for p in PRODUCTS), key=len, reverse=True)
     by_model = {slug: [] for slug in model_slugs}
+    locked_models = set()
+    for model_slug, image_slugs in _MODEL_IMAGE_SLUGS.items():
+        colors = [
+            _image_entry(model_slug, image_slug, "svg")
+            for image_slug in image_slugs
+            if (_VEHICLE_DIR / f"{image_slug}.svg").exists()
+        ]
+        if colors:
+            by_model[model_slug] = colors
+            locked_models.add(model_slug)
+
     for item in manifest.get("products", []):
         image_slug = item.get("slug", "")
         for model_slug in model_slugs:
+            if model_slug in locked_models:
+                continue
             prefix = f"{model_slug}-"
             if not image_slug.startswith(prefix):
                 continue
-            color_slug = image_slug[len(prefix):]
-            label, hex_code = _COLOR_META.get(
-                color_slug,
-                (color_slug.replace("-", " ").title(), "#6b7280"),
-            )
-            by_model[model_slug].append({
-                "name": label,
-                "hex": hex_code,
-                "photo": _asset_path("webp", image_slug),
-                "thumb": _asset_path("thumb", image_slug),
-                "asset_slug": image_slug,
-                "color_slug": color_slug,
-            })
+            by_model[model_slug].append(_image_entry(model_slug, image_slug))
             break
 
     def sort_key(color):
@@ -397,11 +435,12 @@ def _vehicle_image_map():
             return (_COLOR_ORDER.index(color_slug), color["asset_slug"])
         return (len(_COLOR_ORDER), color["asset_slug"])
 
-    return {
-        model_slug: sorted(colors, key=sort_key)
-        for model_slug, colors in by_model.items()
-        if colors
-    }
+    result = {}
+    for model_slug, colors in by_model.items():
+        if not colors:
+            continue
+        result[model_slug] = colors if model_slug in locked_models else sorted(colors, key=sort_key)
+    return result
 
 
 def _apply_vehicle_images():

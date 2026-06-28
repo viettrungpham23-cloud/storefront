@@ -1,7 +1,7 @@
 # VinFast Thu Anh — Hệ sinh thái Quản lý Bán hàng (App ↔ Website)
 
 Mô hình **toàn diện** từ Ứng dụng khách hàng (App) tới Hệ quản trị trung tâm (Website Admin):
-Backend **FastAPI** + Dashboard **React (Vite)**, dữ liệu grounded theo **kho thật 2.998 xe**.
+Backend **FastAPI** + Dashboard **React (Vite)**, dữ liệu grounded theo **kho 3.054 xe**.
 
 ## 1. Kiến trúc
 
@@ -11,8 +11,8 @@ QLBH-Website/
 ├── database.py        # Kết nối SQLite (xe_dien_thu_anh.db)
 ├── models.py          # 13 bảng: kho, khách, đơn, thanh toán, đối soát, công nợ…
 ├── reference.py       # Bảng giá theo dòng xe, phân khúc, màu, cửa hàng, KM
-├── seed.py            # Nạp kho thật + sinh khách/đơn/thanh toán/đối soát
-├── data/inventory.json# Kho thật (2.998 số khung — copy từ app/inventory_clean.json)
+├── seed.py            # Nạp kho seed + sinh khách/đơn/thanh toán/đối soát
+├── data/inventory.json# Kho seed (3.054 số khung, gồm 20 xe/mẫu cho Amio S, Evo Grand Lite, Evo Grand, VeroX)
 ├── routers/
 │   ├── dashboard.py   # API phân tích cho dashboard (KPI, doanh thu, đối soát…)
 │   ├── orders.py      # Đơn hàng: danh sách/chi tiết/checkout
@@ -62,8 +62,8 @@ Hồ sơ khách hàng (2 bảng): `service_records` (bảo dưỡng) · `part_sa
 - `customer_db/media/<id>/<nhóm>/*.svg` — ảnh đính kèm, **lưu định dạng SVG, chia nhóm**
   (CCCD / VNeID / Xe / Hợp đồng…). Phục vụ tĩnh tại `/customer-files`.
 
-Dữ liệu seed (grounded theo kho thật):
-- **2.998** số khung (VIN) trên 3 cơ sở **TA1/TA2/TA3** + kho, trạng thái `available/reserved/sold`.
+Dữ liệu seed (grounded theo kho vận hành):
+- **3.054** số khung (VIN) trên 3 cơ sở **TA1/TA2/TA3** + kho, trạng thái `available/reserved/sold`.
 - **2.560** đơn đã bán → **2.346** khách hàng · **2.540** thanh toán · **255** hợp đồng trả góp.
 - Doanh thu lũy kế ~**63 tỷ₫**, trải đều 12 tháng để dashboard có xu hướng thật.
 
@@ -121,7 +121,7 @@ Cấu hình địa chỉ backend cho Frontend: biến môi trường `VITE_API_B
 | `release_reserved` | Đưa xe `reserved` về `available` | — |
 | `vacuum` | Tối ưu & nén file SQLite (VACUUM) | — |
 | `wipe_transactions` | Xóa đơn/thanh toán/khách, giữ kho & tham chiếu | ✅ |
-| `reseed` | Khôi phục toàn bộ từ kho thật (2.998 xe) | ✅ |
+| `reseed` | Khôi phục toàn bộ từ kho seed (3.054 xe) | ✅ |
 | `wipe_all` | Drop & tạo lại mọi bảng (CSDL rỗng) | ✅ |
 
 ## 6. Luồng nghiệp vụ App → Website (đa kênh)

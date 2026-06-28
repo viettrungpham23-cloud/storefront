@@ -150,6 +150,18 @@ svg{display:block}
 .hero h3{font-size:15px;font-weight:800;line-height:1.2}
 .hero p{font-size:11px;margin-top:4px;opacity:.85}
 .hero .glyph{width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex:none}
+.offer-head{margin-top:14px}
+.offer-head span{font-size:11.5px;font-weight:800;color:var(--green-d);background:var(--green-l);border-radius:999px;padding:4px 9px}
+.offer-board{display:flex;flex-direction:column;gap:8px;padding:0 18px 8px}
+.offer-item{width:100%;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line-2);border-radius:var(--r-md);padding:10px 12px;text-align:left;box-shadow:var(--shadow-sm);font-family:var(--font-ios)}
+.offer-item:active{transform:scale(.99)}
+.offer-tag{width:48px;min-width:48px;height:38px;border-radius:11px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums}
+.offer-tag.auto{background:linear-gradient(135deg,var(--brand),var(--brand-2))}
+.offer-tag.amount{background:var(--green)}
+.offer-copy{min-width:0;display:flex;flex-direction:column;gap:2px}
+.offer-copy b{font-size:12.5px;color:var(--ink-strong);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.offer-copy small{font-size:10.5px;color:var(--muted-2);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.offer-copy em{font-size:10.5px;color:var(--faint);font-style:normal;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
 /* category chips */
 .chips{display:flex;gap:8px;overflow-x:auto;padding:14px 18px 4px;scrollbar-width:none}
@@ -177,12 +189,13 @@ svg{display:block}
 .card .thumb .cmp.on{background:var(--brand);color:#fff;border-color:var(--brand)}
 .card .body{padding:10px 12px 12px}
 .card .body .nm{font-size:13.5px;font-weight:800;color:var(--ink-strong);letter-spacing:-.2px}
-.card .body .sp{margin-top:2px}
-.card .body .pr{margin-top:8px;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
-.card .body .pr .price{font-size:14px}
-.price-options{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
-.price-options span{font-size:10.5px;font-weight:800;color:var(--muted);background:var(--chip);border:1px solid var(--line-2);border-radius:999px;padding:3px 7px;white-space:nowrap}
-
+.card .body .sp{margin-top:3px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;line-height:1.35}
+.card .body .sp i{width:3px;height:3px;border-radius:50%;background:var(--faint);flex:none}
+.card .body .pr{margin-top:8px;display:block}
+.card .body .pr .price{font-size:15px}
+.card-price{display:flex;flex-direction:column;gap:2px;min-width:0}
+.card-price .price-row{display:flex;align-items:center;gap:6px;min-width:0}
+.price-note{font-size:9.5px;font-weight:800;color:var(--green-d);background:var(--green-l);border-radius:999px;padding:2px 6px;line-height:1.2;white-space:nowrap}
 /* horizontal featured row */
 .h-scroll{display:flex;gap:12px;overflow-x:auto;padding:2px 18px 10px;scrollbar-width:none}
 .h-scroll::-webkit-scrollbar{display:none}
@@ -220,23 +233,6 @@ svg{display:block}
 .sheet.in{transform:translateY(0)}
 .sheet .grab{width:38px;height:5px;border-radius:99px;background:#d8dee8;margin:0 auto 12px}
 
-/* promo popup specifics */
-.promo-pop{text-align:center}
-.promo-pop .live{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;letter-spacing:.12em;color:#dc2626;background:#fee2e2;padding:4px 10px;border-radius:999px;text-transform:uppercase}
-.promo-pop .live .blink{width:7px;height:7px;border-radius:50%;background:#dc2626;animation:blink 1s steps(2) infinite}
-@keyframes blink{50%{opacity:.25}}
-.promo-pop .pct{font-size:64px;font-weight:800;color:var(--brand);letter-spacing:-2px;line-height:1;margin:8px 0 2px}
-.promo-pop .pct span{font-size:30px}
-.promo-pop h2{font-size:19px;font-weight:800;color:var(--ink-strong);margin-top:6px}
-.promo-pop .desc{font-size:12.5px;color:var(--muted);line-height:1.55;margin:8px 14px 0}
-.promo-pop .meta{display:flex;gap:10px;margin:16px 0 4px}
-.promo-pop .meta .box{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:var(--r-md);padding:10px}
-.promo-pop .meta .box .k{font-size:9.5px;font-weight:800;letter-spacing:.08em;color:var(--faint);text-transform:uppercase}
-.promo-pop .meta .box .v{font-size:17px;font-weight:800;color:var(--ink-strong);margin-top:3px;font-variant-numeric:tabular-nums}
-.promo-pop .meta .box.save .v{color:var(--green-d)}
-.promo-pop .code{margin-top:12px;font-size:12px;color:var(--muted)}
-.promo-pop .code b{background:var(--blue-l);color:var(--brand);padding:2px 8px;border-radius:6px;font-weight:800;letter-spacing:.5px}
-
 /* ── Buttons ─────────────────────────────────────────────── */
 .btn{display:flex;align-items:center;justify-content:center;gap:8px;border-radius:14px;font-weight:800;font-size:15px;padding:15px;transition:transform .12s, box-shadow .2s, filter .15s;width:100%}
 .btn:active{transform:scale(.975)}
@@ -258,7 +254,10 @@ svg{display:block}
 .detail-top{position:absolute;top:var(--safe-top);left:0;right:0;z-index:20;display:flex;justify-content:space-between;padding:6px 14px;pointer-events:none}
 .glass-pill{width:40px;height:40px;border-radius:999px;background:rgba(255,255,255,.6);-webkit-backdrop-filter:blur(12px) saturate(180%);backdrop-filter:blur(12px) saturate(180%);box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;pointer-events:auto;transition:transform .12s}
 .glass-pill:active{transform:scale(.9)}
-.gallery{position:relative;background:radial-gradient(circle at 50% 35%,#eef4fb,#dfe8f4);padding:64px 24px 18px;display:flex;align-items:center;justify-content:center;min-height:300px}
+.gallery{position:relative;background:radial-gradient(circle at 50% 35%,#eef4fb,#dfe8f4);padding:64px 0 22px;display:flex;align-items:center;justify-content:center;min-height:300px;overflow:hidden}
+.gallery-strip{position:relative;z-index:1;width:100%;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.gallery-strip::-webkit-scrollbar{display:none}
+.gallery-slide{flex:0 0 100%;min-height:214px;padding:0 24px;display:flex;align-items:center;justify-content:center;scroll-snap-align:center}
 .gallery .hero-img{max-height:240px;width:auto;filter:drop-shadow(0 20px 22px rgba(15,23,42,.22))}
 .gallery .dot-grid{position:absolute;inset:0;background-image:radial-gradient(rgba(10,100,180,.12) 1px,transparent 1px);background-size:18px 18px;opacity:.6;pointer-events:none}
 .gallery .pager{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:5px}
@@ -403,11 +402,6 @@ svg{display:block}
   *{animation-duration:.001s!important;transition-duration:.05s!important}
 }
 
-/* ── Tồn kho (stock) ───────────────────────────────────────── */
-.stk{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--green-d);margin:1px 0 3px}
-.stk i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 0 2px var(--green-l)}
-.stk.low{color:#b45309}.stk.low i{background:#f59e0b;box-shadow:0 0 0 2px #fef3c7}
-.stk.out{color:#dc2626}.stk.out i{background:#dc2626;box-shadow:0 0 0 2px #fee2e2}
 .card.is-out .thumb{opacity:.62}
 .out-tag{position:absolute;inset:0;margin:auto;width:max-content;height:max-content;background:rgba(15,23,42,.82);color:#fff;font-size:11px;font-weight:800;padding:5px 12px;border-radius:999px;z-index:2}
 .d-stock{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--green-d);background:var(--green-l);padding:7px 12px;border-radius:10px;margin:2px 0 12px}
@@ -627,7 +621,26 @@ svg{display:block}
 /* ── Login Screen ────────────────────────────────── */
 .login-screen {
   z-index: 1000;
-  background: var(--bg);
+  background: #0f172a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:24px;
+  text-align:center;
+}
+.login-card{
+  background:#fff;
+  padding:36px 24px;
+  border-radius:24px;
+  width:100%;
+  max-width:400px;
+  box-shadow:0 20px 40px rgba(0,0,0,.2);
+}
+.login-logo{
+  height:80px;
+  width:auto;
+  margin:0 auto 20px;
 }
 .login-screen .btn-primary {
   height: 48px;

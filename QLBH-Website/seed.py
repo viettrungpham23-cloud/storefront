@@ -1,5 +1,5 @@
 """
-Seed CSDL toàn diện từ dữ liệu kho THẬT (data/inventory.json — 2998 xe).
+Seed CSDL toàn diện từ dữ liệu kho seed (data/inventory.json — 3.054 xe).
 
 Quy trình:
   1. Dựng lại toàn bộ bảng (drop + create).
@@ -102,7 +102,7 @@ def main():
 
     # ---- 3. Kho thực tế ----
     raw = json.load(open(DATA, encoding="utf-8"))
-    print(f"→ Nạp {len(raw)} xe từ kho thật...")
+    print(f"→ Nạp {len(raw)} xe từ kho seed...")
 
     variants = {}          # sku_color -> dict
     inv_rows = []          # mappings cho inventory_items

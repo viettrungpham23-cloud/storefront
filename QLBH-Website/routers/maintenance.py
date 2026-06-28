@@ -34,7 +34,7 @@ TABLES = [
 ]
 
 # Các thao tác cần xác nhận (hành động khó hoàn tác)
-DESTRUCTIVE = {"wipe_transactions", "wipe_all", "reseed"}
+DESTRUCTIVE = {"wipe_transactions", "wipe_all", "reseed", "refresh_target_stock"}
 
 
 class CleanRequest(BaseModel):
@@ -126,6 +126,16 @@ def clean(req: CleanRequest, db: Session = Depends(get_db)):
         db.commit()
         return _result(db, "Đã xóa toàn bộ dữ liệu giao dịch; kho & tham chiếu được giữ lại.", {})
 
+    # ---- Chuẩn hóa tồn kho 4 mẫu launch về đúng 20 xe/mẫu ----
+    if action == "refresh_target_stock":
+        import stock_refresh
+        synced = stock_refresh.refresh_target_stock(db)
+        return _result(
+            db,
+            "Đã chuẩn hóa tồn kho Amio S, Evo Grand Lite, Evo Grand, VeroX về 20 xe/mẫu.",
+            synced,
+        )
+
     # ---- Làm trống toàn bộ (drop + tạo lại bảng rỗng) ----
     if action == "wipe_all":
         db.close()
@@ -136,13 +146,13 @@ def clean(req: CleanRequest, db: Session = Depends(get_db)):
         ndb.close()
         return res
 
-    # ---- Khôi phục dữ liệu gốc từ kho thật ----
+    # ---- Khôi phục dữ liệu gốc từ kho seed ----
     if action == "reseed":
         db.close()
         import seed
         seed.main()
         ndb = SessionLocal()
-        res = _result(ndb, "Đã khôi phục dữ liệu gốc từ kho thật (2.998 xe).", {})
+        res = _result(ndb, "Đã khôi phục dữ liệu gốc từ kho seed (3.054 xe).", {})
         ndb.close()
         return res
 
