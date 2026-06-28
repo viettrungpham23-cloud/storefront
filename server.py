@@ -327,7 +327,17 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("Access-Control-Allow-Origin", "*")
+        
+        origin = self.headers.get("Origin")
+        allowed_origins_str = os.environ.get("ALLOWED_ORIGINS", "*")
+        allowed_origins = [o.strip() for o in allowed_origins_str.split(",")] if allowed_origins_str != "*" else ["*"]
+        
+        if allowed_origins_str == "*":
+            self.send_header("Access-Control-Allow-Origin", "*")
+        elif origin in allowed_origins:
+            self.send_header("Access-Control-Allow-Origin", origin)
+        elif allowed_origins:
+            self.send_header("Access-Control-Allow-Origin", allowed_origins[0])
         self.send_header("Access-Control-Allow-Headers", "Content-Type, X-Cart-Token")
         self.send_header("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS")
         self.send_header("Cache-Control", "no-store")

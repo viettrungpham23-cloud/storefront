@@ -38,8 +38,11 @@ _auto_seed()
 
 app = FastAPI(title="VinFast Thu Anh — API Quản lý", version="2.0")
 
+allowed_origins_str = os.getenv("ALLOWED_ORIGINS", "*")
+allowed_origins = [o.strip() for o in allowed_origins_str.split(",")] if allowed_origins_str != "*" else ["*"]
+
 app.add_middleware(
-    CORSMiddleware, allow_origins=["*"], allow_credentials=True,
+    CORSMiddleware, allow_origins=allowed_origins, allow_credentials=True,
     allow_methods=["*"], allow_headers=["*"],
 )
 

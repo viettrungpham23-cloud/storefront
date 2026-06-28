@@ -10,9 +10,21 @@ load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./xe_dien_thu_anh.db")
 
 # Phân loại luồng kết nối: Cloud (PostgreSQL) không cần check_same_thread, Local (SQLite) thì có
-connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
+is_sqlite = DATABASE_URL.startswith("sqlite")
+connect_args = {"check_same_thread": False} if is_sqlite else {}
 
-engine = create_engine(DATABASE_URL, connect_args=connect_args)
+# Cấu hình Connection Pooling an toàn cho PostgreSQL (Cloud)
+pool_kwargs = {}
+if not is_sqlite:
+    pool_kwargs = {
+        "pool_size": 20,
+        "max_overflow": 10,
+        "pool_timeout": 30,
+        "pool_recycle": 1800,  # Recycle connections after 30 mins
+        "pool_pre_ping": True, # Check if connection is alive before using
+    }
+
+engine = create_engine(DATABASE_URL, connect_args=connect_args, **pool_kwargs)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()

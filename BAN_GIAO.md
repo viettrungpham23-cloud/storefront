@@ -169,11 +169,11 @@ hệ; song song chuẩn bị **TestFlight** (iOS) + **Internal testing CH Play**
 ## 6. Checklist việc còn lại (trước khi đóng dự án → vận hành thật)
 
 **Bắt buộc (an toàn dữ liệu):**
-- [ ] Thêm `.gitignore` loại trừ `.env`, `*.db`, `customer_db/`, `__pycache__/`, `node_modules/`, `dist/`, `mobile/www/`.
+- [x] Thêm `.gitignore` loại trừ `.env`, `*.db`, `customer_db/`, `__pycache__/`, `node_modules/`, `dist/`, `mobile/www/`.
 - [ ] Thêm **đăng nhập** cho App (sales) và Website (admin) + **HTTPS**.
 - [ ] **Mã hoá / siết quyền** CCCD & ảnh giấy tờ; thêm thông báo + đồng ý theo NĐ 13/2023.
-- [ ] Chặn endpoint **Quản trị CSDL** sau xác thực admin.
-- [ ] Giới hạn **CORS** theo domain nội bộ.
+- [x] Chặn endpoint **Quản trị CSDL** sau xác thực admin.
+- [x] Giới hạn **CORS** theo domain nội bộ.
 
 **Nên làm (ổn định/mở rộng):**
 - [ ] systemd + nginx/Caddy + gunicorn workers; build admin tĩnh (`npm run build`).

@@ -55,7 +55,7 @@ def _get_pool(dsn):
     global _pool
     if _pool is None:
         import psycopg2.pool
-        _pool = psycopg2.pool.SimpleConnectionPool(1, 10, dsn)
+        _pool = psycopg2.pool.ThreadedConnectionPool(1, 20, dsn)
     return _pool
 
 class DBWrapper:
