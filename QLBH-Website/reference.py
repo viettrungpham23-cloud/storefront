@@ -9,23 +9,27 @@ KiotViet quan sát được; các dòng ngoài catalog dùng giá bán lẻ VinF
 # Giá cơ sở theo dòng xe (VNĐ). Khóa = model viết HOA như trong inventory thật.
 MODEL_PRICE = {
     "FELIZ II": 30_500_000,
+    "EVO MAX": 25_600_000,
     "FELIZ NEO": 27_000_000,
-    "FELIZ 2025": 26_500_000,
+    "FELIZ 2025": 27_900_000,
     "FELIZ LITE": 24_000_000,
-    "VERO X": 36_900_000,
+    "VEROX": 34_900_000,
+    "VERO X": 34_900_000,
     "EVO GRAND": 23_900_000,        # theo niêm yết KiotViet
     "EVO GRAND +1": 24_900_000,     # bản kèm pin phụ
     "EVO GRAND LITE": 19_900_000,
     "EVO GRAND LITE +1": 20_900_000,
     "EVO": 22_000_000,
     "EVO 200 LITE": 22_000_000,
-    "EVO LITE": 21_000_000,
+    "EVO LITE": 22_600_000,
     "EVO LITE NEO": 21_500_000,
     "AMIO": 13_900_000,
+    "AMIO S": 13_900_000,
     "FLAZZ": 16_900_000,
+    "FLAZZ MAX": 20_600_000,
     "ZGOO": 15_900_000,
     "MOTIO": 18_000_000,
-    "VIPER": 50_000_000,
+    "VIPER": 45_500_000,
     "KLARA": 40_000_000,
     "VENTO NEO 2025": 50_000_000,
     "THEON": 64_900_000,
@@ -35,14 +39,15 @@ DEFAULT_PRICE = 25_000_000
 
 # Phân khúc theo dòng xe (khớp App: doi_pin / kem_pin / hoc_sinh)
 MODEL_SEGMENT = {
-    "FELIZ II": "doi_pin", "FELIZ NEO": "doi_pin", "VERO X": "doi_pin",
+    "FELIZ II": "doi_pin", "EVO MAX": "doi_pin", "FELIZ NEO": "doi_pin",
     "VIPER": "doi_pin", "THEON": "doi_pin", "KLARA": "doi_pin",
     "VENTO NEO 2025": "doi_pin", "VENTO": "doi_pin",
+    "EVO LITE": "doi_pin", "FLAZZ MAX": "doi_pin",
     "FELIZ 2025": "kem_pin", "FELIZ LITE": "kem_pin",
-    "EVO GRAND": "kem_pin", "EVO GRAND +1": "kem_pin",
+    "EVO GRAND": "kem_pin", "EVO GRAND +1": "kem_pin", "VEROX": "kem_pin", "VERO X": "kem_pin",
     "EVO": "kem_pin", "EVO 200 LITE": "kem_pin",
-    "EVO LITE": "kem_pin", "EVO LITE NEO": "kem_pin", "MOTIO": "kem_pin",
-    "AMIO": "hoc_sinh", "FLAZZ": "hoc_sinh", "ZGOO": "hoc_sinh",
+    "EVO LITE NEO": "kem_pin", "MOTIO": "kem_pin",
+    "AMIO": "hoc_sinh", "AMIO S": "hoc_sinh", "FLAZZ": "hoc_sinh", "ZGOO": "hoc_sinh",
     "EVO GRAND LITE": "hoc_sinh", "EVO GRAND LITE +1": "hoc_sinh",
 }
 

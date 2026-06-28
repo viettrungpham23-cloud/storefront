@@ -39,6 +39,13 @@ const state = {
 const fmt = n => (n || 0).toLocaleString('vi-VN') + '₫';
 const num = n => (n || 0).toLocaleString('vi-VN');
 const vndShort = n => { n = n || 0; if (n >= 1e9) return (n / 1e9).toLocaleString('vi-VN', { maximumFractionDigits: 1 }) + ' tỷ'; if (n >= 1e6) return (n / 1e6).toLocaleString('vi-VN', { maximumFractionDigits: 1 }) + ' tr'; if (n >= 1e3) return Math.round(n / 1e3) + ' ng'; return String(n); };
+const saleOf = (base, pct) => Math.round((base || 0) * (100 - (pct || 0)) / 100);
+const priceWithPromo = (base, pct) => pct
+  ? `<span class="price">${fmt(saleOf(base, pct))}</span><span class="price-old">${fmt(base)}</span>`
+  : `<span class="price">${fmt(base)}</span>`;
+const optionLabel = (p, opt) => opt === 'rent' ? 'Thuê pin' : (p.has_rent ? 'Mua đứt pin' : 'Trọn giá kèm pin');
+const isUnavailable = p => p.sellable === false || (p.stock != null && p.stock <= 0);
+const specVal = (p, key) => (p.specs && p.specs[key]) || '';
 const monthLabel = p => p ? 'T' + Number(p.slice(5)) + '/' + p.slice(2, 4) : '';
 const initials = s => (s || '?').trim().split(' ').slice(-2).map(w => w[0]).join('').toUpperCase();
 const getPref = (k, def) => { const v = localStorage.getItem('ta_pref_' + k); return v === null ? def : v === '1'; };
@@ -77,7 +84,16 @@ function scooterSVG(hex) {
 // image for a product/color: photo if available else colored scooter
 function prodImg(p, ci = 0) {
   const c = (p.colors && p.colors[ci]) || (p.colors && p.colors[0]) || { hex: '#0a64b4' };
-  return c.photo ? `<img src="/assets/${esc(c.photo)}" alt="${esc(p.name)}">` : scooterSVG(c.hex || '#0a64b4');
+  const photo = c.photo || c.thumb;
+  if (photo) {
+    const thumb = c.thumb || photo;
+    const srcset = c.photo && c.thumb
+      ? ` srcset="/assets/${esc(c.thumb)} 360w, /assets/${esc(c.photo)} 900w" sizes="(max-width: 640px) 70vw, 360px"`
+      : '';
+    const alt = [p.name, c.name].filter(Boolean).join(' ');
+    return `<img class="hero-img" src="/assets/${esc(thumb)}"${srcset} alt="${esc(alt)}" loading="lazy" decoding="async">`;
+  }
+  return scooterSVG(c.hex || '#0a64b4');
 }
 
 // ── Icons ────────────────────────────────────────────────────
@@ -278,29 +294,32 @@ SCREENS.home = (entry) => {
 
 // ---- product card ----
 function cardHTML(p) {
-  const badgeCls = p.segment === 'hoc_sinh' ? 'green' : p.badge === 'MỚI' ? 'new' : 'blue';
+  const badgeCls = p.sellable === false ? 'off' : p.segment === 'hoc_sinh' ? 'green' : p.badge === 'MỚI' ? 'new' : 'blue';
   const ci = p.colors.findIndex(c => c.photo); const imgIdx = ci >= 0 ? ci : 0;
   const cmpOn = state.compare.includes(p.slug);
-  const priceBlock = p.promo_pct
-    ? `<span class="price">${fmt(p.price_sale)}</span><span class="price-old">${fmt(p.price_base)}</span>`
-    : `<span class="price">${fmt(p.price_base)}</span>${p.has_rent ? '<span class="spec-line">thuê pin</span>' : ''}`;
+  const priceBlock = `${priceWithPromo(p.price_base, p.promo_pct)}<span class="spec-line">${p.has_rent ? 'từ giá thuê pin' : 'trọn giá kèm pin'}</span>`;
+  const optionPrices = p.has_rent
+    ? `<div class="price-options"><span>Thuê ${fmt(saleOf(p.price_rent, p.promo_pct))}</span><span>Mua ${fmt(saleOf(p.price_buy, p.promo_pct))}</span></div>`
+    : `<div class="price-options"><span>Kèm pin ${fmt(saleOf(p.price_buy, p.promo_pct))}</span></div>`;
   const stk = p.stock;
-  const out = stk != null && stk <= 0;
+  const out = isUnavailable(p);
+  const statusLine = p.sellable === false ? p.status : (stk == null ? (p.status || '') : '');
   const stockLine = stk == null ? '' :
-    `<div class="stk ${out ? 'out' : stk <= 5 ? 'low' : ''}"><i></i>${out ? 'Hết hàng' : 'Còn ' + stk + ' xe'}</div>`;
+    `<div class="stk ${out ? 'out' : stk <= 5 ? 'low' : ''}"><i></i>${out ? esc(statusLine || 'Hết hàng') : 'Còn ' + stk + ' xe'}</div>`;
   return `<div class="card ${out ? 'is-out' : ''}" data-slug="${p.slug}">
     <div class="thumb">
       <span class="badge ${badgeCls}">${esc(p.badge)}</span>
       <button class="cmp ${cmpOn ? 'on' : ''}" data-cmp="${p.slug}" title="So sánh">${cmpOn ? I.check : '+'}</button>
-      ${out ? '<span class="out-tag">Hết hàng</span>' : ''}
+      ${out ? `<span class="out-tag">${esc(statusLine || 'Hết hàng')}</span>` : ''}
       ${prodImg(p, imgIdx)}
     </div>
     <div class="body">
       <div class="nm">${esc(p.name)}</div>
-      <div class="sp spec-line">${p.speed} km/h · ${p.range_km} km</div>
+      <div class="sp spec-line">${esc(p.category_label || p.tagline)} · ${p.speed} km/h · ${p.range_km} km</div>
       ${stockLine}
       <div class="pr">${priceBlock}</div>
-      ${out ? `<button class="card-buy off" disabled>Hết hàng</button>` : `<div style="display:flex;gap:6px;"><button class="card-buy" data-addcart="${p.slug}" style="flex:0 0 38px;background:#f8fafc;color:var(--brand);border:1.5px solid var(--brand);padding:0;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></button><button class="card-buy" data-buy="${p.slug}" style="flex:1;">Mua ngay</button></div>`}
+      ${optionPrices}
+      ${out ? `<button class="card-buy off" disabled>${esc(statusLine || 'Hết hàng')}</button>` : `<div style="display:flex;gap:6px;"><button class="card-buy" data-addcart="${p.slug}" style="flex:0 0 38px;background:#f8fafc;color:var(--brand);border:1.5px solid var(--brand);padding:0;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></button><button class="card-buy" data-buy="${p.slug}" style="flex:1;">Mua ngay</button></div>`}
     </div></div>`;
 }
 function addonCardHTML(a) {
@@ -332,13 +351,14 @@ function bindCards(root) {
 async function quickAddCart(slug) {
   const p = await loadProduct(slug);
   if (!p) return;
+  if (isUnavailable(p)) { toast(p.sellable === false ? 'Mẫu xe đang ngừng kinh doanh' : 'Xe tạm hết hàng'); return; }
   const ci = p.colors.findIndex(c => c.photo); const imgIdx = ci >= 0 ? ci : 0;
   await addToCart(p.slug, p.colors[imgIdx].name, p.has_rent ? 'rent' : 'buy');
   toast('Đã thêm vào giỏ hàng');
 }
 async function quickBuy(slug) {
   const p = await loadProduct(slug);
-  if (p.stock != null && p.stock <= 0) { toast('Xe tạm hết hàng'); return; }
+  if (isUnavailable(p)) { toast(p.sellable === false ? 'Mẫu xe đang ngừng kinh doanh' : 'Xe tạm hết hàng'); return; }
   let ci = p.colors.findIndex(c => c.photo); if (ci < 0) ci = 0;
   const option = p.has_rent ? 'rent' : 'buy';
   await addToCart(p.slug, p.colors[ci].name, option);
@@ -449,19 +469,29 @@ SCREENS.detail = (entry) => {
 
     const render = () => {
       const c = p.colors[ci];
-      const badgeCls = p.segment === 'hoc_sinh' ? 'green' : p.badge === 'MỚI' ? 'new' : 'blue';
+      const badgeCls = p.sellable === false ? 'off' : p.segment === 'hoc_sinh' ? 'green' : p.badge === 'MỚI' ? 'new' : 'blue';
       const specRows = [
-        ['Dung lượng pin', p.battery], ['Tốc độ tối đa', p.speed + ' km/h'],
-        ['Quãng đường', p.range_km + ' km / sạc'], ['Thời gian sạc', p.charge],
-        ['Bảo hành pin', p.battery_warranty], ['Cần bằng lái', p.needs_license],
-      ];
-      const priceBuy = p.promo_pct ? Math.round(p.price_buy * (100 - p.promo_pct) / 100) : p.price_buy;
+        ['Dung lượng 1 pin', p.battery],
+        ['Tốc độ tối đa', p.speed + ' km/h'],
+        ['Quãng đường/sạc', p.range_km + ' km'],
+        ['Pin phụ', specVal(p, 'aux_battery')],
+        ['Thời gian sạc', p.charge],
+        ['eSIM', specVal(p, 'esim')],
+        ['Bàn đạp', specVal(p, 'pedal')],
+        ['Loại động cơ', specVal(p, 'motor_type')],
+        ['Khoá xe', specVal(p, 'lock_type')],
+        ['Trọng lượng', specVal(p, 'weight')],
+        ['Công suất', specVal(p, 'power')],
+        ['Dài x rộng x cao', specVal(p, 'dimensions')],
+        ['Bằng lái', p.needs_license],
+        ['Trạng thái', p.status || 'Đang bán'],
+      ].filter(r => r[1]);
       const optRow = p.has_rent
         ? `<div class="opt-row">
-            <button class="opt ${option === 'rent' ? 'on' : ''}" data-opt="rent"><div class="k">Thuê pin</div><div class="v">${fmt(p.price_rent)}</div></button>
-            <button class="opt ${option === 'buy' ? 'on' : ''}" data-opt="buy"><div class="k">Mua đứt</div><div class="v">${fmt(p.price_buy)}</div></button>
+            <button class="opt ${option === 'rent' ? 'on' : ''}" data-opt="rent"><div class="k">Thuê pin</div><div class="v">${priceWithPromo(p.price_rent, p.promo_pct)}</div></button>
+            <button class="opt ${option === 'buy' ? 'on' : ''}" data-opt="buy"><div class="k">Mua đứt pin</div><div class="v">${priceWithPromo(p.price_buy, p.promo_pct)}</div></button>
           </div>`
-        : `<div class="opt-row"><button class="opt on" style="flex:1"><div class="k">${p.promo_pct ? 'Giá ưu đãi (-' + p.promo_pct + '%)' : 'Giá niêm yết'}</div><div class="v">${fmt(priceBuy)} ${p.promo_pct ? '<span class="price-old">' + fmt(p.price_buy) + '</span>' : ''}</div></button></div>`;
+        : `<div class="opt-row"><button class="opt on" style="flex:1"><div class="k">${p.promo_pct ? 'Trọn giá kèm pin · KM ' + p.promo_pct + '%' : 'Trọn giá kèm pin'}</div><div class="v">${priceWithPromo(p.price_buy, p.promo_pct)}</div></button></div>`;
 
       scroll.innerHTML = `
         <div class="gallery"><div class="dot-grid"></div>${prodImg(p, ci)}
@@ -473,7 +503,8 @@ SCREENS.detail = (entry) => {
             <div><h1>${esc(p.name)}</h1><div class="meta">${esc(p.tagline)} · ${esc(c.name)}</div></div>
             <span class="rating">${I.star}${p.rating}</span>
           </div>
-          ${p.stock != null ? `<div class="d-stock ${p.stock <= 0 ? 'out' : p.stock <= 5 ? 'low' : ''}"><i></i>${p.stock <= 0 ? 'Tạm hết hàng — liên hệ đặt trước' : 'Còn ' + p.stock + ' xe sẵn giao · 3 cơ sở Hà Nội'}</div>` : ''}
+          <div class="detail-tags"><span>${esc(p.category_label || p.badge)}</span>${p.promo_pct ? `<span>KM ${p.promo_pct}%</span>` : ''}<span>${esc(p.status || 'Đang bán')}</span></div>
+          ${p.stock != null ? `<div class="d-stock ${isUnavailable(p) ? 'out' : p.stock <= 5 ? 'low' : ''}"><i></i>${isUnavailable(p) ? (p.sellable === false ? esc(p.status || 'Ngừng KD') : 'Tạm hết hàng — liên hệ đặt trước') : 'Còn ' + p.stock + ' xe sẵn giao · 3 cơ sở Hà Nội'}</div>` : ''}
           ${optRow}
           <div class="colors">${p.colors.map((col, i) => `<button class="swatch ${i === ci ? 'on' : ''}" data-ci="${i}" style="background:${col.hex}" title="${esc(col.name)}"></button>`).join('')}</div>
           <div class="block-title">Thông số kỹ thuật</div>
@@ -489,10 +520,11 @@ SCREENS.detail = (entry) => {
     render();
 
     // sticky action bar
-    const out = p.stock != null && p.stock <= 0;
+    const out = isUnavailable(p);
+    const unavailableLabel = p.sellable === false ? 'Ngừng KD' : 'Tạm hết hàng';
     const bar = el(`<div class="action-bar">
       <button class="btn btn-line btn-sm" style="flex:1" data-add ${out ? 'disabled' : ''}>Thêm vào giỏ</button>
-      <button class="btn btn-primary btn-sm" style="flex:1" data-buy ${out ? 'disabled' : ''}>${out ? 'Tạm hết hàng' : 'Mua ngay →'}</button>
+      <button class="btn btn-primary btn-sm" style="flex:1" data-buy ${out ? 'disabled' : ''}>${out ? unavailableLabel : 'Mua ngay →'}</button>
     </div>`);
     s.appendChild(bar);
     if (!out) {
@@ -541,20 +573,27 @@ SCREENS.compare = (entry) => {
   Promise.all(state.compare.map(loadProduct)).then(list => {
     s.querySelector('#cmp-sub').textContent = `${list.length} mẫu xe đã chọn`;
     const rowDef = [
-      ['GIÁ', p => p.promo_pct ? `${fmt(p.price_sale)}<div class="muted" style="font-weight:600;font-size:11px">${fmt(p.price_base)}</div>` : (p.has_rent ? `${fmt(p.price_rent)}<div class="muted" style="font-weight:600;font-size:11px">thuê pin</div>` : fmt(p.price_buy))],
+      ['GIÁ BÁN', p => p.has_rent
+        ? `<div>${fmt(saleOf(p.price_rent, p.promo_pct))}<div class="muted" style="font-weight:600;font-size:11px">thuê pin</div></div><div style="margin-top:4px">${fmt(saleOf(p.price_buy, p.promo_pct))}<div class="muted" style="font-weight:600;font-size:11px">mua đứt pin</div></div>`
+        : `<div>${fmt(saleOf(p.price_buy, p.promo_pct))}<div class="muted" style="font-weight:600;font-size:11px">kèm pin</div></div>`],
       ['TỐC ĐỘ TỐI ĐA', p => p.speed + ' km/h', p => p.speed],
       ['QUÃNG ĐƯỜNG / SẠC', p => p.range_km + ' km', p => p.range_km],
       ['DUNG LƯỢNG PIN', p => p.battery],
+      ['PIN PHỤ', p => esc(specVal(p, 'aux_battery') || '—')],
       ['THỜI GIAN SẠC', p => p.charge],
+      ['CÔNG SUẤT', p => esc(specVal(p, 'power') || '—')],
+      ['KHÓA XE', p => esc(specVal(p, 'lock_type') || '—')],
+      ['TRỌNG LƯỢNG', p => esc(specVal(p, 'weight') || '—')],
       ['CẦN BẰNG LÁI', p => p.needs_license],
+      ['TRẠNG THÁI', p => esc(p.status || 'Đang bán')],
     ];
     const cols = list.map((p, idx) => {
       const ci = p.colors.findIndex(c => c.photo); const ii = ci >= 0 ? ci : 0;
       const you = idx === 0;
-      const out = p.stock != null && p.stock <= 0;
-      const buy = out ? `<button class="cmp-buy off" disabled>Hết hàng</button>` : `<button class="cmp-buy" data-buy="${p.slug}">Mua ngay</button>`;
+      const out = isUnavailable(p);
+      const buy = out ? `<button class="cmp-buy off" disabled>${esc(p.sellable === false ? (p.status || 'Ngừng KD') : 'Hết hàng')}</button>` : `<button class="cmp-buy" data-buy="${p.slug}">Mua ngay</button>`;
       return `<div class="cmp-col ${you ? 'you' : ''}"><div class="pic">${prodImg(p, ii)}</div>
-        <div class="nm">${esc(p.name)}</div><div class="tag">${you ? 'Của bạn' : esc(p.colors[0].name)}</div>${buy}</div>`;
+        <div class="nm">${esc(p.name)}</div><div class="tag">${esc(p.category_label || (you ? 'Của bạn' : p.colors[0].name))}</div>${buy}</div>`;
     }).join('');
     const addCol = list.length < 3 ? `<button class="cmp-add" id="cmp-add"><span class="plus">+</span>Thêm xe</button>` : '';
 
@@ -599,7 +638,7 @@ function renderCartScreen(s) {
     const ab = s.querySelector('.action-bar'); if (ab) ab.remove();
     return;
   }
-  const promo = c.promo ? `<div class="promo-strip"><div class="pc">-16%</div><div style="flex:1"><div class="a">${esc(c.promo.code)} · −16% xe không bằng lái</div><div class="b">Tự động áp dụng cho xe học sinh</div></div></div>` : '';
+  const promo = c.promo ? `<div class="promo-strip"><div class="pc">KM</div><div style="flex:1"><div class="a">${esc(c.promo.code)} · ${esc(c.promo.title || 'Khuyến mại')}</div><div class="b">${esc(c.promo.subtitle || 'Tự động áp dụng theo bảng giá')}</div></div></div>` : '';
   const items = c.items.map(it => {
     const col = (it.colors || []).find(x => x.name === it.color) || (it.colors || [])[0] || { hex: '#0a64b4' };
     const img = col.photo ? `<img src="/assets/${esc(col.photo)}" alt="">` : scooterSVG(col.hex);
@@ -639,7 +678,7 @@ function renderCartScreen(s) {
       <h3>Tóm tắt đơn hàng</h3>
       <div class="sr"><span>Tạm tính</span><span class="v">${fmt(c.veh_subtotal != null ? c.veh_subtotal : c.subtotal)}</span></div>
       ${c.addon_total ? `<div class="sr"><span>Linh kiện / dịch vụ</span><span class="v">${fmt(c.addon_total)}</span></div>` : ''}
-      ${c.product_discount ? `<div class="sr disc"><span>Ưu đãi học sinh (-16%)</span><span class="v">−${fmt(c.product_discount)}</span></div>` : ''}
+      ${c.product_discount ? `<div class="sr disc"><span>Khuyến mại theo bảng giá</span><span class="v">−${fmt(c.product_discount)}</span></div>` : ''}
       ${c.promo_discount ? `<div class="sr disc"><span>Mã ${esc((c.applied_promo || {}).code || 'ưu đãi')}</span><span class="v">−${fmt(c.promo_discount)}</span></div>` : ''}
       <div class="sr"><span>Phí giao hàng</span><span class="v">Miễn phí</span></div>
       <div class="sr total"><span>Tổng cộng</span><span class="v">${fmt(c.total)}</span></div>
@@ -1092,7 +1131,7 @@ SCREENS.checkout = (entry) => {
         <div class="summary">
           <h3>Tóm tắt</h3>
           <div class="sr"><span>Tạm tính (${c.count})</span><span class="v">${fmt(c.subtotal)}</span></div>
-          ${c.discount ? `<div class="sr disc"><span>${esc(c.promo ? c.promo.code : 'Ưu đãi')}</span><span class="v">−${fmt(c.discount)}</span></div>` : ''}
+          ${c.discount ? `<div class="sr disc"><span>${esc(c.promo ? c.promo.title || c.promo.code : 'Ưu đãi')}</span><span class="v">−${fmt(c.discount)}</span></div>` : ''}
           <div class="sr"><span>Phí giao hàng</span><span class="v">Miễn phí</span></div>
           <div class="sr total"><span>Tổng cộng</span><span class="v">${fmt(c.total)}</span></div>
         </div>
@@ -1300,7 +1339,7 @@ function openSheet(innerHTML, onMount) {
 let promoTimer = null;
 function showPromoPopup() {
   const promo = state.catalog && state.catalog.promo; if (!promo) return;
-  const amio = state.catalog.products.find(p => p.slug === 'amio');
+  const amio = state.catalog.products.find(p => p.slug === 'amio-s') || state.catalog.products.find(p => /amio/i.test(p.name));
   const saveEx = amio ? Math.round(amio.price_base * promo.pct / 100) : 2224000;
   const close = openSheet(`<div class="promo-pop">
     <div class="grab"></div>
@@ -1341,7 +1380,7 @@ function showAddSheet(p, color, option) {
     <div style="width:60px;height:60px;border-radius:50%;background:var(--green-l);color:var(--green-d);display:flex;align-items:center;justify-content:center;margin:4px auto 12px">
       <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
     <h2 style="font-size:18px;font-weight:800;color:var(--ink-strong)">Đã thêm vào giỏ</h2>
-    <p style="font-size:13px;color:var(--muted);margin-top:6px">${esc(p.name)} · ${esc(color)} · ${option === 'rent' ? 'thuê pin' : 'mua đứt'}</p>
+    <p style="font-size:13px;color:var(--muted);margin-top:6px">${esc(p.name)} · ${esc(color)} · ${esc(optionLabel(p, option).toLowerCase())}</p>
     <div style="display:flex;gap:10px;margin-top:18px">
       <button class="btn btn-line" id="as-cont">Tiếp tục xem</button>
       <button class="btn btn-primary" id="as-cart">Tới giỏ hàng →</button>
@@ -1372,7 +1411,7 @@ async function ensureCatalog(seg = 'all') {
     return state.catalog;
   }
   const full = await ensureCatalog('all');
-  return { ...full, products: full.products.filter(p => p.segment === seg) };
+  return { ...full, products: full.products.filter(p => (p.segments || [p.segment]).includes(seg)) };
 }
 async function loadProduct(slug) {
   if (!state.productCache[slug]) state.productCache[slug] = await api('/products/' + slug);

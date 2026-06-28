@@ -1,7 +1,7 @@
 /* Service worker — app shell offline + cập nhật.
  * Tĩnh: cache-first.  Điều hướng: network-first → fallback index.html.
  * API & cross-origin (backend host, fonts): luôn qua mạng (không cache). */
-const CACHE = 'ta-store-v18';
+const CACHE = 'ta-store-v20';
 // Mã nguồn → network-first (luôn lấy bản mới); ảnh/asset → cache-first.
 const FRESH = ['/app.js', '/styles.css', '/config.js', '/index.html', '/'];
 const SHELL = [

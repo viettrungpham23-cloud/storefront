@@ -1,0 +1,1723 @@
+{
+  "generated_at": "2026-06-28T03:01:48.688062+00:00",
+  "canvas_size": 1024,
+  "intended_direction": "left",
+  "webp_quality": 86,
+  "svg_mode": "external_webp_wrapper",
+  "notes": [
+    "SVG files are lightweight wrappers that reference processed transparent WebP files.",
+    "Keep processed/svg and processed/webp together when hosting or importing into an app.",
+    "Use review_flags and processed/qa/contact-sheet*.jpg for manual visual QA."
+  ],
+  "count": 48,
+  "products": [
+    {
+      "slug": "flazz-do",
+      "source": "Flazz-do.webp",
+      "source_metadata": {
+        "width": 2048,
+        "height": 961,
+        "has_alpha": true,
+        "size_bytes": 214000
+      },
+      "source_bbox": {
+        "x": 359,
+        "y": 17,
+        "width": 1689,
+        "height": 944
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 260,
+        "width": 900,
+        "height": 503
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/flazz-do.webp",
+        "svg": "processed/svg/flazz-do.svg",
+        "thumbnail": "processed/thumb/flazz-do.webp"
+      },
+      "output_webp_size_bytes": 56364,
+      "output_svg_size_bytes": 247,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "amio-s-den",
+      "source": "amio-s-den.webp",
+      "source_metadata": {
+        "width": 1119,
+        "height": 700,
+        "has_alpha": true,
+        "size_bytes": 79682
+      },
+      "source_bbox": {
+        "x": 0,
+        "y": 23,
+        "width": 1119,
+        "height": 677
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 240,
+        "width": 900,
+        "height": 544
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/amio-s-den.webp",
+        "svg": "processed/svg/amio-s-den.svg",
+        "thumbnail": "processed/thumb/amio-s-den.webp"
+      },
+      "output_webp_size_bytes": 71418,
+      "output_svg_size_bytes": 251,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "amio-s-do",
+      "source": "amio-s-do.webp",
+      "source_metadata": {
+        "width": 1119,
+        "height": 700,
+        "has_alpha": true,
+        "size_bytes": 81644
+      },
+      "source_bbox": {
+        "x": 0,
+        "y": 23,
+        "width": 1119,
+        "height": 677
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 240,
+        "width": 900,
+        "height": 544
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/amio-s-do.webp",
+        "svg": "processed/svg/amio-s-do.svg",
+        "thumbnail": "processed/thumb/amio-s-do.webp"
+      },
+      "output_webp_size_bytes": 73088,
+      "output_svg_size_bytes": 249,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "amio-s-trang",
+      "source": "amio-s-trang.webp",
+      "source_metadata": {
+        "width": 1119,
+        "height": 700,
+        "has_alpha": true,
+        "size_bytes": 80426
+      },
+      "source_bbox": {
+        "x": 0,
+        "y": 23,
+        "width": 1119,
+        "height": 677
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 240,
+        "width": 900,
+        "height": 544
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/amio-s-trang.webp",
+        "svg": "processed/svg/amio-s-trang.svg",
+        "thumbnail": "processed/thumb/amio-s-trang.webp"
+      },
+      "output_webp_size_bytes": 71864,
+      "output_svg_size_bytes": 255,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "amio-s-xam",
+      "source": "amio-s-xam.webp",
+      "source_metadata": {
+        "width": 1119,
+        "height": 700,
+        "has_alpha": true,
+        "size_bytes": 80306
+      },
+      "source_bbox": {
+        "x": 0,
+        "y": 23,
+        "width": 1119,
+        "height": 677
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 240,
+        "width": 900,
+        "height": 544
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/amio-s-xam.webp",
+        "svg": "processed/svg/amio-s-xam.svg",
+        "thumbnail": "processed/thumb/amio-s-xam.webp"
+      },
+      "output_webp_size_bytes": 72002,
+      "output_svg_size_bytes": 251,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "amio-s-xanh-oliu",
+      "source": "amio-s-xanh-oliu.webp",
+      "source_metadata": {
+        "width": 1119,
+        "height": 700,
+        "has_alpha": true,
+        "size_bytes": 83630
+      },
+      "source_bbox": {
+        "x": 0,
+        "y": 23,
+        "width": 1119,
+        "height": 677
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 240,
+        "width": 900,
+        "height": 544
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/amio-s-xanh-oliu.webp",
+        "svg": "processed/svg/amio-s-xanh-oliu.svg",
+        "thumbnail": "processed/thumb/amio-s-xanh-oliu.webp"
+      },
+      "output_webp_size_bytes": 75450,
+      "output_svg_size_bytes": 263,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-grand-den",
+      "source": "evo-grand-den.webp",
+      "source_metadata": {
+        "width": 1024,
+        "height": 768,
+        "has_alpha": false,
+        "size_bytes": 25068
+      },
+      "source_bbox": {
+        "x": 218,
+        "y": 18,
+        "width": 582,
+        "height": 732
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 221,
+        "y": 146,
+        "width": 582,
+        "height": 732
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-grand-den.webp",
+        "svg": "processed/svg/evo-grand-den.svg",
+        "thumbnail": "processed/thumb/evo-grand-den.webp"
+      },
+      "output_webp_size_bytes": 38626,
+      "output_svg_size_bytes": 257,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-grand-do",
+      "source": "evo-grand-do.png",
+      "source_metadata": {
+        "width": 1024,
+        "height": 768,
+        "has_alpha": false,
+        "size_bytes": 258190
+      },
+      "source_bbox": {
+        "x": 259,
+        "y": 16,
+        "width": 509,
+        "height": 732
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 257,
+        "y": 146,
+        "width": 509,
+        "height": 732
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-grand-do.webp",
+        "svg": "processed/svg/evo-grand-do.svg",
+        "thumbnail": "processed/thumb/evo-grand-do.webp"
+      },
+      "output_webp_size_bytes": 36338,
+      "output_svg_size_bytes": 255,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-grand-lite-den",
+      "source": "evo-grand-lite-den.webp",
+      "source_metadata": {
+        "width": 1024,
+        "height": 768,
+        "has_alpha": false,
+        "size_bytes": 25068
+      },
+      "source_bbox": {
+        "x": 218,
+        "y": 18,
+        "width": 582,
+        "height": 732
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 221,
+        "y": 146,
+        "width": 582,
+        "height": 732
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-grand-lite-den.webp",
+        "svg": "processed/svg/evo-grand-lite-den.svg",
+        "thumbnail": "processed/thumb/evo-grand-lite-den.webp"
+      },
+      "output_webp_size_bytes": 38626,
+      "output_svg_size_bytes": 267,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-grand-lite-tim-lavender",
+      "source": "evo-grand-lite-tim-lavender.webp",
+      "source_metadata": {
+        "width": 1024,
+        "height": 768,
+        "has_alpha": false,
+        "size_bytes": 26472
+      },
+      "source_bbox": {
+        "x": 218,
+        "y": 18,
+        "width": 584,
+        "height": 732
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 220,
+        "y": 146,
+        "width": 584,
+        "height": 732
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-grand-lite-tim-lavender.webp",
+        "svg": "processed/svg/evo-grand-lite-tim-lavender.svg",
+        "thumbnail": "processed/thumb/evo-grand-lite-tim-lavender.webp"
+      },
+      "output_webp_size_bytes": 41074,
+      "output_svg_size_bytes": 285,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-grand-lite-trang",
+      "source": "evo-grand-lite-trang.webp",
+      "source_metadata": {
+        "width": 1024,
+        "height": 768,
+        "has_alpha": false,
+        "size_bytes": 26258
+      },
+      "source_bbox": {
+        "x": 218,
+        "y": 18,
+        "width": 584,
+        "height": 732
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 220,
+        "y": 146,
+        "width": 584,
+        "height": 732
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-grand-lite-trang.webp",
+        "svg": "processed/svg/evo-grand-lite-trang.svg",
+        "thumbnail": "processed/thumb/evo-grand-lite-trang.webp"
+      },
+      "output_webp_size_bytes": 44412,
+      "output_svg_size_bytes": 271,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-grand-lite-vang",
+      "source": "evo-grand-lite-vang.webp",
+      "source_metadata": {
+        "width": 1024,
+        "height": 768,
+        "has_alpha": false,
+        "size_bytes": 31066
+      },
+      "source_bbox": {
+        "x": 218,
+        "y": 18,
+        "width": 584,
+        "height": 732
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 220,
+        "y": 146,
+        "width": 584,
+        "height": 732
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-grand-lite-vang.webp",
+        "svg": "processed/svg/evo-grand-lite-vang.svg",
+        "thumbnail": "processed/thumb/evo-grand-lite-vang.webp"
+      },
+      "output_webp_size_bytes": 45150,
+      "output_svg_size_bytes": 269,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-grand-trang",
+      "source": "evo-grand-trang.webp",
+      "source_metadata": {
+        "width": 1024,
+        "height": 768,
+        "has_alpha": false,
+        "size_bytes": 26258
+      },
+      "source_bbox": {
+        "x": 218,
+        "y": 18,
+        "width": 584,
+        "height": 732
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 220,
+        "y": 146,
+        "width": 584,
+        "height": 732
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-grand-trang.webp",
+        "svg": "processed/svg/evo-grand-trang.svg",
+        "thumbnail": "processed/thumb/evo-grand-trang.webp"
+      },
+      "output_webp_size_bytes": 44412,
+      "output_svg_size_bytes": 261,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-grand-vang-cat",
+      "source": "evo-grand-vang-cat.webp",
+      "source_metadata": {
+        "width": 1024,
+        "height": 768,
+        "has_alpha": false,
+        "size_bytes": 26774
+      },
+      "source_bbox": {
+        "x": 220,
+        "y": 18,
+        "width": 582,
+        "height": 732
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 221,
+        "y": 146,
+        "width": 582,
+        "height": 732
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-grand-vang-cat.webp",
+        "svg": "processed/svg/evo-grand-vang-cat.svg",
+        "thumbnail": "processed/thumb/evo-grand-vang-cat.webp"
+      },
+      "output_webp_size_bytes": 39032,
+      "output_svg_size_bytes": 267,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-grand-xanh-oliu",
+      "source": "evo-grand-xanh-oliu.webp",
+      "source_metadata": {
+        "width": 1024,
+        "height": 768,
+        "has_alpha": false,
+        "size_bytes": 26198
+      },
+      "source_bbox": {
+        "x": 220,
+        "y": 18,
+        "width": 582,
+        "height": 732
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 221,
+        "y": 146,
+        "width": 582,
+        "height": 732
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-grand-xanh-oliu.webp",
+        "svg": "processed/svg/evo-grand-xanh-oliu.svg",
+        "thumbnail": "processed/thumb/evo-grand-xanh-oliu.webp"
+      },
+      "output_webp_size_bytes": 40208,
+      "output_svg_size_bytes": 269,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-lite-den",
+      "source": "evo-lite-den.webp",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 40286
+      },
+      "source_bbox": {
+        "x": 284,
+        "y": 17,
+        "width": 996,
+        "height": 943
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 86,
+        "width": 900,
+        "height": 852
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-lite-den.webp",
+        "svg": "processed/svg/evo-lite-den.svg",
+        "thumbnail": "processed/thumb/evo-lite-den.webp"
+      },
+      "output_webp_size_bytes": 63762,
+      "output_svg_size_bytes": 255,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-lite-do",
+      "source": "evo-lite-do.webp",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 49254
+      },
+      "source_bbox": {
+        "x": 285,
+        "y": 17,
+        "width": 995,
+        "height": 943
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 86,
+        "width": 900,
+        "height": 852
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-lite-do.webp",
+        "svg": "processed/svg/evo-lite-do.svg",
+        "thumbnail": "processed/thumb/evo-lite-do.webp"
+      },
+      "output_webp_size_bytes": 71590,
+      "output_svg_size_bytes": 253,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-lite-trang",
+      "source": "evo-lite-trang.webp",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 41498
+      },
+      "source_bbox": {
+        "x": 289,
+        "y": 17,
+        "width": 991,
+        "height": 943
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 84,
+        "width": 900,
+        "height": 856
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-lite-trang.webp",
+        "svg": "processed/svg/evo-lite-trang.svg",
+        "thumbnail": "processed/thumb/evo-lite-trang.webp"
+      },
+      "output_webp_size_bytes": 78330,
+      "output_svg_size_bytes": 259,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-lite-xanh-oliu",
+      "source": "evo-lite-xanh-oliu.webp",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 42122
+      },
+      "source_bbox": {
+        "x": 284,
+        "y": 17,
+        "width": 996,
+        "height": 943
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 86,
+        "width": 900,
+        "height": 852
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-lite-xanh-oliu.webp",
+        "svg": "processed/svg/evo-lite-xanh-oliu.svg",
+        "thumbnail": "processed/thumb/evo-lite-xanh-oliu.webp"
+      },
+      "output_webp_size_bytes": 83250,
+      "output_svg_size_bytes": 267,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-max-den",
+      "source": "evo-max-den.webp",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 40286
+      },
+      "source_bbox": {
+        "x": 284,
+        "y": 17,
+        "width": 996,
+        "height": 943
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 86,
+        "width": 900,
+        "height": 852
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-max-den.webp",
+        "svg": "processed/svg/evo-max-den.svg",
+        "thumbnail": "processed/thumb/evo-max-den.webp"
+      },
+      "output_webp_size_bytes": 63762,
+      "output_svg_size_bytes": 253,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-max-do",
+      "source": "evo-max-do.webp",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 49254
+      },
+      "source_bbox": {
+        "x": 285,
+        "y": 17,
+        "width": 995,
+        "height": 943
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 86,
+        "width": 900,
+        "height": 852
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-max-do.webp",
+        "svg": "processed/svg/evo-max-do.svg",
+        "thumbnail": "processed/thumb/evo-max-do.webp"
+      },
+      "output_webp_size_bytes": 71590,
+      "output_svg_size_bytes": 251,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-max-trang",
+      "source": "evo-max-trang.webp",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 41498
+      },
+      "source_bbox": {
+        "x": 289,
+        "y": 17,
+        "width": 991,
+        "height": 943
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 84,
+        "width": 900,
+        "height": 856
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-max-trang.webp",
+        "svg": "processed/svg/evo-max-trang.svg",
+        "thumbnail": "processed/thumb/evo-max-trang.webp"
+      },
+      "output_webp_size_bytes": 78330,
+      "output_svg_size_bytes": 257,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "evo-max-xanh-oliu",
+      "source": "evo-max-xanh-oliu.webp",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 42122
+      },
+      "source_bbox": {
+        "x": 284,
+        "y": 17,
+        "width": 996,
+        "height": 943
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 86,
+        "width": 900,
+        "height": 852
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/evo-max-xanh-oliu.webp",
+        "svg": "processed/svg/evo-max-xanh-oliu.svg",
+        "thumbnail": "processed/thumb/evo-max-xanh-oliu.webp"
+      },
+      "output_webp_size_bytes": 83250,
+      "output_svg_size_bytes": 265,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "feliz-2025-den",
+      "source": "feliz-2025-den.webp",
+      "source_metadata": {
+        "width": 1659,
+        "height": 2048,
+        "has_alpha": true,
+        "size_bytes": 155596
+      },
+      "source_bbox": {
+        "x": 146,
+        "y": 64,
+        "width": 1380,
+        "height": 1732
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 161,
+        "y": 72,
+        "width": 701,
+        "height": 880
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/feliz-2025-den.webp",
+        "svg": "processed/svg/feliz-2025-den.svg",
+        "thumbnail": "processed/thumb/feliz-2025-den.webp"
+      },
+      "output_webp_size_bytes": 71662,
+      "output_svg_size_bytes": 259,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "feliz-2025-trang",
+      "source": "feliz-2025-trang.webp",
+      "source_metadata": {
+        "width": 1617,
+        "height": 2048,
+        "has_alpha": true,
+        "size_bytes": 157646
+      },
+      "source_bbox": {
+        "x": 106,
+        "y": 90,
+        "width": 1380,
+        "height": 1732
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 161,
+        "y": 72,
+        "width": 701,
+        "height": 880
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/feliz-2025-trang.webp",
+        "svg": "processed/svg/feliz-2025-trang.svg",
+        "thumbnail": "processed/thumb/feliz-2025-trang.webp"
+      },
+      "output_webp_size_bytes": 73108,
+      "output_svg_size_bytes": 263,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "feliz-2025-vang-cat",
+      "source": "feliz-2025-vang-cat.webp",
+      "source_metadata": {
+        "width": 1705,
+        "height": 2048,
+        "has_alpha": true,
+        "size_bytes": 152896
+      },
+      "source_bbox": {
+        "x": 165,
+        "y": 158,
+        "width": 1379,
+        "height": 1732
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 162,
+        "y": 72,
+        "width": 700,
+        "height": 880
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/feliz-2025-vang-cat.webp",
+        "svg": "processed/svg/feliz-2025-vang-cat.svg",
+        "thumbnail": "processed/thumb/feliz-2025-vang-cat.webp"
+      },
+      "output_webp_size_bytes": 74262,
+      "output_svg_size_bytes": 269,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "feliz-2025-xanh-reu",
+      "source": "feliz-2025-xanh-reu.webp",
+      "source_metadata": {
+        "width": 1701,
+        "height": 2048,
+        "has_alpha": true,
+        "size_bytes": 160962
+      },
+      "source_bbox": {
+        "x": 158,
+        "y": 158,
+        "width": 1379,
+        "height": 1732
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 162,
+        "y": 72,
+        "width": 700,
+        "height": 880
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/feliz-2025-xanh-reu.webp",
+        "svg": "processed/svg/feliz-2025-xanh-reu.svg",
+        "thumbnail": "processed/thumb/feliz-2025-xanh-reu.webp"
+      },
+      "output_webp_size_bytes": 74246,
+      "output_svg_size_bytes": 269,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "feliz-ii-den",
+      "source": "feliz-ii-den.png",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 421052
+      },
+      "source_bbox": {
+        "x": 0,
+        "y": 40,
+        "width": 1280,
+        "height": 892
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 198,
+        "width": 900,
+        "height": 627
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/feliz-ii-den.webp",
+        "svg": "processed/svg/feliz-ii-den.svg",
+        "thumbnail": "processed/thumb/feliz-ii-den.webp"
+      },
+      "output_webp_size_bytes": 47850,
+      "output_svg_size_bytes": 255,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "feliz-ii-do",
+      "source": "feliz-ii-do.webp",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 47254
+      },
+      "source_bbox": {
+        "x": 249,
+        "y": 40,
+        "width": 803,
+        "height": 891
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 115,
+        "y": 72,
+        "width": 793,
+        "height": 880
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/feliz-ii-do.webp",
+        "svg": "processed/svg/feliz-ii-do.svg",
+        "thumbnail": "processed/thumb/feliz-ii-do.webp"
+      },
+      "output_webp_size_bytes": 69462,
+      "output_svg_size_bytes": 253,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "feliz-ii-trang",
+      "source": "feliz-ii-trang.webp",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 44206
+      },
+      "source_bbox": {
+        "x": 239,
+        "y": 40,
+        "width": 812,
+        "height": 875
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 106,
+        "y": 74,
+        "width": 812,
+        "height": 875
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/feliz-ii-trang.webp",
+        "svg": "processed/svg/feliz-ii-trang.svg",
+        "thumbnail": "processed/thumb/feliz-ii-trang.webp"
+      },
+      "output_webp_size_bytes": 61452,
+      "output_svg_size_bytes": 259,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "feliz-ii-xanh-oliu",
+      "source": "feliz-ii-xanh-oliu.webp",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 44416
+      },
+      "source_bbox": {
+        "x": 239,
+        "y": 40,
+        "width": 813,
+        "height": 875
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 105,
+        "y": 74,
+        "width": 813,
+        "height": 875
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/feliz-ii-xanh-oliu.webp",
+        "svg": "processed/svg/feliz-ii-xanh-oliu.svg",
+        "thumbnail": "processed/thumb/feliz-ii-xanh-oliu.webp"
+      },
+      "output_webp_size_bytes": 60966,
+      "output_svg_size_bytes": 267,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "flazz-den",
+      "source": "flazz-den.webp",
+      "source_metadata": {
+        "width": 2048,
+        "height": 961,
+        "has_alpha": true,
+        "size_bytes": 202090
+      },
+      "source_bbox": {
+        "x": 359,
+        "y": 17,
+        "width": 1689,
+        "height": 944
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 260,
+        "width": 900,
+        "height": 503
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/flazz-den.webp",
+        "svg": "processed/svg/flazz-den.svg",
+        "thumbnail": "processed/thumb/flazz-den.webp"
+      },
+      "output_webp_size_bytes": 53754,
+      "output_svg_size_bytes": 249,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "flazz-max-cam",
+      "source": "flazz-max-cam.webp",
+      "source_metadata": {
+        "width": 1000,
+        "height": 1000,
+        "has_alpha": false,
+        "size_bytes": 66884
+      },
+      "source_bbox": {
+        "x": 22,
+        "y": 9,
+        "width": 939,
+        "height": 976
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 89,
+        "y": 72,
+        "width": 846,
+        "height": 880
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/flazz-max-cam.webp",
+        "svg": "processed/svg/flazz-max-cam.svg",
+        "thumbnail": "processed/thumb/flazz-max-cam.webp"
+      },
+      "output_webp_size_bytes": 103884,
+      "output_svg_size_bytes": 257,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "flazz-max-xanh",
+      "source": "flazz-max-xanh.webp",
+      "source_metadata": {
+        "width": 1000,
+        "height": 1000,
+        "has_alpha": false,
+        "size_bytes": 70436
+      },
+      "source_bbox": {
+        "x": 0,
+        "y": 9,
+        "width": 964,
+        "height": 990
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 84,
+        "y": 72,
+        "width": 856,
+        "height": 880
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/flazz-max-xanh.webp",
+        "svg": "processed/svg/flazz-max-xanh.svg",
+        "thumbnail": "processed/thumb/flazz-max-xanh.webp"
+      },
+      "output_webp_size_bytes": 83084,
+      "output_svg_size_bytes": 259,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "flazz-trang",
+      "source": "flazz-trang.webp",
+      "source_metadata": {
+        "width": 2048,
+        "height": 961,
+        "has_alpha": true,
+        "size_bytes": 202936
+      },
+      "source_bbox": {
+        "x": 0,
+        "y": 17,
+        "width": 1834,
+        "height": 944
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 280,
+        "width": 900,
+        "height": 463
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/flazz-trang.webp",
+        "svg": "processed/svg/flazz-trang.svg",
+        "thumbnail": "processed/thumb/flazz-trang.webp"
+      },
+      "output_webp_size_bytes": 48080,
+      "output_svg_size_bytes": 253,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "verox-xanh-reu",
+      "source": "veroX-xanh-reu.webp",
+      "source_metadata": {
+        "width": 2048,
+        "height": 966,
+        "has_alpha": true,
+        "size_bytes": 108826
+      },
+      "source_bbox": {
+        "x": 401,
+        "y": 30,
+        "width": 1127,
+        "height": 936
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 138,
+        "width": 900,
+        "height": 747
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/verox-xanh-reu.webp",
+        "svg": "processed/svg/verox-xanh-reu.svg",
+        "thumbnail": "processed/thumb/verox-xanh-reu.webp"
+      },
+      "output_webp_size_bytes": 67124,
+      "output_svg_size_bytes": 259,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "verox-den",
+      "source": "verox-den.webp",
+      "source_metadata": {
+        "width": 2048,
+        "height": 966,
+        "has_alpha": true,
+        "size_bytes": 115310
+      },
+      "source_bbox": {
+        "x": 401,
+        "y": 30,
+        "width": 1120,
+        "height": 936
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 136,
+        "width": 900,
+        "height": 752
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/verox-den.webp",
+        "svg": "processed/svg/verox-den.svg",
+        "thumbnail": "processed/thumb/verox-den.webp"
+      },
+      "output_webp_size_bytes": 68394,
+      "output_svg_size_bytes": 249,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "verox-trang",
+      "source": "verox-trang.webp",
+      "source_metadata": {
+        "width": 2048,
+        "height": 1616,
+        "has_alpha": true,
+        "size_bytes": 260720
+      },
+      "source_bbox": {
+        "x": 1,
+        "y": 49,
+        "width": 1895,
+        "height": 1567
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 140,
+        "width": 900,
+        "height": 744
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/verox-trang.webp",
+        "svg": "processed/svg/verox-trang.svg",
+        "thumbnail": "processed/thumb/verox-trang.webp"
+      },
+      "output_webp_size_bytes": 71764,
+      "output_svg_size_bytes": 253,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "verox-xanh-oliu",
+      "source": "verox-xanh-oliu.webp",
+      "source_metadata": {
+        "width": 2048,
+        "height": 966,
+        "has_alpha": true,
+        "size_bytes": 116482
+      },
+      "source_bbox": {
+        "x": 401,
+        "y": 30,
+        "width": 1127,
+        "height": 936
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 138,
+        "width": 900,
+        "height": 747
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/verox-xanh-oliu.webp",
+        "svg": "processed/svg/verox-xanh-oliu.svg",
+        "thumbnail": "processed/thumb/verox-xanh-oliu.webp"
+      },
+      "output_webp_size_bytes": 71300,
+      "output_svg_size_bytes": 261,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "viper-den",
+      "source": "viper-den.webp",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 64558
+      },
+      "source_bbox": {
+        "x": 82,
+        "y": 29,
+        "width": 1100,
+        "height": 930
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 132,
+        "width": 900,
+        "height": 760
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/viper-den.webp",
+        "svg": "processed/svg/viper-den.svg",
+        "thumbnail": "processed/thumb/viper-den.webp"
+      },
+      "output_webp_size_bytes": 79876,
+      "output_svg_size_bytes": 249,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "viper-do",
+      "source": "viper-do.webp",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 67654
+      },
+      "source_bbox": {
+        "x": 82,
+        "y": 29,
+        "width": 1099,
+        "height": 929
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 132,
+        "width": 900,
+        "height": 760
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/viper-do.webp",
+        "svg": "processed/svg/viper-do.svg",
+        "thumbnail": "processed/thumb/viper-do.webp"
+      },
+      "output_webp_size_bytes": 81514,
+      "output_svg_size_bytes": 247,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "viper-trang",
+      "source": "viper-trang.webp",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 66424
+      },
+      "source_bbox": {
+        "x": 82,
+        "y": 29,
+        "width": 1100,
+        "height": 927
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 133,
+        "width": 900,
+        "height": 758
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/viper-trang.webp",
+        "svg": "processed/svg/viper-trang.svg",
+        "thumbnail": "processed/thumb/viper-trang.webp"
+      },
+      "output_webp_size_bytes": 87372,
+      "output_svg_size_bytes": 253,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "viper-vang",
+      "source": "viper-vang.webp",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 65668
+      },
+      "source_bbox": {
+        "x": 82,
+        "y": 29,
+        "width": 1097,
+        "height": 929
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 131,
+        "width": 900,
+        "height": 762
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/viper-vang.webp",
+        "svg": "processed/svg/viper-vang.svg",
+        "thumbnail": "processed/thumb/viper-vang.webp"
+      },
+      "output_webp_size_bytes": 80806,
+      "output_svg_size_bytes": 251,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "viper-xam",
+      "source": "viper-xam.webp",
+      "source_metadata": {
+        "width": 1280,
+        "height": 960,
+        "has_alpha": false,
+        "size_bytes": 65980
+      },
+      "source_bbox": {
+        "x": 82,
+        "y": 29,
+        "width": 1100,
+        "height": 928
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 132,
+        "width": 900,
+        "height": 759
+      },
+      "background_method": "edge_flood_light_background",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/viper-xam.webp",
+        "svg": "processed/svg/viper-xam.svg",
+        "thumbnail": "processed/thumb/viper-xam.webp"
+      },
+      "output_webp_size_bytes": 81150,
+      "output_svg_size_bytes": 249,
+      "review_flags": [
+        "review_background_cutout",
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "zgoo-den",
+      "source": "zgoo-den.webp",
+      "source_metadata": {
+        "width": 2048,
+        "height": 961,
+        "has_alpha": true,
+        "size_bytes": 170520
+      },
+      "source_bbox": {
+        "x": 75,
+        "y": 25,
+        "width": 1473,
+        "height": 936
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 226,
+        "width": 900,
+        "height": 571
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/zgoo-den.webp",
+        "svg": "processed/svg/zgoo-den.svg",
+        "thumbnail": "processed/thumb/zgoo-den.webp"
+      },
+      "output_webp_size_bytes": 60514,
+      "output_svg_size_bytes": 247,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "zgoo-do",
+      "source": "zgoo-do.webp",
+      "source_metadata": {
+        "width": 2048,
+        "height": 961,
+        "has_alpha": true,
+        "size_bytes": 173564
+      },
+      "source_bbox": {
+        "x": 86,
+        "y": 25,
+        "width": 1460,
+        "height": 936
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 224,
+        "width": 900,
+        "height": 576
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/zgoo-do.webp",
+        "svg": "processed/svg/zgoo-do.svg",
+        "thumbnail": "processed/thumb/zgoo-do.webp"
+      },
+      "output_webp_size_bytes": 62858,
+      "output_svg_size_bytes": 245,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "zgoo-trang",
+      "source": "zgoo-trang.webp",
+      "source_metadata": {
+        "width": 2048,
+        "height": 963,
+        "has_alpha": true,
+        "size_bytes": 82372
+      },
+      "source_bbox": {
+        "x": 585,
+        "y": 25,
+        "width": 871,
+        "height": 938
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 103,
+        "y": 72,
+        "width": 817,
+        "height": 880
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/zgoo-trang.webp",
+        "svg": "processed/svg/zgoo-trang.svg",
+        "thumbnail": "processed/thumb/zgoo-trang.webp"
+      },
+      "output_webp_size_bytes": 71978,
+      "output_svg_size_bytes": 251,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    },
+    {
+      "slug": "zgoo-xanh-oliu",
+      "source": "zgoo-xanh-oliu.webp",
+      "source_metadata": {
+        "width": 2048,
+        "height": 961,
+        "has_alpha": true,
+        "size_bytes": 160004
+      },
+      "source_bbox": {
+        "x": 503,
+        "y": 25,
+        "width": 989,
+        "height": 936
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 62,
+        "y": 86,
+        "width": 900,
+        "height": 851
+      },
+      "background_method": "source_alpha",
+      "intended_direction": "left",
+      "outputs": {
+        "webp": "processed/webp/zgoo-xanh-oliu.webp",
+        "svg": "processed/svg/zgoo-xanh-oliu.svg",
+        "thumbnail": "processed/thumb/zgoo-xanh-oliu.webp"
+      },
+      "output_webp_size_bytes": 94360,
+      "output_svg_size_bytes": 259,
+      "review_flags": [
+        "orientation_assumed_left"
+      ]
+    }
+  ]
+}

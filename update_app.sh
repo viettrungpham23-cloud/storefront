@@ -27,10 +27,10 @@ rm -f "$APK_DIR"/*.apk
 rm -f *.apk # Xoá tệp ở ngoài nếu có từ trước
 
 echo "Đang tải tệp APK mới..."
-gh run download $RUN_ID -n app-debug -D .
+gh run download $RUN_ID -n app-release -D .
 
 NEW_APK_NAME="VinFast_Thu_Anh_App_v${VERSION}_build${RUN_ID}.apk"
-mv app-debug.apk "$APK_DIR/$NEW_APK_NAME"
+mv app-release.apk "$APK_DIR/$NEW_APK_NAME"
 
 echo "=========================================="
 echo "✅ ĐÃ CẬP NHẬT APP THÀNH CÔNG!"

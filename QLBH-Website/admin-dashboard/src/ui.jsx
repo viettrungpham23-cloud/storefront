@@ -51,50 +51,52 @@ export function Status({ value }) {
   return <span className={`badge ${tone}`}><span className="d" />{label}</span>
 }
 
+const BADGE_VARIANTS = {
+  success: 'green',
+  warning: 'amber',
+  danger: 'red',
+  info: 'blue',
+  neutral: 'gray',
+}
+
 export function Badge({ variant = 'neutral', children }) {
-  const tone = {
-    success: 'green',
-    danger: 'red',
-    warning: 'amber',
-    info: 'blue',
-    neutral: 'gray',
-  }[variant] || variant
+  const tone = BADGE_VARIANTS[variant] || variant || 'gray'
   return <span className={`badge ${tone}`}><span className="d" />{children}</span>
 }
 
-export function Button({ variant = 'outline', size, className = '', children, ...props }) {
-  const cls = [
-    'btn',
-    variant === 'primary' ? 'btn-primary' : '',
-    variant === 'ghost' ? 'btn-ghost' : '',
-    size === 'sm' ? 'btn-sm' : '',
-    className,
-  ].filter(Boolean).join(' ')
-  return <button className={cls} {...props}>{children}</button>
+export function Table({ headers = [], data = [], loading = false, renderRow }) {
+  if (loading) return <Loading />
+  return (
+    <div className="table-wrap">
+      <table className="tbl">
+        <thead>
+          <tr>{headers.map((h) => <th key={h}>{h}</th>)}</tr>
+        </thead>
+        <tbody>
+          {data.length ? data.map(renderRow) : (
+            <tr><td colSpan={headers.length || 1} className="t-muted">Không có dữ liệu</td></tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+export function Button({ variant = 'primary', size, className = '', children, ...props }) {
+  const classes = ['btn']
+  if (variant === 'outline' || variant === 'ghost') classes.push('ghost')
+  if (variant === 'success') classes.push('green')
+  if (size === 'sm') classes.push('btn-sm')
+  if (className) classes.push(className)
+  return <button className={classes.join(' ')} {...props}>{children}</button>
 }
 
 export function Input({ className = '', ...props }) {
-  return <input className={['input', className].filter(Boolean).join(' ')} {...props} />
+  return <input className={`input ${className}`.trim()} {...props} />
 }
 
 export function Select({ className = '', children, ...props }) {
-  return <select className={['select', className].filter(Boolean).join(' ')} {...props}>{children}</select>
-}
-
-export function Table({ headers, data, loading, renderRow }) {
-  if (loading) return <Loading />
-  return (
-    <table className="data-table">
-      <thead>
-        <tr>{headers.map((h) => <th key={h}>{h}</th>)}</tr>
-      </thead>
-      <tbody>
-        {data.length ? data.map(renderRow) : (
-          <tr><td colSpan={headers.length} className="empty-cell">Không có dữ liệu</td></tr>
-        )}
-      </tbody>
-    </table>
-  )
+  return <select className={`select ${className}`.trim()} {...props}>{children}</select>
 }
 
 export function Pager({ page, pageSize, total, onPage }) {

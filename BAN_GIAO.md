@@ -28,7 +28,7 @@ storefront/
 ├── README.md · PACKAGING.md · BAN_GIAO.md     # tài liệu
 ├── web/                                        # FRONT-END App (nguồn đóng gói mobile)
 │   ├── config.js  (apiBase)  index.html  app.js  styles.css
-│   ├── manifest.webmanifest · sw.js (PWA, cache ta-store-v10)
+│   ├── manifest.webmanifest · sw.js (PWA, cache ta-store-v20)
 │   └── assets/  (logo, icon-180/192/512/1024, ảnh xe, scooter SVG)
 ├── mobile/                                     # VỎ NATIVE Capacitor (xuất APK/IPA)
 │   ├── capacitor.config.json · sync.sh

@@ -6,7 +6,11 @@ on:
     branches:
       - main
     paths:
+      - 'catalog.py'
+      - 'server.py'
+      - 'web/**'
       - 'mobile/**'
+      - 'docs/**'
       - '.github/workflows/build-apk.yml'
 
 jobs:
@@ -69,25 +73,25 @@ jobs:
         ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
         ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
       run: |
-        if [ -n "$ANDROID_KEYSTORE_BASE64" ]; then
-          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 -d > release.keystore
-          echo "ANDROID_KEYSTORE_FILE=$PWD/release.keystore" >> "$GITHUB_ENV"
-          echo "ANDROID_KEYSTORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
-          echo "ANDROID_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
-          echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
-          keytool -list -v -keystore release.keystore -storepass "$ANDROID_KEYSTORE_PASSWORD" -alias "$ANDROID_KEY_ALIAS" | grep -E 'SHA1:|SHA256:'
-        else
-          echo "No Android signing secret configured; using Gradle debug signing."
-        fi
+        test -n "$ANDROID_KEYSTORE_BASE64" || { echo "Missing secret ANDROID_KEYSTORE_BASE64"; exit 1; }
+        test -n "$ANDROID_KEYSTORE_PASSWORD" || { echo "Missing secret ANDROID_KEYSTORE_PASSWORD"; exit 1; }
+        test -n "$ANDROID_KEY_ALIAS" || { echo "Missing secret ANDROID_KEY_ALIAS"; exit 1; }
+        test -n "$ANDROID_KEY_PASSWORD" || { echo "Missing secret ANDROID_KEY_PASSWORD"; exit 1; }
+        printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 -d > release.keystore
+        echo "ANDROID_KEYSTORE_FILE=$PWD/release.keystore" >> "$GITHUB_ENV"
+        echo "ANDROID_KEYSTORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
+        echo "ANDROID_KEY_ALIAS=$ANDROID_KEY_ALIAS" >> "$GITHUB_ENV"
+        echo "ANDROID_KEY_PASSWORD=$ANDROID_KEY_PASSWORD" >> "$GITHUB_ENV"
+        keytool -list -v -keystore release.keystore -storepass "$ANDROID_KEYSTORE_PASSWORD" -alias "$ANDROID_KEY_ALIAS" | grep -E 'SHA1:|SHA256:'
 
-    - name: Build APK
+    - name: Build release APK
       working-directory: ./mobile/android
       run: |
         chmod +x gradlew
-        ./gradlew assembleDebug
+        ./gradlew assembleRelease
 
-    - name: Upload APK artifact
+    - name: Upload release APK artifact
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug
-        path: mobile/android/app/build/outputs/apk/debug/app-debug.apk
+        name: app-release
+        path: mobile/android/app/build/outputs/apk/release/app-release.apk

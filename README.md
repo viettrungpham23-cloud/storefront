@@ -86,7 +86,7 @@ storefront/
 ├── web/             # FRONT-END App (nguồn đóng gói mobile)
 │   ├── config.js    # apiBase: "" (local) | URL backend public (đóng gói)
 │   ├── index.html · styles.css · app.js
-│   ├── manifest.webmanifest · sw.js   # PWA (cache ta-store-v18)
+│   ├── manifest.webmanifest · sw.js   # PWA (cache ta-store-v20)
 │   └── assets/      # logo, icon-192/512, ảnh xe, scooter SVG theo màu
 └── mobile/          # Vỏ NATIVE Capacitor để xuất APK/IPA
     ├── capacitor.config.json   # appId vn.tainnovation.store · appName "TA innovation"
@@ -113,9 +113,11 @@ storefront/
 
 ## 7. Dữ liệu
 
-10 mẫu xe (Feliz II, Feliz Neo, Vero X, Evo Grand, Feliz 2025, Evo, Amio, Flazz, Zgoo, Evo Grand Lite),
-giá & màu theo thiết kế; tồn kho lấy từ kho thật Website (`app/inventory_clean.json` — 2.998 VIN).
-Ưu đãi **HOCSINH16 −16%** cho phân khúc học sinh. Mã ưu đãi áp tay & linh kiện/VAS khai báo trong [`catalog.py`](catalog.py).
+12 mẫu xe theo file `BangGia_PhanTich_VinFast_ThuAnh.xlsx`: Feliz II, Evo Max, Viper, Evo Lite,
+Flazz Max, Feliz 2025, Evo Grand, VeroX, Flazz, Zgoo, Evo Grand Lite, Amio S.
+Nhóm **Đổi pin** có 2 giá `Thuê pin` và `Mua đứt pin`; nhóm **Kèm pin** và **Học sinh**
+hiển thị trọn giá kèm pin. Tồn kho lấy từ kho thật Website (`app/inventory_clean.json` — 2.998 VIN)
+khi bật đồng bộ. Ưu đãi tự động theo mức KM trong bảng giá (8%/16%); mã ưu đãi áp tay & linh kiện/VAS khai báo trong [`catalog.py`](catalog.py).
 
 ---
 
@@ -187,7 +189,7 @@ appId/appName/màu nền sửa trong [`mobile/capacitor.config.json`](mobile/cap
 
 ## 9. Ghi chú vận hành
 
-- **PWA cache**: service worker `web/sw.js` (`ta-store-v18`) — *network-first* cho mã nguồn (`app.js/styles.css`)
+- **PWA cache**: service worker `web/sw.js` (`ta-store-v20`) — *network-first* cho mã nguồn (`app.js/styles.css`)
   nên đổi code là cập nhật ngay; **bump số version** khi sửa để chắc chắn không phục vụ bản cũ.
 - **Python backend**: `server.py` chỉ dùng thư viện chuẩn (chạy mọi `python3`). Website QLBH cần FastAPI/uvicorn —
   dùng venv: `source ~/venv/bin/activate`, `pip install -r QLBH-Website/requirements.txt`, rồi `uvicorn main:app`.

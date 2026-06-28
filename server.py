@@ -65,12 +65,13 @@ def init_db():
             rating REAL, reviews INTEGER, stock INTEGER,
             price_buy INTEGER, price_rent INTEGER, promo_pct INTEGER,
             badge TEXT, featured INTEGER, colors TEXT, highlights TEXT,
-            description TEXT, sort INTEGER
+            description TEXT, status TEXT, specs TEXT, segments TEXT,
+            category_label TEXT, inventory_names TEXT, sort INTEGER
         );
     """)
     for i, p in enumerate(catalog.PRODUCTS):
         c.execute("""INSERT INTO products VALUES
-            (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", (
+            (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", (
             p["slug"], p["name"], p["segment"], p["tagline"], p["needs_license"],
             p["speed"], p["range_km"], p["battery"], p["charge"],
             p["battery_warranty"], p["warranty"], p["rating"], p["reviews"], p["stock"],
@@ -78,7 +79,12 @@ def init_db():
             p["badge"], 1 if p.get("featured") else 0,
             json.dumps(p["colors"], ensure_ascii=False),
             json.dumps(p["highlights"], ensure_ascii=False),
-            p["description"], i,
+            p["description"], p.get("status", "Đang bán"),
+            json.dumps(p.get("specs", {}), ensure_ascii=False),
+            json.dumps(p.get("segments", [p["segment"]]), ensure_ascii=False),
+            p.get("category_label", ""),
+            json.dumps(p.get("inventory_names", [p["name"].upper()]), ensure_ascii=False),
+            i,
         ))
     # Bảng giao dịch — giữ lại qua các lần chạy.
     c.executescript("""
@@ -120,20 +126,49 @@ def product_row(conn, slug):
     return dict(r) if r else None
 
 
-def to_public(r):
+def _loads(value, fallback):
+    if not value:
+        return fallback
+    try:
+        return json.loads(value)
+    except Exception:
+        return fallback
+
+
+def _sellable(r):
+    return (r.get("status") or "Đang bán") == "Đang bán"
+
+
+def _stock_for(avail, r):
+    if not avail:
+        return r["stock"]
+    names = [r["name"].upper()] + _loads(r.get("inventory_names"), [])
+    return max([avail.get(str(n).upper(), 0) for n in names] or [0])
+
+
+def to_public(r, stock_override=None):
     """Hàng products (sqlite Row/dict) -> JSON danh sách, tính sẵn giá."""
     base = r["price_rent"] if r["price_rent"] else r["price_buy"]
     promo = r["promo_pct"] or 0
+    rent = r["price_rent"]
+    segments = _loads(r.get("segments"), [r["segment"]])
     return {
         "slug": r["slug"], "name": r["name"], "segment": r["segment"],
+        "segments": segments,
+        "category_label": r.get("category_label") or "",
         "tagline": r["tagline"], "needs_license": r["needs_license"],
         "speed": r["speed"], "range_km": r["range_km"], "battery": r["battery"],
-        "rating": r["rating"], "reviews": r["reviews"], "stock": r["stock"],
-        "badge": r["badge"], "promo_pct": promo, "featured": bool(r["featured"]),
-        "has_rent": bool(r["price_rent"]),
+        "rating": r["rating"], "reviews": r["reviews"],
+        "stock": r["stock"] if stock_override is None else stock_override,
+        "badge": r["badge"], "status": r.get("status") or "Đang bán",
+        "sellable": _sellable(r),
+        "promo_pct": promo, "featured": bool(r["featured"]),
+        "has_rent": bool(rent),
         "price_base": base, "price_sale": catalog.sale_price(base, promo),
-        "price_buy": r["price_buy"], "price_rent": r["price_rent"],
-        "colors": json.loads(r["colors"]),
+        "price_buy": r["price_buy"], "price_buy_sale": catalog.sale_price(r["price_buy"], promo),
+        "price_rent": rent, "price_rent_sale": catalog.sale_price(rent, promo) if rent else None,
+        "colors": _loads(r["colors"], []),
+        "specs": _loads(r.get("specs"), {}),
     }
 
 
@@ -141,7 +176,7 @@ def to_detail(r):
     d = to_public(r)
     d.update({
         "charge": r["charge"], "battery_warranty": r["battery_warranty"],
-        "warranty": r["warranty"], "highlights": json.loads(r["highlights"]),
+        "warranty": r["warranty"], "highlights": _loads(r["highlights"], []),
         "description": r["description"],
     })
     return d
@@ -168,17 +203,22 @@ def compute_cart(conn, token):
         promo = p["promo_pct"] or 0
         unit_sale = catalog.sale_price(base, promo)
         qty = it["qty"]
+        option_label = (
+            "thuê pin" if option == "rent"
+            else "mua đứt pin" if p["price_rent"]
+            else "trọn giá kèm pin"
+        )
         veh_subtotal += base * qty
         product_discount += (base - unit_sale) * qty
         seg_base[p["segment"]] = seg_base.get(p["segment"], 0) + base * qty
         count += qty
         items.append({
             "id": it["id"], "slug": p["slug"], "name": p["name"], "color": it["color"],
-            "option": option, "option_label": "thuê pin" if option == "rent" else "mua đứt",
+            "option": option, "option_label": option_label,
             "qty": qty, "unit_base": base, "unit_sale": unit_sale,
             "line_total": unit_sale * qty, "promo_pct": promo,
             "needs_license": p["needs_license"], "segment": p["segment"],
-            "colors": json.loads(p["colors"]),
+            "colors": _loads(p["colors"], []),
         })
 
     # Linh kiện / dịch vụ mua kèm
@@ -220,7 +260,7 @@ def compute_cart(conn, token):
         "product_discount": product_discount, "promo_discount": promo_discount,
         "discount": discount, "shipping": shipping,
         "total": max(0, subtotal - discount + shipping),
-        "promo": catalog.PROMO if product_discount > 0 else None,
+        "promo": catalog.AUTO_PROMO if product_discount > 0 else None,
         "applied_promo": promo_meta,
     }
 
@@ -328,8 +368,11 @@ class Handler(BaseHTTPRequestHandler):
                 slug = body.get("slug"); color = body.get("color", "")
                 option = body.get("option", "buy")
                 qty = max(1, int(body.get("qty", 1)))
-                if not product_row(conn, slug):
+                prod = product_row(conn, slug)
+                if not prod:
                     return self._json({"error": "not_found"}, 404)
+                if not _sellable(prod):
+                    return self._json({"error": "not_sellable", "message": "Mẫu xe này đang ngừng kinh doanh"}, 400)
                 conn.execute("""INSERT INTO cart_items (token,slug,color,option,qty)
                     VALUES (?,?,?,?,?)
                     ON CONFLICT(token,slug,color,option)
@@ -437,19 +480,21 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if path == "/api/catalog":
                 seg = qs.get("segment", ["all"])[0]
-                if seg and seg != "all":
-                    rows = conn.execute("SELECT * FROM products WHERE segment=? ORDER BY sort", (seg,)).fetchall()
-                else:
-                    rows = conn.execute("SELECT * FROM products ORDER BY sort").fetchall()
+                rows = [dict(r) for r in conn.execute("SELECT * FROM products ORDER BY sort").fetchall()]
                 counts = {k: 0 for k in ("doi_pin", "kem_pin", "hoc_sinh")}
-                for r in conn.execute("SELECT segment, COUNT(*) n FROM products GROUP BY segment"):
-                    counts[r["segment"]] = r["n"]
-                products = [to_public(r) for r in rows]
                 avail = qlbh_sync.available()  # đồng bộ tồn kho từ Website
+                products_all = [to_public(r, _stock_for(avail, r) if avail else None) for r in rows]
                 if avail:
-                    for p in products:
-                        p["stock"] = avail.get(p["name"].upper(), 0)
+                    for p in products_all:
                         p["synced"] = True
+                for p in products_all:
+                    for key in counts:
+                        if key in p.get("segments", [p["segment"]]):
+                            counts[key] += 1
+                products = [
+                    p for p in products_all
+                    if not seg or seg == "all" or seg in p.get("segments", [p["segment"]])
+                ]
                 return self._json({
                     "categories": catalog.CATEGORIES,
                     "counts": counts,
@@ -465,7 +510,7 @@ class Handler(BaseHTTPRequestHandler):
                 d = to_detail(r)
                 avail = qlbh_sync.available()
                 if avail:
-                    d["stock"] = avail.get(d["name"].upper(), 0)
+                    d["stock"] = _stock_for(avail, r)
                     d["synced"] = True
                 return self._json(d)
             if path == "/api/promo":
