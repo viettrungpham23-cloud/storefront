@@ -220,7 +220,9 @@ def sales_stats(sid):
             "SELECT o.order_no, o.total, o.created_at, o.admin_status, c.full_name, MAX(od.sku_type) AS sku_type "
             "FROM orders o JOIN customers c ON c.customer_id=o.customer_id "
             "LEFT JOIN order_details od ON od.order_id=o.order_id "
-            "WHERE o.sales_id=? GROUP BY o.order_id ORDER BY o.created_at DESC LIMIT 6", (sid,)).fetchall()
+            "WHERE o.sales_id=? "
+            "GROUP BY o.order_id, o.order_no, o.total, o.created_at, o.admin_status, c.full_name "
+            "ORDER BY o.created_at DESC LIMIT 6", (sid,)).fetchall()
         return {
             "sales": s, "orders": tot["c"], "revenue": tot["rev"], "pending": pend["c"],
             "month": month, "month_orders": mrow["c"], "month_revenue": mrow["rev"],
