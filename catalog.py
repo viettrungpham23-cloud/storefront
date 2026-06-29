@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Dữ liệu danh mục cho cửa hàng xe điện TA innovation (Xe Lê Trọng Tấn).
-Sản phẩm, màu sắc và tồn kho lấy theo dữ liệu thật trong app/inventory_clean.json,
-giá & ưu đãi theo thiết kế "Thu Anh EV iOS App".
+Sản phẩm, màu sắc & giá theo thiết kế "Thu Anh EV iOS App"; tồn kho (stock) đồng
+bộ động từ kho QLBH thật (QLBH-Website/data/inventory.json) qua apply_inventory_stock().
 
 Nguồn bảng giá hiện hành: BangGia_PhanTich_VinFast_ThuAnh.xlsx.
 
@@ -497,3 +497,43 @@ def find_addon(sku):
 
 def find_promo(code):
     return _PROMO_BY_CODE.get((code or "").strip().upper())
+
+
+# ── Đồng bộ tồn kho từ kho QLBH thật ────────────────────────────────────────
+# Stock hiển thị trong app lấy theo số xe 'con' (in-stock) của model tương ứng
+# trong QLBH-Website/data/inventory.json (map qua `inventory_names`).
+# An toàn: chỉ ghi đè khi model có mặt trong kho; model không khớp giữ stock
+# hardcode; xe ngừng kinh doanh (sellable=False) luôn = 0.
+def _inventory_con_counts():
+    path = Path(__file__).resolve().parent / "QLBH-Website" / "data" / "inventory.json"
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    counts = {}
+    for r in data:
+        if isinstance(r, dict) and r.get("status") == "con":
+            m = (r.get("model") or "").strip().upper()
+            if m:
+                counts[m] = counts.get(m, 0) + 1
+    return counts
+
+
+def apply_inventory_stock():
+    """Cập nhật PRODUCTS[*]['stock'] theo kho thật. Gọi lúc import và có thể gọi
+    lại sau khi kho thay đổi (vd sau import CSV / uat_stock)."""
+    counts = _inventory_con_counts()
+    for p in PRODUCTS:
+        if not sellable(p):
+            p["stock"] = 0
+            continue
+        if not counts:
+            continue  # không đọc được kho → giữ stock hardcode
+        names = p.get("inventory_names") or [p["name"]]
+        present = [n for n in names if n.strip().upper() in counts]
+        if present:
+            p["stock"] = sum(counts[n.strip().upper()] for n in present)
+    return counts
+
+
+apply_inventory_stock()

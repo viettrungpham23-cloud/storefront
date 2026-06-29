@@ -122,6 +122,7 @@ Cấu hình địa chỉ backend cho Frontend: biến môi trường `VITE_API_B
 | `vacuum` | Tối ưu & nén file SQLite (VACUUM) | — |
 | `wipe_transactions` | Xóa đơn/thanh toán/khách, giữ kho & tham chiếu | ✅ |
 | `reseed` | Khôi phục toàn bộ từ kho thật (2.998 xe) | ✅ |
+| `uat_stock` | Dọn kho UAT (chỉ giữ 20 xe `available`/mẫu) | ✅ |
 | `wipe_all` | Drop & tạo lại mọi bảng (CSDL rỗng) | ✅ |
 
 ## 6. Luồng nghiệp vụ App → Website (đa kênh)

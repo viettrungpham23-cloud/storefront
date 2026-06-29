@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Search, Boxes, CheckCircle2, Clock, ArchiveX } from 'lucide-react'
+import { Search, Boxes, CheckCircle2, Clock, ArchiveX, Upload } from 'lucide-react'
 import { api } from '../api'
 import { vnd, dateVN, num } from '../format'
 import { Card, Status, Pager, Loading } from '../ui'
@@ -20,12 +20,15 @@ export default function Inventory() {
   const [sum, setSum] = useState(null)
   const [data, setData] = useState(null)
   const [err, setErr] = useState(null)
+  const [bump, setBump] = useState(0)
+  const [importing, setImporting] = useState(false)
+  const [importMsg, setImportMsg] = useState(null)
 
   useEffect(() => {
     api.inventoryModels().then(setModels).catch(() => {})
     api.inventoryColors().then(setColors).catch(() => {})
     api.inventorySummary().then(setSum).catch((e) => setErr(e.message))
-  }, [])
+  }, [bump])
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -33,7 +36,28 @@ export default function Inventory() {
         .then(setData).catch((e) => setErr(e.message))
     }, q ? 280 : 0)
     return () => clearTimeout(t)
-  }, [status, store, model, color, q, page])
+  }, [status, store, model, color, q, page, bump])
+
+  async function onImportCsv(e) {
+    const f = e.target.files?.[0]
+    e.target.value = ''  // cho phép chọn lại cùng 1 file
+    if (!f) return
+    setImporting(true); setImportMsg(null)
+    try {
+      const r = await api.inventoryImportCsv(f)
+      setImportMsg({
+        ok: true,
+        text: `Đã nhập ${r.created} xe · bỏ qua ${r.skipped}` +
+          (r.errors?.length ? ` · ${r.errors.length} dòng lỗi (vd dòng ${r.errors[0].row}: ${r.errors[0].error})` : ''),
+      })
+      setBump((b) => b + 1)
+    } catch (er) {
+      const detail = er?.response?.data?.detail || er.message
+      setImportMsg({ ok: false, text: `Lỗi import: ${detail}` })
+    } finally {
+      setImporting(false)
+    }
+  }
 
   if (err) return <ApiError msg={err} />
 
@@ -97,13 +121,27 @@ export default function Inventory() {
       {/* VIN table */}
       <Card title="Sổ kho theo số khung (VIN)" sub={data ? `${num(data.total)} xe` : '…'}
         right={
-          <div className="search" style={{ width: 240 }}>
-            <Search size={15} />
-            <input placeholder="Tìm VIN, số máy, mã hãng…" value={q}
-              onChange={(e) => { setQ(e.target.value); setPage(1) }} />
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+            <label className="btn" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, cursor: importing ? 'wait' : 'pointer', opacity: importing ? 0.6 : 1 }}
+              title="Nhập kho từ file CSV (cột: model, color, vin, [engine, code, store, status, date_in, note])">
+              <Upload size={15} />{importing ? 'Đang nhập…' : 'Import CSV'}
+              <input type="file" accept=".csv,text/csv" hidden disabled={importing} onChange={onImportCsv} />
+            </label>
+            <div className="search" style={{ width: 240 }}>
+              <Search size={15} />
+              <input placeholder="Tìm VIN, số máy, mã hãng…" value={q}
+                onChange={(e) => { setQ(e.target.value); setPage(1) }} />
+            </div>
           </div>
         }
         bodyStyle={{ padding: 0 }}>
+        {importMsg && (
+          <div style={{
+            margin: '12px 20px 0', padding: '10px 14px', borderRadius: 10, fontSize: 13, fontWeight: 600,
+            background: importMsg.ok ? '#ecfdf5' : '#fef2f2', color: importMsg.ok ? '#047857' : '#b91c1c',
+            border: `1px solid ${importMsg.ok ? '#a7f3d0' : '#fecaca'}`,
+          }}>{importMsg.text}</div>
+        )}
         <div style={{ padding: '14px 20px 4px', display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
           <div className="filters">
             {STATUSES.map(([v, l]) => (

@@ -1,8 +1,12 @@
 """Kho hàng: danh sách xe theo số khung (lọc cơ sở/trạng thái/dòng xe + tìm kiếm)."""
-from fastapi import APIRouter, Depends, Query
+import csv
+import io
+from datetime import datetime
+from fastapi import APIRouter, Depends, Query, HTTPException, Request
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from database import get_db
+import models
 
 router = APIRouter(prefix="/api/v1/inventory", tags=["Kho hàng"])
 
@@ -122,3 +126,88 @@ def provenance(vin: str, db: Session = Depends(get_db)):
                       "date": sale.created_at})
 
     return {"vehicle": info, "timeline": steps}
+
+
+# ── Import hàng hoá bằng file CSV ────────────────────────────────────────────
+# Cột bắt buộc: model, color, vin. Cột tuỳ chọn: code, engine, store, status, date_in, note.
+# Header chấp nhận cả tiếng Việt (mẫu/màu/số khung/số máy/mã/cơ sở/trạng thái/ngày nhập).
+_CSV_ALIASES = {
+    "model": "model", "mẫu": "model", "dòng xe": "model", "sku_type": "model",
+    "color": "color", "màu": "color", "màu sắc": "color",
+    "vin": "vin", "số khung": "vin", "vin_code": "vin", "frame": "vin",
+    "engine": "engine", "số máy": "engine", "engine_number": "engine",
+    "code": "code", "mã": "code", "mã hãng": "code",
+    "store": "store", "cơ sở": "store", "current_unit_id": "store", "kho": "store",
+    "status": "status", "trạng thái": "status",
+    "date_in": "date_in", "ngày nhập": "date_in", "import_time": "date_in",
+    "note": "note", "ghi chú": "note",
+}
+_STATUS_MAP = {
+    "con": "available", "còn": "available", "available": "available",
+    "da_xuat": "sold", "đã xuất": "sold", "sold": "sold",
+    "reserved": "reserved", "giữ": "reserved",
+}
+
+
+@router.post("/import-csv")
+async def import_csv(request: Request, db: Session = Depends(get_db)):
+    """Nhập kho từ file CSV (gửi nội dung file ở phần thân request, không cần multipart).
+    Parse → validate cột → ghi inventory_items, bỏ qua VIN trùng.
+    Trả về {ok, total, created, skipped, errors[]}."""
+    raw = await request.body()
+    if not raw:
+        raise HTTPException(400, "File rỗng")
+    for enc in ("utf-8-sig", "utf-8", "latin-1"):
+        try:
+            text_data = raw.decode(enc)
+            break
+        except UnicodeDecodeError:
+            continue
+    else:
+        raise HTTPException(400, "Không đọc được mã hoá file CSV")
+
+    reader = csv.DictReader(io.StringIO(text_data))
+    if not reader.fieldnames:
+        raise HTTPException(400, "CSV không có dòng tiêu đề")
+    colmap = {h: _CSV_ALIASES.get((h or "").strip().lower()) for h in reader.fieldnames}
+    mapped = set(v for v in colmap.values() if v)
+    missing = [c for c in ("model", "color", "vin") if c not in mapped]
+    if missing:
+        raise HTTPException(400, f"Thiếu cột bắt buộc: {', '.join(missing)}")
+
+    existing = {v[0] for v in db.query(models.InventoryItem.vin_code).all() if v[0]}
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    today = datetime.now().strftime("%Y-%m-%d")
+    created, skipped, errors = 0, 0, []
+    seen_in_file = set()
+
+    for idx, row in enumerate(reader, start=2):  # dòng 1 là header
+        rec = {}
+        for h, val in row.items():
+            key = colmap.get(h)
+            if key:
+                rec[key] = (val or "").strip()
+        model = rec.get("model", "")
+        color = rec.get("color", "")
+        vin = rec.get("vin", "")
+        if not model or not color or not vin:
+            errors.append({"row": idx, "error": "Thiếu model/color/vin"}); skipped += 1; continue
+        if vin in existing or vin in seen_in_file:
+            errors.append({"row": idx, "error": f"VIN trùng: {vin}"}); skipped += 1; continue
+        seen_in_file.add(vin)
+        status = _STATUS_MAP.get(rec.get("status", "").lower(), "available")
+        store = rec.get("store") or "TA1"
+        db.add(models.InventoryItem(
+            vin_code=vin, sku_type=model, color=color, code=rec.get("code", ""),
+            frame_number_imei1=vin, engine_number_imei2=rec.get("engine", ""),
+            import_unit_id=store, current_unit_id=store,
+            import_time=rec.get("date_in") or today, status=status,
+            note=rec.get("note") or "Import CSV", goods_type="vehicle", source_type="factory",
+        ))
+        db.add(models.InventoryLog(vin_code=vin, from_unit=None, to_unit=store,
+                                   action_type="Nhập kho", created_at=now))
+        created += 1
+
+    db.commit()
+    return {"ok": True, "total": created + skipped, "created": created,
+            "skipped": skipped, "errors": errors[:50]}

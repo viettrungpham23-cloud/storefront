@@ -56,3 +56,6 @@ temp_append.js
 venv/
 .venv/
 .claude/
+
+# UAT inventory backup
+QLBH-Website/data/*.bak

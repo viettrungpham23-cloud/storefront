@@ -194,6 +194,7 @@ appId/appName/màu nền sửa trong [`mobile/capacitor.config.json`](mobile/cap
 - **Python backend**: `server.py` chỉ dùng thư viện chuẩn (chạy mọi `python3`). Website QLBH cần FastAPI/uvicorn —
   dùng venv: `source ~/venv/bin/activate`, `pip install -r QLBH-Website/requirements.txt`, rồi `uvicorn main:app`.
 - **Dữ liệu sạch**: muốn xoá đơn/khách kiểm thử → Website → **Quản trị CSDL → Khôi phục dữ liệu gốc**.
+- **Môi trường UAT**: muốn giảm tải dữ liệu để test → Website → **Quản trị CSDL → Dọn kho UAT (20 xe/mẫu)**.
 
 ## 10. Nhật ký cập nhật (Phiên làm việc gần nhất)
 
