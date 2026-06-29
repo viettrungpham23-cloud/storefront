@@ -499,7 +499,7 @@ SCREENS.catalog = (entry) => {
 
 // ---- DETAIL ----
 SCREENS.detail = (entry) => {
-  const s = el(`<section class="screen no-tab">
+  const s = el(`<section class="screen no-tab has-action">
     <div class="detail-top">
       <button class="glass-pill" data-back>${I.back}</button>
       <button class="glass-pill">${I.dots}</button>
@@ -662,7 +662,7 @@ SCREENS.compare = (entry) => {
 
 // ---- CART ----
 SCREENS.cart = (entry) => {
-  const s = el(`<section class="screen pinned">
+  const s = el(`<section class="screen pinned has-action">
     <div class="topbar">${appHeader()}</div>
     <div class="screen-scroll">
     <div class="nav-large"><h1>Giỏ hàng</h1><div class="sub" id="cart-sub"></div></div>
@@ -1162,7 +1162,7 @@ SCREENS.checkout = (entry) => {
     ['vnpay', '#0a64b4', 'QR', 'VNPay QR', 'Quét bằng app ngân hàng'],
     ['installment', '#10b981', '0%', 'Trả góp 0%', '6 tháng · ' + fmt(Math.round(c.total / 6)) + '/tháng'],
   ];
-  const s = el(`<section class="screen no-tab">
+  const s = el(`<section class="screen no-tab has-action">
     <div class="detail-top" style="position:static;padding:54px 14px 0;background:var(--bg)">
       <button class="glass-pill" data-back style="background:#fff">${I.back}</button>
       <div style="flex:1"></div>
@@ -1475,7 +1475,7 @@ function showAddSheet(p, color, option) {
 let toastT = null;
 function toast(msg) {
   let t = document.getElementById('toast');
-  if (!t) { t = el('<div id="toast" style="position:absolute;left:50%;bottom:calc(var(--tab-h) + 18px);transform:translateX(-50%) translateY(10px);background:rgba(15,23,42,.92);color:#fff;font-size:13px;font-weight:600;padding:10px 18px;border-radius:999px;z-index:90;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;white-space:nowrap;backdrop-filter:blur(8px)"></div>'); phone.appendChild(t); }
+  if (!t) { t = el('<div id="toast"></div>'); phone.appendChild(t); }
   t.textContent = msg;
   requestAnimationFrame(() => { t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)'; });
   clearTimeout(toastT);

@@ -1,155 +1,134 @@
 {
-  "generated_at": "2026-06-28T03:01:48.688062+00:00",
+  "generated_at": "2026-06-29T09:42:40.113Z",
+  "source_archive": "/Users/vetc/Documents/02_VinFast_Thu_Anh/Stock xe .zip",
   "canvas_size": 1024,
+  "thumbnail_size": 320,
   "intended_direction": "left",
-  "webp_quality": 86,
-  "svg_mode": "external_webp_wrapper",
+  "webp_quality": 90,
+  "svg_mode": "source_svg_png_alpha_to_webp",
   "notes": [
-    "SVG files are lightweight wrappers that reference processed transparent WebP files.",
-    "Keep processed/svg and processed/webp together when hosting or importing into an app.",
-    "Use review_flags and processed/qa/contact-sheet*.jpg for manual visual QA."
+    "Generated from the user-provided Stock xe .zip source artwork.",
+    "SVG sources embed PNG alpha; WebP outputs preserve transparency.",
+    "amio-s-xam is kept from the previous processed asset because it is not present in the archive."
   ],
   "count": 48,
   "products": [
     {
-      "slug": "flazz-do",
-      "source": "Flazz-do.webp",
-      "source_metadata": {
-        "width": 2048,
-        "height": 961,
-        "has_alpha": true,
-        "size_bytes": 214000
-      },
-      "source_bbox": {
-        "x": 359,
-        "y": 17,
-        "width": 1689,
-        "height": 944
-      },
-      "canvas_size": 1024,
-      "canvas_bbox": {
-        "x": 62,
-        "y": 260,
-        "width": 900,
-        "height": 503
-      },
-      "background_method": "source_alpha",
-      "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/flazz-do.webp",
-        "svg": "processed/svg/flazz-do.svg",
-        "thumbnail": "processed/thumb/flazz-do.webp"
-      },
-      "output_webp_size_bytes": 56364,
-      "output_svg_size_bytes": 247,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
-    },
-    {
       "slug": "amio-s-den",
-      "source": "amio-s-den.webp",
+      "source": "AmioS-den.svg",
       "source_metadata": {
-        "width": 1119,
-        "height": 700,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 79682
+        "size_bytes": 403007
       },
       "source_bbox": {
-        "x": 0,
-        "y": 23,
-        "width": 1119,
-        "height": 677
+        "x": 149,
+        "y": 97,
+        "width": 774,
+        "height": 868
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 240,
-        "width": 900,
-        "height": 544
+        "x": 149,
+        "y": 97,
+        "width": 774,
+        "height": 868
       },
-      "background_method": "source_alpha",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/amio-s-den.webp",
-        "svg": "processed/svg/amio-s-den.svg",
-        "thumbnail": "processed/thumb/amio-s-den.webp"
+      "color": {
+        "slug": "den",
+        "name": "Đen",
+        "hex": "#1f2937"
       },
-      "output_webp_size_bytes": 71418,
-      "output_svg_size_bytes": 251,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/amio-s-den.webp",
+        "svg": "amio-s-den.svg",
+        "thumbnail": "thumb/amio-s-den.webp"
+      },
+      "output_webp_size_bytes": 95914,
+      "output_thumb_size_bytes": 18752,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "amio-s-do",
-      "source": "amio-s-do.webp",
+      "source": "AmioS-do.svg",
       "source_metadata": {
-        "width": 1119,
-        "height": 700,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 81644
+        "size_bytes": 411914
       },
       "source_bbox": {
-        "x": 0,
-        "y": 23,
-        "width": 1119,
-        "height": 677
+        "x": 140,
+        "y": 101,
+        "width": 783,
+        "height": 864
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 240,
-        "width": 900,
-        "height": 544
+        "x": 140,
+        "y": 101,
+        "width": 783,
+        "height": 864
       },
-      "background_method": "source_alpha",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/amio-s-do.webp",
-        "svg": "processed/svg/amio-s-do.svg",
-        "thumbnail": "processed/thumb/amio-s-do.webp"
+      "color": {
+        "slug": "do",
+        "name": "Đỏ",
+        "hex": "#d23b3b"
       },
-      "output_webp_size_bytes": 73088,
-      "output_svg_size_bytes": 249,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/amio-s-do.webp",
+        "svg": "amio-s-do.svg",
+        "thumbnail": "thumb/amio-s-do.webp"
+      },
+      "output_webp_size_bytes": 95496,
+      "output_thumb_size_bytes": 19224,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "amio-s-trang",
-      "source": "amio-s-trang.webp",
+      "source": "AmioS-Trang.svg",
       "source_metadata": {
-        "width": 1119,
-        "height": 700,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 80426
+        "size_bytes": 391111
       },
       "source_bbox": {
-        "x": 0,
-        "y": 23,
-        "width": 1119,
-        "height": 677
+        "x": 143,
+        "y": 98,
+        "width": 780,
+        "height": 867
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 240,
-        "width": 900,
-        "height": 544
+        "x": 143,
+        "y": 98,
+        "width": 780,
+        "height": 867
       },
-      "background_method": "source_alpha",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/amio-s-trang.webp",
-        "svg": "processed/svg/amio-s-trang.svg",
-        "thumbnail": "processed/thumb/amio-s-trang.webp"
+      "color": {
+        "slug": "trang",
+        "name": "Trắng",
+        "hex": "#e8eaed"
       },
-      "output_webp_size_bytes": 71864,
-      "output_svg_size_bytes": 255,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/amio-s-trang.webp",
+        "svg": "amio-s-trang.svg",
+        "thumbnail": "thumb/amio-s-trang.webp"
+      },
+      "output_webp_size_bytes": 94970,
+      "output_thumb_size_bytes": 19126,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "amio-s-xam",
@@ -173,1551 +152,1743 @@
         "width": 900,
         "height": 544
       },
-      "background_method": "source_alpha",
+      "background_method": "existing_asset_fallback",
       "intended_direction": "left",
       "outputs": {
-        "webp": "processed/webp/amio-s-xam.webp",
-        "svg": "processed/svg/amio-s-xam.svg",
-        "thumbnail": "processed/thumb/amio-s-xam.webp"
+        "webp": "webp/amio-s-xam.webp",
+        "svg": "amio-s-xam.svg",
+        "thumbnail": "thumb/amio-s-xam.webp"
       },
       "output_webp_size_bytes": 72002,
+      "output_thumb_size_bytes": 14506,
       "output_svg_size_bytes": 251,
+      "output_has_alpha": true,
       "review_flags": [
-        "orientation_assumed_left"
+        "orientation_assumed_left",
+        "missing_from_stock_zip"
       ]
     },
     {
       "slug": "amio-s-xanh-oliu",
-      "source": "amio-s-xanh-oliu.webp",
+      "source": "AmioS-Xanh-oliu.svg",
       "source_metadata": {
-        "width": 1119,
-        "height": 700,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 83630
+        "size_bytes": 402135
       },
       "source_bbox": {
-        "x": 0,
-        "y": 23,
-        "width": 1119,
-        "height": 677
+        "x": 135,
+        "y": 107,
+        "width": 788,
+        "height": 858
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 240,
-        "width": 900,
-        "height": 544
+        "x": 135,
+        "y": 107,
+        "width": 788,
+        "height": 858
       },
-      "background_method": "source_alpha",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/amio-s-xanh-oliu.webp",
-        "svg": "processed/svg/amio-s-xanh-oliu.svg",
-        "thumbnail": "processed/thumb/amio-s-xanh-oliu.webp"
+      "color": {
+        "slug": "xanh-oliu",
+        "name": "Xanh Oliu",
+        "hex": "#6f7a52"
       },
-      "output_webp_size_bytes": 75450,
-      "output_svg_size_bytes": 263,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/amio-s-xanh-oliu.webp",
+        "svg": "amio-s-xanh-oliu.svg",
+        "thumbnail": "thumb/amio-s-xanh-oliu.webp"
+      },
+      "output_webp_size_bytes": 93116,
+      "output_thumb_size_bytes": 18862,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "evo-grand-den",
-      "source": "evo-grand-den.webp",
+      "source": "evo-grand-den.svg",
       "source_metadata": {
-        "width": 1024,
-        "height": 768,
-        "has_alpha": false,
-        "size_bytes": 25068
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 377951
       },
       "source_bbox": {
-        "x": 218,
-        "y": 18,
-        "width": 582,
-        "height": 732
+        "x": 201,
+        "y": 102,
+        "width": 704,
+        "height": 863
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 221,
-        "y": 146,
-        "width": 582,
-        "height": 732
+        "x": 201,
+        "y": 102,
+        "width": 704,
+        "height": 863
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-grand-den.webp",
-        "svg": "processed/svg/evo-grand-den.svg",
-        "thumbnail": "processed/thumb/evo-grand-den.webp"
+      "color": {
+        "slug": "den",
+        "name": "Đen",
+        "hex": "#1f2937"
       },
-      "output_webp_size_bytes": 38626,
-      "output_svg_size_bytes": 257,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/evo-grand-den.webp",
+        "svg": "evo-grand-den.svg",
+        "thumbnail": "thumb/evo-grand-den.webp"
+      },
+      "output_webp_size_bytes": 78958,
+      "output_thumb_size_bytes": 16208,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "evo-grand-do",
-      "source": "evo-grand-do.png",
+      "source": "evo-grand-do.svg",
       "source_metadata": {
-        "width": 1024,
-        "height": 768,
-        "has_alpha": false,
-        "size_bytes": 258190
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 447441
       },
       "source_bbox": {
-        "x": 259,
-        "y": 16,
-        "width": 509,
-        "height": 732
+        "x": 201,
+        "y": 104,
+        "width": 704,
+        "height": 861
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 257,
-        "y": 146,
-        "width": 509,
-        "height": 732
+        "x": 201,
+        "y": 104,
+        "width": 704,
+        "height": 861
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-grand-do.webp",
-        "svg": "processed/svg/evo-grand-do.svg",
-        "thumbnail": "processed/thumb/evo-grand-do.webp"
+      "color": {
+        "slug": "do",
+        "name": "Đỏ",
+        "hex": "#d23b3b"
       },
-      "output_webp_size_bytes": 36338,
-      "output_svg_size_bytes": 255,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/evo-grand-do.webp",
+        "svg": "evo-grand-do.svg",
+        "thumbnail": "thumb/evo-grand-do.webp"
+      },
+      "output_webp_size_bytes": 73590,
+      "output_thumb_size_bytes": 15082,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "evo-grand-lite-den",
-      "source": "evo-grand-lite-den.webp",
+      "source": "evo-grand-lite-den.svg",
       "source_metadata": {
-        "width": 1024,
-        "height": 768,
-        "has_alpha": false,
-        "size_bytes": 25068
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 377934
       },
       "source_bbox": {
-        "x": 218,
-        "y": 18,
-        "width": 582,
-        "height": 732
+        "x": 199,
+        "y": 99,
+        "width": 706,
+        "height": 866
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 221,
-        "y": 146,
-        "width": 582,
-        "height": 732
+        "x": 199,
+        "y": 99,
+        "width": 706,
+        "height": 866
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-grand-lite-den.webp",
-        "svg": "processed/svg/evo-grand-lite-den.svg",
-        "thumbnail": "processed/thumb/evo-grand-lite-den.webp"
+      "color": {
+        "slug": "den",
+        "name": "Đen",
+        "hex": "#1f2937"
       },
-      "output_webp_size_bytes": 38626,
-      "output_svg_size_bytes": 267,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/evo-grand-lite-den.webp",
+        "svg": "evo-grand-lite-den.svg",
+        "thumbnail": "thumb/evo-grand-lite-den.webp"
+      },
+      "output_webp_size_bytes": 79420,
+      "output_thumb_size_bytes": 16162,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "evo-grand-lite-tim-lavender",
-      "source": "evo-grand-lite-tim-lavender.webp",
+      "source": "evo-grand-tim-lavender.svg",
       "source_metadata": {
-        "width": 1024,
-        "height": 768,
-        "has_alpha": false,
-        "size_bytes": 26472
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 412985
       },
       "source_bbox": {
-        "x": 218,
-        "y": 18,
-        "width": 584,
-        "height": 732
+        "x": 190,
+        "y": 99,
+        "width": 715,
+        "height": 866
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 220,
-        "y": 146,
-        "width": 584,
-        "height": 732
+        "x": 190,
+        "y": 99,
+        "width": 715,
+        "height": 866
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-grand-lite-tim-lavender.webp",
-        "svg": "processed/svg/evo-grand-lite-tim-lavender.svg",
-        "thumbnail": "processed/thumb/evo-grand-lite-tim-lavender.webp"
+      "color": {
+        "slug": "tim-lavender",
+        "name": "Tím Lavender",
+        "hex": "#a78bfa"
       },
-      "output_webp_size_bytes": 41074,
-      "output_svg_size_bytes": 285,
+      "outputs": {
+        "webp": "webp/evo-grand-lite-tim-lavender.webp",
+        "svg": "evo-grand-lite-tim-lavender.svg",
+        "thumbnail": "thumb/evo-grand-lite-tim-lavender.webp"
+      },
+      "output_webp_size_bytes": 81940,
+      "output_thumb_size_bytes": 16726,
+      "output_has_alpha": true,
       "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
+        "source_name_normalized"
       ]
     },
     {
       "slug": "evo-grand-lite-trang",
-      "source": "evo-grand-lite-trang.webp",
+      "source": "evo-grand-lite-trang.svg",
       "source_metadata": {
-        "width": 1024,
-        "height": 768,
-        "has_alpha": false,
-        "size_bytes": 26258
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 381520
       },
       "source_bbox": {
-        "x": 218,
-        "y": 18,
-        "width": 584,
-        "height": 732
+        "x": 199,
+        "y": 98,
+        "width": 706,
+        "height": 867
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 220,
-        "y": 146,
-        "width": 584,
-        "height": 732
+        "x": 199,
+        "y": 98,
+        "width": 706,
+        "height": 867
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-grand-lite-trang.webp",
-        "svg": "processed/svg/evo-grand-lite-trang.svg",
-        "thumbnail": "processed/thumb/evo-grand-lite-trang.webp"
+      "color": {
+        "slug": "trang",
+        "name": "Trắng",
+        "hex": "#e8eaed"
       },
-      "output_webp_size_bytes": 44412,
-      "output_svg_size_bytes": 271,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/evo-grand-lite-trang.webp",
+        "svg": "evo-grand-lite-trang.svg",
+        "thumbnail": "thumb/evo-grand-lite-trang.webp"
+      },
+      "output_webp_size_bytes": 80380,
+      "output_thumb_size_bytes": 16572,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "evo-grand-lite-vang",
-      "source": "evo-grand-lite-vang.webp",
+      "source": "evo-grand-lite-vang.svg",
       "source_metadata": {
-        "width": 1024,
-        "height": 768,
-        "has_alpha": false,
-        "size_bytes": 31066
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 444629
       },
       "source_bbox": {
-        "x": 218,
-        "y": 18,
-        "width": 584,
-        "height": 732
+        "x": 199,
+        "y": 99,
+        "width": 706,
+        "height": 866
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 220,
-        "y": 146,
-        "width": 584,
-        "height": 732
+        "x": 199,
+        "y": 99,
+        "width": 706,
+        "height": 866
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-grand-lite-vang.webp",
-        "svg": "processed/svg/evo-grand-lite-vang.svg",
-        "thumbnail": "processed/thumb/evo-grand-lite-vang.webp"
+      "color": {
+        "slug": "vang",
+        "name": "Vàng",
+        "hex": "#f59e0b"
       },
-      "output_webp_size_bytes": 45150,
-      "output_svg_size_bytes": 269,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/evo-grand-lite-vang.webp",
+        "svg": "evo-grand-lite-vang.svg",
+        "thumbnail": "thumb/evo-grand-lite-vang.webp"
+      },
+      "output_webp_size_bytes": 85216,
+      "output_thumb_size_bytes": 17876,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "evo-grand-trang",
-      "source": "evo-grand-trang.webp",
+      "source": "evo-grand-trang.svg",
       "source_metadata": {
-        "width": 1024,
-        "height": 768,
-        "has_alpha": false,
-        "size_bytes": 26258
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 381460
       },
       "source_bbox": {
-        "x": 218,
-        "y": 18,
-        "width": 584,
-        "height": 732
+        "x": 201,
+        "y": 103,
+        "width": 704,
+        "height": 862
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 220,
-        "y": 146,
-        "width": 584,
-        "height": 732
+        "x": 201,
+        "y": 103,
+        "width": 704,
+        "height": 862
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-grand-trang.webp",
-        "svg": "processed/svg/evo-grand-trang.svg",
-        "thumbnail": "processed/thumb/evo-grand-trang.webp"
+      "color": {
+        "slug": "trang",
+        "name": "Trắng",
+        "hex": "#e8eaed"
       },
-      "output_webp_size_bytes": 44412,
-      "output_svg_size_bytes": 261,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/evo-grand-trang.webp",
+        "svg": "evo-grand-trang.svg",
+        "thumbnail": "thumb/evo-grand-trang.webp"
+      },
+      "output_webp_size_bytes": 79668,
+      "output_thumb_size_bytes": 16338,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "evo-grand-vang-cat",
-      "source": "evo-grand-vang-cat.webp",
+      "source": "evo-grand-vang.svg",
       "source_metadata": {
-        "width": 1024,
-        "height": 768,
-        "has_alpha": false,
-        "size_bytes": 26774
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 235608
       },
       "source_bbox": {
-        "x": 220,
-        "y": 18,
-        "width": 582,
-        "height": 732
+        "x": 201,
+        "y": 99,
+        "width": 704,
+        "height": 866
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 221,
-        "y": 146,
-        "width": 582,
-        "height": 732
+        "x": 201,
+        "y": 99,
+        "width": 704,
+        "height": 866
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-grand-vang-cat.webp",
-        "svg": "processed/svg/evo-grand-vang-cat.svg",
-        "thumbnail": "processed/thumb/evo-grand-vang-cat.webp"
+      "color": {
+        "slug": "vang-cat",
+        "name": "Vàng cát",
+        "hex": "#e7b75f"
       },
-      "output_webp_size_bytes": 39032,
-      "output_svg_size_bytes": 267,
+      "outputs": {
+        "webp": "webp/evo-grand-vang-cat.webp",
+        "svg": "evo-grand-vang-cat.svg",
+        "thumbnail": "thumb/evo-grand-vang-cat.webp"
+      },
+      "output_webp_size_bytes": 75786,
+      "output_thumb_size_bytes": 15642,
+      "output_has_alpha": true,
       "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
+        "source_name_normalized"
       ]
     },
     {
       "slug": "evo-grand-xanh-oliu",
-      "source": "evo-grand-xanh-oliu.webp",
+      "source": "evo-grand-xanh-oliu.svg",
       "source_metadata": {
-        "width": 1024,
-        "height": 768,
-        "has_alpha": false,
-        "size_bytes": 26198
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 410349
       },
       "source_bbox": {
-        "x": 220,
-        "y": 18,
-        "width": 582,
-        "height": 732
+        "x": 201,
+        "y": 100,
+        "width": 704,
+        "height": 865
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 221,
-        "y": 146,
-        "width": 582,
-        "height": 732
+        "x": 201,
+        "y": 100,
+        "width": 704,
+        "height": 865
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-grand-xanh-oliu.webp",
-        "svg": "processed/svg/evo-grand-xanh-oliu.svg",
-        "thumbnail": "processed/thumb/evo-grand-xanh-oliu.webp"
+      "color": {
+        "slug": "xanh-oliu",
+        "name": "Xanh Oliu",
+        "hex": "#6f7a52"
       },
-      "output_webp_size_bytes": 40208,
-      "output_svg_size_bytes": 269,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/evo-grand-xanh-oliu.webp",
+        "svg": "evo-grand-xanh-oliu.svg",
+        "thumbnail": "thumb/evo-grand-xanh-oliu.webp"
+      },
+      "output_webp_size_bytes": 79742,
+      "output_thumb_size_bytes": 16456,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "evo-lite-den",
-      "source": "evo-lite-den.webp",
+      "source": "evo-lite-den.svg",
       "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 40286
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 475487
       },
       "source_bbox": {
-        "x": 284,
-        "y": 17,
-        "width": 996,
-        "height": 943
+        "x": 204,
+        "y": 105,
+        "width": 688,
+        "height": 873
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 86,
-        "width": 900,
-        "height": 852
+        "x": 204,
+        "y": 105,
+        "width": 688,
+        "height": 873
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-lite-den.webp",
-        "svg": "processed/svg/evo-lite-den.svg",
-        "thumbnail": "processed/thumb/evo-lite-den.webp"
+      "color": {
+        "slug": "den",
+        "name": "Đen",
+        "hex": "#1f2937"
       },
-      "output_webp_size_bytes": 63762,
-      "output_svg_size_bytes": 255,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/evo-lite-den.webp",
+        "svg": "evo-lite-den.svg",
+        "thumbnail": "thumb/evo-lite-den.webp"
+      },
+      "output_webp_size_bytes": 76306,
+      "output_thumb_size_bytes": 14620,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "evo-lite-do",
-      "source": "evo-lite-do.webp",
+      "source": "evo-lite-do.svg",
       "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 49254
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 625519
       },
       "source_bbox": {
-        "x": 285,
-        "y": 17,
-        "width": 995,
-        "height": 943
+        "x": 209,
+        "y": 104,
+        "width": 683,
+        "height": 874
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 86,
-        "width": 900,
-        "height": 852
+        "x": 209,
+        "y": 104,
+        "width": 683,
+        "height": 874
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-lite-do.webp",
-        "svg": "processed/svg/evo-lite-do.svg",
-        "thumbnail": "processed/thumb/evo-lite-do.webp"
+      "color": {
+        "slug": "do",
+        "name": "Đỏ",
+        "hex": "#d23b3b"
       },
-      "output_webp_size_bytes": 71590,
-      "output_svg_size_bytes": 253,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/evo-lite-do.webp",
+        "svg": "evo-lite-do.svg",
+        "thumbnail": "thumb/evo-lite-do.webp"
+      },
+      "output_webp_size_bytes": 81654,
+      "output_thumb_size_bytes": 16014,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "evo-lite-trang",
-      "source": "evo-lite-trang.webp",
+      "source": "evo-lite-trang.svg",
       "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 41498
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 478990
       },
       "source_bbox": {
-        "x": 289,
-        "y": 17,
-        "width": 991,
-        "height": 943
+        "x": 206,
+        "y": 101,
+        "width": 686,
+        "height": 877
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 84,
-        "width": 900,
-        "height": 856
+        "x": 206,
+        "y": 101,
+        "width": 686,
+        "height": 877
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-lite-trang.webp",
-        "svg": "processed/svg/evo-lite-trang.svg",
-        "thumbnail": "processed/thumb/evo-lite-trang.webp"
+      "color": {
+        "slug": "trang",
+        "name": "Trắng",
+        "hex": "#e8eaed"
       },
-      "output_webp_size_bytes": 78330,
-      "output_svg_size_bytes": 259,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/evo-lite-trang.webp",
+        "svg": "evo-lite-trang.svg",
+        "thumbnail": "thumb/evo-lite-trang.webp"
+      },
+      "output_webp_size_bytes": 78028,
+      "output_thumb_size_bytes": 15068,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "evo-lite-xanh-oliu",
-      "source": "evo-lite-xanh-oliu.webp",
+      "source": "evo-lite-xanh-oliu.svg",
       "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 42122
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 546463
       },
       "source_bbox": {
-        "x": 284,
-        "y": 17,
-        "width": 996,
-        "height": 943
+        "x": 204,
+        "y": 99,
+        "width": 688,
+        "height": 879
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 86,
-        "width": 900,
-        "height": 852
+        "x": 204,
+        "y": 99,
+        "width": 688,
+        "height": 879
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-lite-xanh-oliu.webp",
-        "svg": "processed/svg/evo-lite-xanh-oliu.svg",
-        "thumbnail": "processed/thumb/evo-lite-xanh-oliu.webp"
+      "color": {
+        "slug": "xanh-oliu",
+        "name": "Xanh Oliu",
+        "hex": "#6f7a52"
       },
-      "output_webp_size_bytes": 83250,
-      "output_svg_size_bytes": 267,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/evo-lite-xanh-oliu.webp",
+        "svg": "evo-lite-xanh-oliu.svg",
+        "thumbnail": "thumb/evo-lite-xanh-oliu.webp"
+      },
+      "output_webp_size_bytes": 77682,
+      "output_thumb_size_bytes": 15200,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "evo-max-den",
-      "source": "evo-max-den.webp",
+      "source": "evo-max-den.svg",
       "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 40286
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 475318
       },
       "source_bbox": {
-        "x": 284,
-        "y": 17,
-        "width": 996,
-        "height": 943
+        "x": 202,
+        "y": 104,
+        "width": 690,
+        "height": 874
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 86,
-        "width": 900,
-        "height": 852
+        "x": 202,
+        "y": 104,
+        "width": 690,
+        "height": 874
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-max-den.webp",
-        "svg": "processed/svg/evo-max-den.svg",
-        "thumbnail": "processed/thumb/evo-max-den.webp"
+      "color": {
+        "slug": "den",
+        "name": "Đen",
+        "hex": "#1f2937"
       },
-      "output_webp_size_bytes": 63762,
-      "output_svg_size_bytes": 253,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/evo-max-den.webp",
+        "svg": "evo-max-den.svg",
+        "thumbnail": "thumb/evo-max-den.webp"
+      },
+      "output_webp_size_bytes": 76600,
+      "output_thumb_size_bytes": 14548,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "evo-max-do",
-      "source": "evo-max-do.webp",
+      "source": "evo-max-do.svg",
       "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 49254
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 625521
       },
       "source_bbox": {
-        "x": 285,
-        "y": 17,
-        "width": 995,
-        "height": 943
+        "x": 205,
+        "y": 100,
+        "width": 687,
+        "height": 878
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 86,
-        "width": 900,
-        "height": 852
+        "x": 205,
+        "y": 100,
+        "width": 687,
+        "height": 878
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-max-do.webp",
-        "svg": "processed/svg/evo-max-do.svg",
-        "thumbnail": "processed/thumb/evo-max-do.webp"
+      "color": {
+        "slug": "do",
+        "name": "Đỏ",
+        "hex": "#d23b3b"
       },
-      "output_webp_size_bytes": 71590,
-      "output_svg_size_bytes": 251,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/evo-max-do.webp",
+        "svg": "evo-max-do.svg",
+        "thumbnail": "thumb/evo-max-do.webp"
+      },
+      "output_webp_size_bytes": 82616,
+      "output_thumb_size_bytes": 16184,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "evo-max-trang",
-      "source": "evo-max-trang.webp",
+      "source": "evo-max-trang.svg",
       "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 41498
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 478988
       },
       "source_bbox": {
-        "x": 289,
-        "y": 17,
-        "width": 991,
-        "height": 943
+        "x": 207,
+        "y": 99,
+        "width": 685,
+        "height": 879
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 84,
-        "width": 900,
-        "height": 856
+        "x": 207,
+        "y": 99,
+        "width": 685,
+        "height": 879
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-max-trang.webp",
-        "svg": "processed/svg/evo-max-trang.svg",
-        "thumbnail": "processed/thumb/evo-max-trang.webp"
+      "color": {
+        "slug": "trang",
+        "name": "Trắng",
+        "hex": "#e8eaed"
       },
-      "output_webp_size_bytes": 78330,
-      "output_svg_size_bytes": 257,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/evo-max-trang.webp",
+        "svg": "evo-max-trang.svg",
+        "thumbnail": "thumb/evo-max-trang.webp"
+      },
+      "output_webp_size_bytes": 77026,
+      "output_thumb_size_bytes": 15218,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "evo-max-xanh-oliu",
-      "source": "evo-max-xanh-oliu.webp",
+      "source": "evo-max-xanh-oliu.svg",
       "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 42122
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 546442
       },
       "source_bbox": {
-        "x": 284,
-        "y": 17,
-        "width": 996,
-        "height": 943
+        "x": 208,
+        "y": 104,
+        "width": 684,
+        "height": 874
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 86,
-        "width": 900,
-        "height": 852
+        "x": 208,
+        "y": 104,
+        "width": 684,
+        "height": 874
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/evo-max-xanh-oliu.webp",
-        "svg": "processed/svg/evo-max-xanh-oliu.svg",
-        "thumbnail": "processed/thumb/evo-max-xanh-oliu.webp"
+      "color": {
+        "slug": "xanh-oliu",
+        "name": "Xanh Oliu",
+        "hex": "#6f7a52"
       },
-      "output_webp_size_bytes": 83250,
-      "output_svg_size_bytes": 265,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/evo-max-xanh-oliu.webp",
+        "svg": "evo-max-xanh-oliu.svg",
+        "thumbnail": "thumb/evo-max-xanh-oliu.webp"
+      },
+      "output_webp_size_bytes": 77046,
+      "output_thumb_size_bytes": 15086,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "feliz-2025-den",
-      "source": "feliz-2025-den.webp",
+      "source": "feliz-2025-den.svg",
       "source_metadata": {
-        "width": 1659,
-        "height": 2048,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 155596
+        "size_bytes": 1165983
       },
       "source_bbox": {
         "x": 146,
-        "y": 64,
-        "width": 1380,
-        "height": 1732
+        "y": 98,
+        "width": 756,
+        "height": 890
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 161,
-        "y": 72,
-        "width": 701,
-        "height": 880
+        "x": 146,
+        "y": 98,
+        "width": 756,
+        "height": 890
       },
-      "background_method": "source_alpha",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/feliz-2025-den.webp",
-        "svg": "processed/svg/feliz-2025-den.svg",
-        "thumbnail": "processed/thumb/feliz-2025-den.webp"
+      "color": {
+        "slug": "den",
+        "name": "Đen",
+        "hex": "#1f2937"
       },
-      "output_webp_size_bytes": 71662,
-      "output_svg_size_bytes": 259,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/feliz-2025-den.webp",
+        "svg": "feliz-2025-den.svg",
+        "thumbnail": "thumb/feliz-2025-den.webp"
+      },
+      "output_webp_size_bytes": 83336,
+      "output_thumb_size_bytes": 16474,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "feliz-2025-trang",
-      "source": "feliz-2025-trang.webp",
+      "source": "Feliz-2025-trang.svg",
       "source_metadata": {
-        "width": 1617,
-        "height": 2048,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 157646
+        "size_bytes": 1109432
       },
       "source_bbox": {
-        "x": 106,
-        "y": 90,
-        "width": 1380,
-        "height": 1732
+        "x": 146,
+        "y": 98,
+        "width": 756,
+        "height": 890
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 161,
-        "y": 72,
-        "width": 701,
-        "height": 880
+        "x": 146,
+        "y": 98,
+        "width": 756,
+        "height": 890
       },
-      "background_method": "source_alpha",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/feliz-2025-trang.webp",
-        "svg": "processed/svg/feliz-2025-trang.svg",
-        "thumbnail": "processed/thumb/feliz-2025-trang.webp"
+      "color": {
+        "slug": "trang",
+        "name": "Trắng",
+        "hex": "#e8eaed"
       },
-      "output_webp_size_bytes": 73108,
-      "output_svg_size_bytes": 263,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/feliz-2025-trang.webp",
+        "svg": "feliz-2025-trang.svg",
+        "thumbnail": "thumb/feliz-2025-trang.webp"
+      },
+      "output_webp_size_bytes": 87112,
+      "output_thumb_size_bytes": 17288,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "feliz-2025-vang-cat",
-      "source": "feliz-2025-vang-cat.webp",
+      "source": "feliz-2025-vang.svg",
       "source_metadata": {
-        "width": 1705,
-        "height": 2048,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 152896
+        "size_bytes": 1284544
       },
       "source_bbox": {
-        "x": 165,
-        "y": 158,
-        "width": 1379,
-        "height": 1732
+        "x": 146,
+        "y": 99,
+        "width": 756,
+        "height": 889
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 162,
-        "y": 72,
-        "width": 700,
-        "height": 880
+        "x": 146,
+        "y": 99,
+        "width": 756,
+        "height": 889
       },
-      "background_method": "source_alpha",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/feliz-2025-vang-cat.webp",
-        "svg": "processed/svg/feliz-2025-vang-cat.svg",
-        "thumbnail": "processed/thumb/feliz-2025-vang-cat.webp"
+      "color": {
+        "slug": "vang-cat",
+        "name": "Vàng cát",
+        "hex": "#e7b75f"
       },
-      "output_webp_size_bytes": 74262,
-      "output_svg_size_bytes": 269,
+      "outputs": {
+        "webp": "webp/feliz-2025-vang-cat.webp",
+        "svg": "feliz-2025-vang-cat.svg",
+        "thumbnail": "thumb/feliz-2025-vang-cat.webp"
+      },
+      "output_webp_size_bytes": 87172,
+      "output_thumb_size_bytes": 17564,
+      "output_has_alpha": true,
       "review_flags": [
-        "orientation_assumed_left"
+        "source_name_normalized"
       ]
     },
     {
       "slug": "feliz-2025-xanh-reu",
-      "source": "feliz-2025-xanh-reu.webp",
+      "source": "feliz-2025-xanh-reu.svg",
       "source_metadata": {
-        "width": 1701,
-        "height": 2048,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 160962
+        "size_bytes": 1308396
       },
       "source_bbox": {
-        "x": 158,
-        "y": 158,
-        "width": 1379,
-        "height": 1732
-      },
-      "canvas_size": 1024,
-      "canvas_bbox": {
-        "x": 162,
-        "y": 72,
-        "width": 700,
-        "height": 880
-      },
-      "background_method": "source_alpha",
-      "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/feliz-2025-xanh-reu.webp",
-        "svg": "processed/svg/feliz-2025-xanh-reu.svg",
-        "thumbnail": "processed/thumb/feliz-2025-xanh-reu.webp"
-      },
-      "output_webp_size_bytes": 74246,
-      "output_svg_size_bytes": 269,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
-    },
-    {
-      "slug": "feliz-ii-den",
-      "source": "feliz-ii-den.png",
-      "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 421052
-      },
-      "source_bbox": {
-        "x": 0,
-        "y": 40,
-        "width": 1280,
+        "x": 166,
+        "y": 99,
+        "width": 755,
         "height": 892
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 198,
-        "width": 900,
-        "height": 627
+        "x": 166,
+        "y": 99,
+        "width": 755,
+        "height": 892
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/feliz-ii-den.webp",
-        "svg": "processed/svg/feliz-ii-den.svg",
-        "thumbnail": "processed/thumb/feliz-ii-den.webp"
+      "color": {
+        "slug": "xanh-reu",
+        "name": "Xanh Rêu",
+        "hex": "#8fae9b"
       },
-      "output_webp_size_bytes": 47850,
-      "output_svg_size_bytes": 255,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/feliz-2025-xanh-reu.webp",
+        "svg": "feliz-2025-xanh-reu.svg",
+        "thumbnail": "thumb/feliz-2025-xanh-reu.webp"
+      },
+      "output_webp_size_bytes": 86878,
+      "output_thumb_size_bytes": 16958,
+      "output_has_alpha": true,
+      "review_flags": []
+    },
+    {
+      "slug": "feliz-ii-den",
+      "source": "feliz-ii-den.svg",
+      "source_metadata": {
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 624376
+      },
+      "source_bbox": {
+        "x": 139,
+        "y": 110,
+        "width": 759,
+        "height": 846
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 139,
+        "y": 110,
+        "width": 759,
+        "height": 846
+      },
+      "background_method": "source_svg_png_alpha",
+      "intended_direction": "left",
+      "color": {
+        "slug": "den",
+        "name": "Đen",
+        "hex": "#1f2937"
+      },
+      "outputs": {
+        "webp": "webp/feliz-ii-den.webp",
+        "svg": "feliz-ii-den.svg",
+        "thumbnail": "thumb/feliz-ii-den.webp"
+      },
+      "output_webp_size_bytes": 84738,
+      "output_thumb_size_bytes": 16536,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "feliz-ii-do",
-      "source": "feliz-ii-do.webp",
+      "source": "feliz-ii-do.svg",
       "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 47254
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 602143
       },
       "source_bbox": {
-        "x": 249,
-        "y": 40,
-        "width": 803,
-        "height": 891
+        "x": 141,
+        "y": 104,
+        "width": 757,
+        "height": 852
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 115,
-        "y": 72,
-        "width": 793,
-        "height": 880
+        "x": 141,
+        "y": 104,
+        "width": 757,
+        "height": 852
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/feliz-ii-do.webp",
-        "svg": "processed/svg/feliz-ii-do.svg",
-        "thumbnail": "processed/thumb/feliz-ii-do.webp"
+      "color": {
+        "slug": "do",
+        "name": "Đỏ",
+        "hex": "#d23b3b"
       },
-      "output_webp_size_bytes": 69462,
-      "output_svg_size_bytes": 253,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/feliz-ii-do.webp",
+        "svg": "feliz-ii-do.svg",
+        "thumbnail": "thumb/feliz-ii-do.webp"
+      },
+      "output_webp_size_bytes": 92234,
+      "output_thumb_size_bytes": 18086,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "feliz-ii-trang",
-      "source": "feliz-ii-trang.webp",
+      "source": "feliz-ii-trang.svg",
       "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 44206
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 557904
       },
       "source_bbox": {
-        "x": 239,
-        "y": 40,
-        "width": 812,
-        "height": 875
+        "x": 123,
+        "y": 97,
+        "width": 775,
+        "height": 859
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 106,
-        "y": 74,
-        "width": 812,
-        "height": 875
+        "x": 123,
+        "y": 97,
+        "width": 775,
+        "height": 859
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/feliz-ii-trang.webp",
-        "svg": "processed/svg/feliz-ii-trang.svg",
-        "thumbnail": "processed/thumb/feliz-ii-trang.webp"
+      "color": {
+        "slug": "trang",
+        "name": "Trắng",
+        "hex": "#e8eaed"
       },
-      "output_webp_size_bytes": 61452,
-      "output_svg_size_bytes": 259,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/feliz-ii-trang.webp",
+        "svg": "feliz-ii-trang.svg",
+        "thumbnail": "thumb/feliz-ii-trang.webp"
+      },
+      "output_webp_size_bytes": 89392,
+      "output_thumb_size_bytes": 18048,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "feliz-ii-xanh-oliu",
-      "source": "feliz-ii-xanh-oliu.webp",
+      "source": "feliz-ii-xanh-oliu.svg",
       "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 44416
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 608300
       },
       "source_bbox": {
-        "x": 239,
-        "y": 40,
-        "width": 813,
-        "height": 875
+        "x": 116,
+        "y": 104,
+        "width": 782,
+        "height": 852
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 105,
-        "y": 74,
-        "width": 813,
-        "height": 875
+        "x": 116,
+        "y": 104,
+        "width": 782,
+        "height": 852
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/feliz-ii-xanh-oliu.webp",
-        "svg": "processed/svg/feliz-ii-xanh-oliu.svg",
-        "thumbnail": "processed/thumb/feliz-ii-xanh-oliu.webp"
+      "color": {
+        "slug": "xanh-oliu",
+        "name": "Xanh Oliu",
+        "hex": "#6f7a52"
       },
-      "output_webp_size_bytes": 60966,
-      "output_svg_size_bytes": 267,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/feliz-ii-xanh-oliu.webp",
+        "svg": "feliz-ii-xanh-oliu.svg",
+        "thumbnail": "thumb/feliz-ii-xanh-oliu.webp"
+      },
+      "output_webp_size_bytes": 88386,
+      "output_thumb_size_bytes": 17756,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "flazz-den",
-      "source": "flazz-den.webp",
+      "source": "flazz-den.svg",
       "source_metadata": {
-        "width": 2048,
-        "height": 961,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 202090
+        "size_bytes": 621217
       },
       "source_bbox": {
-        "x": 359,
-        "y": 17,
-        "width": 1689,
-        "height": 944
+        "x": 184,
+        "y": 104,
+        "width": 783,
+        "height": 871
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 260,
-        "width": 900,
-        "height": 503
+        "x": 184,
+        "y": 104,
+        "width": 783,
+        "height": 871
       },
-      "background_method": "source_alpha",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/flazz-den.webp",
-        "svg": "processed/svg/flazz-den.svg",
-        "thumbnail": "processed/thumb/flazz-den.webp"
+      "color": {
+        "slug": "den",
+        "name": "Đen",
+        "hex": "#1f2937"
       },
-      "output_webp_size_bytes": 53754,
-      "output_svg_size_bytes": 249,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/flazz-den.webp",
+        "svg": "flazz-den.svg",
+        "thumbnail": "thumb/flazz-den.webp"
+      },
+      "output_webp_size_bytes": 90576,
+      "output_thumb_size_bytes": 17430,
+      "output_has_alpha": true,
+      "review_flags": []
+    },
+    {
+      "slug": "flazz-do",
+      "source": "flazz-do.svg",
+      "source_metadata": {
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 671281
+      },
+      "source_bbox": {
+        "x": 189,
+        "y": 105,
+        "width": 763,
+        "height": 863
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 189,
+        "y": 105,
+        "width": 763,
+        "height": 863
+      },
+      "background_method": "source_svg_png_alpha",
+      "intended_direction": "left",
+      "color": {
+        "slug": "do",
+        "name": "Đỏ",
+        "hex": "#d23b3b"
+      },
+      "outputs": {
+        "webp": "webp/flazz-do.webp",
+        "svg": "flazz-do.svg",
+        "thumbnail": "thumb/flazz-do.webp"
+      },
+      "output_webp_size_bytes": 92622,
+      "output_thumb_size_bytes": 17888,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "flazz-max-cam",
-      "source": "flazz-max-cam.webp",
+      "source": "flazz-max-cam.svg",
       "source_metadata": {
-        "width": 1000,
-        "height": 1000,
-        "has_alpha": false,
-        "size_bytes": 66884
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 753691
       },
       "source_bbox": {
-        "x": 22,
-        "y": 9,
-        "width": 939,
-        "height": 976
+        "x": 176,
+        "y": 101,
+        "width": 776,
+        "height": 867
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 89,
-        "y": 72,
-        "width": 846,
-        "height": 880
+        "x": 176,
+        "y": 101,
+        "width": 776,
+        "height": 867
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/flazz-max-cam.webp",
-        "svg": "processed/svg/flazz-max-cam.svg",
-        "thumbnail": "processed/thumb/flazz-max-cam.webp"
+      "color": {
+        "slug": "cam",
+        "name": "Cam",
+        "hex": "#f97316"
       },
-      "output_webp_size_bytes": 103884,
-      "output_svg_size_bytes": 257,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/flazz-max-cam.webp",
+        "svg": "flazz-max-cam.svg",
+        "thumbnail": "thumb/flazz-max-cam.webp"
+      },
+      "output_webp_size_bytes": 105468,
+      "output_thumb_size_bytes": 20388,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "flazz-max-xanh",
-      "source": "flazz-max-xanh.webp",
+      "source": "flazz-max-xanh.svg",
       "source_metadata": {
-        "width": 1000,
-        "height": 1000,
-        "has_alpha": false,
-        "size_bytes": 70436
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 785809
       },
       "source_bbox": {
-        "x": 0,
-        "y": 9,
-        "width": 964,
-        "height": 990
+        "x": 169,
+        "y": 103,
+        "width": 783,
+        "height": 865
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 84,
-        "y": 72,
-        "width": 856,
-        "height": 880
+        "x": 169,
+        "y": 103,
+        "width": 783,
+        "height": 865
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/flazz-max-xanh.webp",
-        "svg": "processed/svg/flazz-max-xanh.svg",
-        "thumbnail": "processed/thumb/flazz-max-xanh.webp"
+      "color": {
+        "slug": "xanh",
+        "name": "Xanh",
+        "hex": "#2563eb"
       },
-      "output_webp_size_bytes": 83084,
-      "output_svg_size_bytes": 259,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/flazz-max-xanh.webp",
+        "svg": "flazz-max-xanh.svg",
+        "thumbnail": "thumb/flazz-max-xanh.webp"
+      },
+      "output_webp_size_bytes": 106498,
+      "output_thumb_size_bytes": 21378,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "flazz-trang",
-      "source": "flazz-trang.webp",
+      "source": "flazz-trang.svg",
       "source_metadata": {
-        "width": 2048,
-        "height": 961,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 202936
+        "size_bytes": 590708
       },
       "source_bbox": {
-        "x": 0,
-        "y": 17,
-        "width": 1834,
-        "height": 944
+        "x": 191,
+        "y": 107,
+        "width": 761,
+        "height": 861
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 280,
-        "width": 900,
-        "height": 463
+        "x": 191,
+        "y": 107,
+        "width": 761,
+        "height": 861
       },
-      "background_method": "source_alpha",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
+      "color": {
+        "slug": "trang",
+        "name": "Trắng",
+        "hex": "#e8eaed"
+      },
       "outputs": {
-        "webp": "processed/webp/flazz-trang.webp",
-        "svg": "processed/svg/flazz-trang.svg",
-        "thumbnail": "processed/thumb/flazz-trang.webp"
+        "webp": "webp/flazz-trang.webp",
+        "svg": "flazz-trang.svg",
+        "thumbnail": "thumb/flazz-trang.webp"
       },
-      "output_webp_size_bytes": 48080,
-      "output_svg_size_bytes": 253,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
-    },
-    {
-      "slug": "verox-xanh-reu",
-      "source": "veroX-xanh-reu.webp",
-      "source_metadata": {
-        "width": 2048,
-        "height": 966,
-        "has_alpha": true,
-        "size_bytes": 108826
-      },
-      "source_bbox": {
-        "x": 401,
-        "y": 30,
-        "width": 1127,
-        "height": 936
-      },
-      "canvas_size": 1024,
-      "canvas_bbox": {
-        "x": 62,
-        "y": 138,
-        "width": 900,
-        "height": 747
-      },
-      "background_method": "source_alpha",
-      "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/verox-xanh-reu.webp",
-        "svg": "processed/svg/verox-xanh-reu.svg",
-        "thumbnail": "processed/thumb/verox-xanh-reu.webp"
-      },
-      "output_webp_size_bytes": 67124,
-      "output_svg_size_bytes": 259,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
+      "output_webp_size_bytes": 86072,
+      "output_thumb_size_bytes": 17024,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "verox-den",
-      "source": "verox-den.webp",
+      "source": "verox-den.svg",
       "source_metadata": {
-        "width": 2048,
-        "height": 966,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 115310
+        "size_bytes": 412606
       },
       "source_bbox": {
-        "x": 401,
-        "y": 30,
-        "width": 1120,
-        "height": 936
+        "x": 207,
+        "y": 99,
+        "width": 677,
+        "height": 886
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 136,
-        "width": 900,
-        "height": 752
+        "x": 207,
+        "y": 99,
+        "width": 677,
+        "height": 886
       },
-      "background_method": "source_alpha",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/verox-den.webp",
-        "svg": "processed/svg/verox-den.svg",
-        "thumbnail": "processed/thumb/verox-den.webp"
+      "color": {
+        "slug": "den",
+        "name": "Đen",
+        "hex": "#1f2937"
       },
-      "output_webp_size_bytes": 68394,
-      "output_svg_size_bytes": 249,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/verox-den.webp",
+        "svg": "verox-den.svg",
+        "thumbnail": "thumb/verox-den.webp"
+      },
+      "output_webp_size_bytes": 72228,
+      "output_thumb_size_bytes": 14204,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "verox-trang",
-      "source": "verox-trang.webp",
+      "source": "verox-trang.svg",
       "source_metadata": {
-        "width": 2048,
-        "height": 1616,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 260720
+        "size_bytes": 863998
       },
       "source_bbox": {
-        "x": 1,
-        "y": 49,
-        "width": 1895,
-        "height": 1567
+        "x": 207,
+        "y": 104,
+        "width": 677,
+        "height": 881
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 140,
-        "width": 900,
-        "height": 744
+        "x": 207,
+        "y": 104,
+        "width": 677,
+        "height": 881
       },
-      "background_method": "source_alpha",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/verox-trang.webp",
-        "svg": "processed/svg/verox-trang.svg",
-        "thumbnail": "processed/thumb/verox-trang.webp"
+      "color": {
+        "slug": "trang",
+        "name": "Trắng",
+        "hex": "#e8eaed"
       },
-      "output_webp_size_bytes": 71764,
-      "output_svg_size_bytes": 253,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/verox-trang.webp",
+        "svg": "verox-trang.svg",
+        "thumbnail": "thumb/verox-trang.webp"
+      },
+      "output_webp_size_bytes": 74726,
+      "output_thumb_size_bytes": 14502,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "verox-xanh-oliu",
-      "source": "verox-xanh-oliu.webp",
+      "source": "verox-xanh-oliu.svg",
       "source_metadata": {
-        "width": 2048,
-        "height": 966,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 116482
+        "size_bytes": 492308
       },
       "source_bbox": {
-        "x": 401,
-        "y": 30,
-        "width": 1127,
-        "height": 936
+        "x": 207,
+        "y": 103,
+        "width": 677,
+        "height": 886
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 138,
-        "width": 900,
-        "height": 747
+        "x": 207,
+        "y": 103,
+        "width": 677,
+        "height": 886
       },
-      "background_method": "source_alpha",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/verox-xanh-oliu.webp",
-        "svg": "processed/svg/verox-xanh-oliu.svg",
-        "thumbnail": "processed/thumb/verox-xanh-oliu.webp"
+      "color": {
+        "slug": "xanh-oliu",
+        "name": "Xanh Oliu",
+        "hex": "#6f7a52"
       },
-      "output_webp_size_bytes": 71300,
-      "output_svg_size_bytes": 261,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/verox-xanh-oliu.webp",
+        "svg": "verox-xanh-oliu.svg",
+        "thumbnail": "thumb/verox-xanh-oliu.webp"
+      },
+      "output_webp_size_bytes": 72446,
+      "output_thumb_size_bytes": 14516,
+      "output_has_alpha": true,
+      "review_flags": []
+    },
+    {
+      "slug": "verox-xanh-reu",
+      "source": "verox-xanh-reu.svg",
+      "source_metadata": {
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 449009
+      },
+      "source_bbox": {
+        "x": 207,
+        "y": 96,
+        "width": 677,
+        "height": 889
+      },
+      "canvas_size": 1024,
+      "canvas_bbox": {
+        "x": 207,
+        "y": 96,
+        "width": 677,
+        "height": 889
+      },
+      "background_method": "source_svg_png_alpha",
+      "intended_direction": "left",
+      "color": {
+        "slug": "xanh-reu",
+        "name": "Xanh Rêu",
+        "hex": "#8fae9b"
+      },
+      "outputs": {
+        "webp": "webp/verox-xanh-reu.webp",
+        "svg": "verox-xanh-reu.svg",
+        "thumbnail": "thumb/verox-xanh-reu.webp"
+      },
+      "output_webp_size_bytes": 71160,
+      "output_thumb_size_bytes": 14166,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "viper-den",
-      "source": "viper-den.webp",
+      "source": "viper-den.svg",
       "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 64558
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 738669
       },
       "source_bbox": {
-        "x": 82,
-        "y": 29,
-        "width": 1100,
-        "height": 930
+        "x": 107,
+        "y": 151,
+        "width": 839,
+        "height": 756
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 132,
-        "width": 900,
-        "height": 760
+        "x": 107,
+        "y": 151,
+        "width": 839,
+        "height": 756
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/viper-den.webp",
-        "svg": "processed/svg/viper-den.svg",
-        "thumbnail": "processed/thumb/viper-den.webp"
+      "color": {
+        "slug": "den",
+        "name": "Đen",
+        "hex": "#1f2937"
       },
-      "output_webp_size_bytes": 79876,
-      "output_svg_size_bytes": 249,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/viper-den.webp",
+        "svg": "viper-den.svg",
+        "thumbnail": "thumb/viper-den.webp"
+      },
+      "output_webp_size_bytes": 103674,
+      "output_thumb_size_bytes": 19328,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "viper-do",
-      "source": "viper-do.webp",
+      "source": "viper-do.svg",
       "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 67654
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 787679
       },
       "source_bbox": {
-        "x": 82,
-        "y": 29,
-        "width": 1099,
-        "height": 929
+        "x": 111,
+        "y": 169,
+        "width": 810,
+        "height": 738
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 132,
-        "width": 900,
-        "height": 760
+        "x": 111,
+        "y": 169,
+        "width": 810,
+        "height": 738
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/viper-do.webp",
-        "svg": "processed/svg/viper-do.svg",
-        "thumbnail": "processed/thumb/viper-do.webp"
+      "color": {
+        "slug": "do",
+        "name": "Đỏ",
+        "hex": "#d23b3b"
       },
-      "output_webp_size_bytes": 81514,
-      "output_svg_size_bytes": 247,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/viper-do.webp",
+        "svg": "viper-do.svg",
+        "thumbnail": "thumb/viper-do.webp"
+      },
+      "output_webp_size_bytes": 102950,
+      "output_thumb_size_bytes": 19188,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "viper-trang",
-      "source": "viper-trang.webp",
+      "source": "viper-trang.svg",
       "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 66424
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 749342
       },
       "source_bbox": {
-        "x": 82,
-        "y": 29,
-        "width": 1100,
-        "height": 927
+        "x": 110,
+        "y": 164,
+        "width": 810,
+        "height": 743
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 133,
-        "width": 900,
-        "height": 758
+        "x": 110,
+        "y": 164,
+        "width": 810,
+        "height": 743
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/viper-trang.webp",
-        "svg": "processed/svg/viper-trang.svg",
-        "thumbnail": "processed/thumb/viper-trang.webp"
+      "color": {
+        "slug": "trang",
+        "name": "Trắng",
+        "hex": "#e8eaed"
       },
-      "output_webp_size_bytes": 87372,
-      "output_svg_size_bytes": 253,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/viper-trang.webp",
+        "svg": "viper-trang.svg",
+        "thumbnail": "thumb/viper-trang.webp"
+      },
+      "output_webp_size_bytes": 102960,
+      "output_thumb_size_bytes": 19236,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "viper-vang",
-      "source": "viper-vang.webp",
+      "source": "viper-vang.svg",
       "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 65668
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 775083
       },
       "source_bbox": {
-        "x": 82,
-        "y": 29,
-        "width": 1097,
-        "height": 929
+        "x": 101,
+        "y": 160,
+        "width": 832,
+        "height": 747
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 131,
-        "width": 900,
-        "height": 762
+        "x": 101,
+        "y": 160,
+        "width": 832,
+        "height": 747
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/viper-vang.webp",
-        "svg": "processed/svg/viper-vang.svg",
-        "thumbnail": "processed/thumb/viper-vang.webp"
+      "color": {
+        "slug": "vang",
+        "name": "Vàng",
+        "hex": "#f59e0b"
       },
-      "output_webp_size_bytes": 80806,
-      "output_svg_size_bytes": 251,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/viper-vang.webp",
+        "svg": "viper-vang.svg",
+        "thumbnail": "thumb/viper-vang.webp"
+      },
+      "output_webp_size_bytes": 104126,
+      "output_thumb_size_bytes": 19928,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "viper-xam",
-      "source": "viper-xam.webp",
+      "source": "viper-xam.svg",
       "source_metadata": {
-        "width": 1280,
-        "height": 960,
-        "has_alpha": false,
-        "size_bytes": 65980
+        "width": 750,
+        "height": 750,
+        "has_alpha": true,
+        "size_bytes": 776552
       },
       "source_bbox": {
-        "x": 82,
-        "y": 29,
-        "width": 1100,
-        "height": 928
+        "x": 101,
+        "y": 160,
+        "width": 834,
+        "height": 747
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 132,
-        "width": 900,
-        "height": 759
+        "x": 101,
+        "y": 160,
+        "width": 834,
+        "height": 747
       },
-      "background_method": "edge_flood_light_background",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/viper-xam.webp",
-        "svg": "processed/svg/viper-xam.svg",
-        "thumbnail": "processed/thumb/viper-xam.webp"
+      "color": {
+        "slug": "xam",
+        "name": "Xám",
+        "hex": "#6b7280"
       },
-      "output_webp_size_bytes": 81150,
-      "output_svg_size_bytes": 249,
-      "review_flags": [
-        "review_background_cutout",
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/viper-xam.webp",
+        "svg": "viper-xam.svg",
+        "thumbnail": "thumb/viper-xam.webp"
+      },
+      "output_webp_size_bytes": 104024,
+      "output_thumb_size_bytes": 19804,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "zgoo-den",
-      "source": "zgoo-den.webp",
+      "source": "zgoo-den.svg",
       "source_metadata": {
-        "width": 2048,
-        "height": 961,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 170520
+        "size_bytes": 589468
       },
       "source_bbox": {
-        "x": 75,
-        "y": 25,
-        "width": 1473,
-        "height": 936
+        "x": 146,
+        "y": 104,
+        "width": 806,
+        "height": 864
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 226,
-        "width": 900,
-        "height": 571
+        "x": 146,
+        "y": 104,
+        "width": 806,
+        "height": 864
       },
-      "background_method": "source_alpha",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/zgoo-den.webp",
-        "svg": "processed/svg/zgoo-den.svg",
-        "thumbnail": "processed/thumb/zgoo-den.webp"
+      "color": {
+        "slug": "den",
+        "name": "Đen",
+        "hex": "#1f2937"
       },
-      "output_webp_size_bytes": 60514,
-      "output_svg_size_bytes": 247,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/zgoo-den.webp",
+        "svg": "zgoo-den.svg",
+        "thumbnail": "thumb/zgoo-den.webp"
+      },
+      "output_webp_size_bytes": 88430,
+      "output_thumb_size_bytes": 16566,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "zgoo-do",
-      "source": "zgoo-do.webp",
+      "source": "zgoo-do.svg",
       "source_metadata": {
-        "width": 2048,
-        "height": 961,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 173564
+        "size_bytes": 621362
       },
       "source_bbox": {
-        "x": 86,
-        "y": 25,
-        "width": 1460,
-        "height": 936
+        "x": 163,
+        "y": 107,
+        "width": 789,
+        "height": 861
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 224,
-        "width": 900,
-        "height": 576
+        "x": 163,
+        "y": 107,
+        "width": 789,
+        "height": 861
       },
-      "background_method": "source_alpha",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/zgoo-do.webp",
-        "svg": "processed/svg/zgoo-do.svg",
-        "thumbnail": "processed/thumb/zgoo-do.webp"
+      "color": {
+        "slug": "do",
+        "name": "Đỏ",
+        "hex": "#d23b3b"
       },
-      "output_webp_size_bytes": 62858,
-      "output_svg_size_bytes": 245,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/zgoo-do.webp",
+        "svg": "zgoo-do.svg",
+        "thumbnail": "thumb/zgoo-do.webp"
+      },
+      "output_webp_size_bytes": 88708,
+      "output_thumb_size_bytes": 16866,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "zgoo-trang",
-      "source": "zgoo-trang.webp",
+      "source": "zgoo-trang.svg",
       "source_metadata": {
-        "width": 2048,
-        "height": 963,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 82372
+        "size_bytes": 545842
       },
       "source_bbox": {
-        "x": 585,
-        "y": 25,
-        "width": 871,
-        "height": 938
+        "x": 152,
+        "y": 101,
+        "width": 800,
+        "height": 867
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 103,
-        "y": 72,
-        "width": 817,
-        "height": 880
+        "x": 152,
+        "y": 101,
+        "width": 800,
+        "height": 867
       },
-      "background_method": "source_alpha",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/zgoo-trang.webp",
-        "svg": "processed/svg/zgoo-trang.svg",
-        "thumbnail": "processed/thumb/zgoo-trang.webp"
+      "color": {
+        "slug": "trang",
+        "name": "Trắng",
+        "hex": "#e8eaed"
       },
-      "output_webp_size_bytes": 71978,
-      "output_svg_size_bytes": 251,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/zgoo-trang.webp",
+        "svg": "zgoo-trang.svg",
+        "thumbnail": "thumb/zgoo-trang.webp"
+      },
+      "output_webp_size_bytes": 83378,
+      "output_thumb_size_bytes": 16372,
+      "output_has_alpha": true,
+      "review_flags": []
     },
     {
       "slug": "zgoo-xanh-oliu",
-      "source": "zgoo-xanh-oliu.webp",
+      "source": "zgoo-xanh-oliu.svg",
       "source_metadata": {
-        "width": 2048,
-        "height": 961,
+        "width": 750,
+        "height": 750,
         "has_alpha": true,
-        "size_bytes": 160004
+        "size_bytes": 623145
       },
       "source_bbox": {
-        "x": 503,
-        "y": 25,
-        "width": 989,
-        "height": 936
+        "x": 161,
+        "y": 103,
+        "width": 791,
+        "height": 865
       },
       "canvas_size": 1024,
       "canvas_bbox": {
-        "x": 62,
-        "y": 86,
-        "width": 900,
-        "height": 851
+        "x": 161,
+        "y": 103,
+        "width": 791,
+        "height": 865
       },
-      "background_method": "source_alpha",
+      "background_method": "source_svg_png_alpha",
       "intended_direction": "left",
-      "outputs": {
-        "webp": "processed/webp/zgoo-xanh-oliu.webp",
-        "svg": "processed/svg/zgoo-xanh-oliu.svg",
-        "thumbnail": "processed/thumb/zgoo-xanh-oliu.webp"
+      "color": {
+        "slug": "xanh-oliu",
+        "name": "Xanh Oliu",
+        "hex": "#6f7a52"
       },
-      "output_webp_size_bytes": 94360,
-      "output_svg_size_bytes": 259,
-      "review_flags": [
-        "orientation_assumed_left"
-      ]
+      "outputs": {
+        "webp": "webp/zgoo-xanh-oliu.webp",
+        "svg": "zgoo-xanh-oliu.svg",
+        "thumbnail": "thumb/zgoo-xanh-oliu.webp"
+      },
+      "output_webp_size_bytes": 90804,
+      "output_thumb_size_bytes": 16924,
+      "output_has_alpha": true,
+      "review_flags": []
     }
   ]
 }
