@@ -45,6 +45,10 @@ export const api = {
   inventory: (p) => get('/api/v1/inventory', p),
   inventoryModels: () => get('/api/v1/inventory/models'),
   inventoryColors: () => get('/api/v1/inventory/colors'),
+  inventoryImportCsv: (file) =>
+    http.post('/api/v1/inventory/import-csv', file, {
+      headers: { 'Content-Type': 'text/csv', 'X-Filename': file.name || 'import.csv' },
+    }).then((r) => r.data),
   customers: (p) => get('/api/v1/customers', p),
   pendingOrders: () => get('/api/v1/admin/pending-orders'),
 

@@ -81,6 +81,17 @@ function scooterSVG(hex) {
   <circle cx="320" cy="220" r="50" fill="#1A1A1A"/><circle cx="320" cy="220" r="20" fill="#cbd5e1"/>
   <path d="M155 155 L300 155 L290 175 L165 175 Z" fill="#fff" opacity=".15"/></svg>`;
 }
+// Chọn biến thể màu "ngẫu nhiên nhưng ổn định" theo slug: mỗi card một màu khác
+// nhau, ưu tiên màu có ảnh thật từ folder assets, fallback tô màu SVG theo hex.
+function pickColorIdx(p) {
+  const cols = (p && p.colors) || [];
+  if (!cols.length) return 0;
+  let h = 0; const s = p.slug || p.name || '';
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  const withPhoto = cols.map((c, i) => i).filter(i => cols[i].photo || cols[i].thumb);
+  const pool = withPhoto.length ? withPhoto : cols.map((_, i) => i);
+  return pool[h % pool.length];
+}
 // image for a product/color: photo if available else colored scooter
 function prodImg(p, ci = 0) {
   const c = (p.colors && p.colors[ci]) || (p.colors && p.colors[0]) || { hex: '#0a64b4' };
@@ -267,6 +278,8 @@ SCREENS.home = (entry) => {
       </div>
     </div>
     <div class="chips sticky" id="home-chips"></div>
+    <div class="section-head"><h2>Ưu đãi hôm nay</h2><a data-go-catalog>Xem tất cả →</a></div>
+    <div class="h-scroll promo-shortlist" id="home-promos"></div>
     <div class="section-head"><h2>Đề xuất cho bạn</h2><a data-go-catalog>Xem tất cả →</a></div>
     <div class="h-scroll" id="home-featured"><div class="card" style="width:172px"><div class="thumb skel" style="aspect-ratio:1.18/1"></div><div class="body"><div class="skel" style="height:14px;width:70%"></div><div class="skel" style="height:11px;width:50%;margin-top:8px"></div></div></div></div>
     <div class="section-head"><h2>Bán chạy nhất</h2></div>
@@ -289,13 +302,46 @@ SCREENS.home = (entry) => {
     bindCards(s);
     if (!state.promoSeen) { state.promoSeen = true; setTimeout(showPromoPopup, 550); }
   });
+
+  // Shortlist ưu đãi (h-scroll) — tap để thu/phóng xem chi tiết
+  ensurePromos().then(promos => {
+    const box = s.querySelector('#home-promos'); if (!box) return;
+    if (!promos || !promos.length) { box.style.display = 'none'; return; }
+    box.innerHTML = promos.map(promoCardHTML).join('');
+    box.querySelectorAll('[data-promo-zoom]').forEach(b => b.onclick = () => showPromoZoom(b.dataset.promoZoom));
+  }).catch(() => { const box = s.querySelector('#home-promos'); if (box) box.style.display = 'none'; });
   return s;
 };
+
+const PROMO_SCOPE = { all: 'Mọi dòng xe', doi_pin: 'Dòng Đổi pin', kem_pin: 'Dòng Kèm pin', hoc_sinh: 'Xe học sinh', addon: 'Phụ kiện / Dịch vụ' };
+const promoTag = p => p.kind === 'percent' ? '-' + p.value + '%' : '-' + (p.value / 1e6).toLocaleString('vi-VN') + 'tr';
+function promoCardHTML(p) {
+  return `<button class="promo-chip" data-promo-zoom="${esc(p.code)}">
+    <span class="pchip-tag ${p.kind}">${promoTag(p)}</span>
+    <span class="pchip-nm">${esc(p.name)}</span>
+    <span class="pchip-code">${esc(p.code)} · ${esc(PROMO_SCOPE[p.scope] || p.scope)}</span>
+  </button>`;
+}
+function showPromoZoom(code) {
+  const p = (state.promos || []).find(x => x.code === code); if (!p) return;
+  const close = openSheet(`<div class="promo-zoom">
+    <div class="grab"></div>
+    <div class="pz-tag ${p.kind}">${promoTag(p)}</div>
+    <h2>${esc(p.name)}</h2>
+    <div class="pz-scope">Áp dụng: ${esc(PROMO_SCOPE[p.scope] || p.scope)}</div>
+    <div class="code">Mã: <b>${esc(p.code)}</b> · Áp dụng tự động khi thanh toán</div>
+    <button class="btn btn-primary" style="margin-top:16px" id="pz-go">Dùng ưu đãi này →</button>
+    <button class="btn btn-ghost btn-sm" style="margin-top:8px" id="pz-close">Đóng</button>
+  </div>`, (root) => {
+    root.querySelector('#pz-close').onclick = () => close();
+    root.querySelector('#pz-go').onclick = () => { close(); state.catalogSeg = (p.scope && p.scope !== 'all' && p.scope !== 'addon') ? p.scope : 'all'; navTab('catalog'); };
+  });
+}
 
 // ---- product card ----
 function cardHTML(p) {
   const badgeCls = p.sellable === false ? 'off' : p.segment === 'hoc_sinh' ? 'green' : p.badge === 'MỚI' ? 'new' : 'blue';
-  const ci = p.colors.findIndex(c => c.photo); const imgIdx = ci >= 0 ? ci : 0;
+  const imgIdx = pickColorIdx(p);
   const cmpOn = state.compare.includes(p.slug);
   const priceBlock = `${priceWithPromo(p.price_base, p.promo_pct)}<span class="spec-line">${p.has_rent ? 'từ giá thuê pin' : 'trọn giá kèm pin'}</span>`;
   const optionPrices = p.has_rent
@@ -931,6 +977,11 @@ async function renderProfile(s) {
   let d;
   try { d = await api('/sales/' + encodeURIComponent(state.salesId) + '/stats'); } catch (e) { scroll.innerHTML = '<div class="empty" style="padding-top:60px">Không tải được hồ sơ.</div>'; return; }
   const sp = d.sales;
+  // Cho phép user cập nhật thông tin hồ sơ (lưu cục bộ, không cần backend)
+  const ov = JSON.parse(localStorage.getItem('ta_profile_ov_' + sp.id) || '{}');
+  if (ov.name) sp.name = ov.name;
+  if (ov.phone) sp.phone = ov.phone;
+  if (ov.email) sp.email = ov.email;
   const pct = Math.min(100, Math.round((d.month_orders / (d.target || 30)) * 100));
   scroll.innerHTML = `
     <div class="prof-hero">
@@ -950,7 +1001,7 @@ async function renderProfile(s) {
         <div class="bar-track" style="height:9px"><div class="bar-fill" style="width:${pct}%;background:${pct >= 100 ? 'var(--green)' : 'var(--brand)'}"></div></div>
         <div class="pt-sub">Doanh thu tháng ${fmt(d.month_revenue)} · Dòng bán chạy: <b>${esc(d.top_model || '—')}</b></div>
       </div>
-      <div class="block-title" style="margin:18px 2px 8px">Liên hệ</div>
+      <div class="block-title" style="margin:18px 2px 8px;display:flex;justify-content:space-between;align-items:center">Liên hệ<button id="prof-edit" style="background:transparent;border:none;color:var(--brand);font-weight:700;font-size:13px;padding:0;cursor:pointer">Chỉnh sửa ✎</button></div>
       <div class="prof-contact">
         <div class="pr-row"><span>📞 Điện thoại</span><b>${esc(sp.phone)}</b></div>
         <div class="pr-row"><span>✉️ Email</span><b>${esc(sp.email)}</b></div>
@@ -965,6 +1016,36 @@ async function renderProfile(s) {
       }).join('') : '<div class="empty" style="padding:20px">Chưa có đơn.</div>'}
       <div style="height:30px"></div>
     </div>`;
+  const eb = scroll.querySelector('#prof-edit');
+  if (eb) eb.onclick = () => openProfileEdit(sp, () => renderProfile(s));
+}
+
+// Sheet chỉnh sửa thông tin hồ sơ user (lưu cục bộ theo mã nhân viên)
+function openProfileEdit(sp, onSave) {
+  const inner = `<div class="profile-edit">
+    <div class="ps-head"><h3>Chỉnh sửa hồ sơ</h3><p>Cập nhật thông tin liên hệ của bạn</p></div>
+    <div class="cform" style="padding:4px 2px 2px">
+      <label class="fld"><span>Họ và tên</span><input id="pe-name" value="${esc(sp.name || '')}" placeholder="Họ tên"></label>
+      <label class="fld"><span>Số điện thoại</span><input id="pe-phone" value="${esc(sp.phone || '')}" inputmode="tel" placeholder="09xx xxx xxx"></label>
+      <label class="fld"><span>Email</span><input id="pe-email" type="email" value="${esc(sp.email || '')}" placeholder="email@example.com"></label>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn btn-line" id="pe-cancel" style="flex:1">Huỷ</button>
+      <button class="btn btn-primary" id="pe-save" style="flex:1.4">Lưu thay đổi</button>
+    </div></div>`;
+  const close = openSheet(inner, (root) => {
+    root.querySelector('#pe-cancel').onclick = close;
+    root.querySelector('#pe-save').onclick = () => {
+      const ov = {
+        name: root.querySelector('#pe-name').value.trim(),
+        phone: root.querySelector('#pe-phone').value.trim(),
+        email: root.querySelector('#pe-email').value.trim(),
+      };
+      localStorage.setItem('ta_profile_ov_' + sp.id, JSON.stringify(ov));
+      close(); toast('Đã cập nhật hồ sơ');
+      if (onSave) onSave();
+    };
+  });
 }
 
 // ---- Sales helpers ----
@@ -1550,7 +1631,7 @@ window.addEventListener('orientationchange', fitPhone);
 SCREENS.login = (entry) => {
   const s = el(`<section class="screen login-screen" style="background:#0f172a;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px;text-align:center;">
     <div style="background:#fff;padding:36px 24px;border-radius:24px;width:100%;max-width:400px;box-shadow:0 20px 40px rgba(0,0,0,.2);">
-      <img src="/assets/logo.png" style="height:80px;width:auto;margin-bottom:20px;">
+      <img src="/assets/logo.png" style="display:block;height:80px;width:auto;margin:0 auto 20px;">
       <h2 style="margin:0 0 8px;font-size:22px;color:#0f172a;">Đăng nhập hệ thống</h2>
       <p style="margin:0 0 32px;font-size:14px;color:#64748b;">Dành riêng cho nhân sự VinFast Thu Anh</p>
       

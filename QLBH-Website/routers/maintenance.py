@@ -149,8 +149,8 @@ def clean(req: CleanRequest, db: Session = Depends(get_db)):
 
     # ---- Dọn kho cho môi trường UAT ----
     if action == "uat_stock":
-        n = stock_refresh.clean_inventory_for_uat(db, 20)
-        return _result(db, f"Đã dọn dẹp kho UAT, xóa {n} xe dư thừa, giữ lại tối đa 20 xe/mẫu.", {"deleted": n})
+        res = stock_refresh.clean_inventory_for_uat(db, 20)
+        return _result(db, f"Đã chuẩn hoá kho UAT: xoá {res['deleted']} xe dư, sinh thêm {res['created']} xe — đúng 20 xe/mẫu.", res)
 
     # ---- Tối ưu / nén file (VACUUM) ----
     if action == "vacuum":
