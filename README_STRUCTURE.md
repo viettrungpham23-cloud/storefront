@@ -68,10 +68,6 @@ web/app.js
 | `restart_services.sh` | Script restart service local. |
 | `restart_remote.sh` | Script hỗ trợ restart/deploy service trên server remote. |
 | `update_app.sh` | Script cập nhật app/web khi deploy. |
-| `update_admin.py` | Script maintenance/cập nhật dữ liệu hoặc logic admin. |
-| `update_finalize.py` | Script maintenance cho trạng thái hoàn tất đơn. |
-| `update_sync.py` | Script maintenance liên quan đồng bộ dữ liệu. |
-| `test_*.py` | Các script smoke test thủ công cho cart, order, Google auth, DB, Supabase/Postgres, promo, sync. |
 
 ## 4. App bán hàng/PWA: `web/`
 
@@ -115,7 +111,7 @@ web/app.js
 | `QLBH-Website/routers/dashboard.py` | API dashboard: summary, revenue, sales by model/store/segment/channel, tồn kho, đối soát, top customers, recent activity. |
 | `QLBH-Website/routers/orders.py` | API danh sách/chi tiết đơn, tạo checkout. |
 | `QLBH-Website/routers/admin.py` | API admin: đơn chờ duyệt, verify xe thực tế, VIN available, assign VIN, finalize/edit order. |
-| `QLBH-Website/routers/inventory.py` | API kho: list inventory, models, colors, provenance VIN. |
+| `QLBH-Website/routers/inventory.py` | API kho: list inventory, models, colors, provenance VIN, import hàng hoá bằng CSV (`POST /import-csv`). |
 | `QLBH-Website/routers/customers.py` | API khách hàng: list/detail/update, lịch sử mua, parts/services, images/upload. |
 | `QLBH-Website/routers/payments.py` | Webhook thanh toán/tín dụng. |
 | `QLBH-Website/routers/procurement.py` | Mua hàng/nhập hàng: PO summary/list/detail, suppliers, tạo PO, import receipt. |
@@ -227,20 +223,7 @@ web/app.js
 
 Các nhóm trên đã được thêm vào `.gitignore` để không quay lại GitHub trong các lần commit sau.
 
-## 9. File test thủ công ở root
-
-| File | Vai trò |
-|---|---|
-| `test_cart.py`, `test_cart2.py` | Test thủ công API/cart behavior. |
-| `test_db.py` | Test kết nối/logic DB local. |
-| `test_google_auth.py` | Test verify Google token/backend auth. |
-| `test_order.py`, `test_order_db.py`, `test_order_get.py` | Test tạo/lấy đơn hàng. |
-| `test_pg.py`, `test_pg_pooler.py` | Test PostgreSQL/Supabase connection/pooler. |
-| `test_promo.py` | Test mã ưu đãi/promo. |
-| `test_qlbh_sync.py` | Test cầu nối đồng bộ QLBH. |
-| `test_supabase.py` | Test kết nối Supabase. |
-
-## 10. Outputs ngoài repo source
+## 9. Outputs ngoài repo source
 
 Các file bàn giao/build nằm ở:
 
@@ -255,7 +238,7 @@ Các file bàn giao/build nằm ở:
 | `deployment_handoff_2026-06-27.md` | Ghi chú bàn giao deployment trước đó. |
 | Các APK cũ | Artifact lịch sử, chỉ giữ để đối chiếu; nên dùng APK `oauth-fixed`. |
 
-## 11. File không nên commit hoặc cần bảo vệ
+## 10. File không nên commit hoặc cần bảo vệ
 
 | Loại | Ví dụ | Lý do |
 |---|---|---|
@@ -264,7 +247,7 @@ Các file bàn giao/build nằm ở:
 | Dependency/build output | `node_modules/`, `dist/`, `__pycache__/`, `.gradle/`, `mobile/www/`, `mobile/android/app/build/` | Sinh lại được, nặng, dễ gây lộ dữ liệu hoặc lệch môi trường. |
 | Signing material | `*.keystore`, `*.jks`, password files | Chỉ lưu trong GitHub Secrets/secret manager hoặc kho mã hóa của owner. |
 
-## 12. Nơi cần sửa khi thay đổi cấu hình quan trọng
+## 11. Nơi cần sửa khi thay đổi cấu hình quan trọng
 
 | Muốn đổi | File cần sửa |
 |---|---|
@@ -277,7 +260,7 @@ Các file bàn giao/build nằm ở:
 | API nghiệp vụ QLBH | `QLBH-Website/routers/*`, `QLBH-Website/models.py`, `QLBH-Website/database.py`. |
 | Catalog app bán hàng | `catalog.py`, `web/app.js`, asset trong `web/assets/`. |
 
-## 13. Lệnh kiểm tra nhanh
+## 12. Lệnh kiểm tra nhanh
 
 ```bash
 cd /Users/vetc/Documents/Codex/2026-06-26/c-to-n-b-d-n/storefront
