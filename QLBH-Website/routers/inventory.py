@@ -2,13 +2,32 @@
 import csv
 import io
 from datetime import datetime
-from fastapi import APIRouter, Depends, Query, HTTPException, Request
+from fastapi import APIRouter, Depends, Query, HTTPException, Request, Response
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from database import get_db
 import models
 
 router = APIRouter(prefix="/api/v1/inventory", tags=["Kho hàng"])
+
+
+def _inventory_filter_clause(store: str, status: str, model: str, color: str, q: str):
+    where, params = ["1=1"], {}
+    if store != "all":
+        where.append("i.current_unit_id = :store"); params["store"] = store
+    if status != "all":
+        where.append("i.status = :status"); params["status"] = status
+    if model != "all":
+        where.append("i.sku_type = :model"); params["model"] = model
+    if color != "all":
+        where.append("i.color = :color"); params["color"] = color
+    if q:
+        where.append(
+            "(i.vin_code LIKE :q OR i.engine_number_imei2 LIKE :q OR "
+            "i.frame_number_imei1 LIKE :q OR i.code LIKE :q OR i.po_no LIKE :q)"
+        )
+        params["q"] = f"%{q}%"
+    return " AND ".join(where), params
 
 
 @router.get("")
@@ -22,19 +41,7 @@ def list_inventory(
     page_size: int = Query(25, ge=1, le=100),
     db: Session = Depends(get_db),
 ):
-    where, params = ["1=1"], {}
-    if store != "all":
-        where.append("i.current_unit_id = :store"); params["store"] = store
-    if status != "all":
-        where.append("i.status = :status"); params["status"] = status
-    if model != "all":
-        where.append("i.sku_type = :model"); params["model"] = model
-    if color != "all":
-        where.append("i.color = :color"); params["color"] = color
-    if q:
-        where.append("(i.vin_code LIKE :q OR i.engine_number_imei2 LIKE :q OR i.code LIKE :q)")
-        params["q"] = f"%{q}%"
-    w = " AND ".join(where)
+    w, params = _inventory_filter_clause(store, status, model, color, q)
 
     total = db.execute(text(f"SELECT COUNT(*) FROM inventory_items i WHERE {w}"), params).scalar()
     params2 = dict(params, lim=page_size, off=(page - 1) * page_size)
@@ -50,6 +57,51 @@ def list_inventory(
         "color_code": r.color_code, "price": r.price_base,
     } for r in rows]
     return {"total": total, "page": page, "page_size": page_size, "items": items}
+
+
+@router.get("/export")
+def export_inventory(
+    store: str = Query("all"),
+    status: str = Query("all"),
+    model: str = Query("all"),
+    color: str = Query("all"),
+    q: str = Query(""),
+    db: Session = Depends(get_db),
+):
+    """Xuất toàn bộ xe đang khớp bộ lọc hiện tại ra CSV."""
+    w, params = _inventory_filter_clause(store, status, model, color, q)
+    rows = db.execute(text(
+        f"SELECT i.vin_code, i.sku_type, i.color, i.code, i.frame_number_imei1, "
+        f"i.engine_number_imei2, i.battery_number, i.charger_number, "
+        f"i.import_unit_id, i.current_unit_id, i.import_time, i.export_time, "
+        f"i.status, i.goods_type, i.source_type, i.po_no, i.note, pv.color_code, pv.price_base "
+        f"FROM inventory_items i LEFT JOIN product_variants pv ON pv.sku_color=i.sku_color "
+        f"WHERE {w} ORDER BY i.import_time DESC, i.vin_code ASC"), params).all()
+
+    out = io.StringIO()
+    out.write("\ufeff")
+    writer = csv.writer(out)
+    writer.writerow([
+        "VIN", "Dòng xe", "Màu", "Mã màu", "Mã hãng", "Số khung/IMEI1",
+        "Số máy/IMEI2", "Số pin", "Số sạc", "Cơ sở nhập", "Cơ sở hiện tại",
+        "Ngày nhập", "Ngày xuất", "Trạng thái", "Loại hàng", "Nguồn", "PO",
+        "Giá niêm yết", "Ghi chú",
+    ])
+    for r in rows:
+        writer.writerow([
+            r.vin_code, r.sku_type, r.color, r.color_code, r.code,
+            r.frame_number_imei1, r.engine_number_imei2, r.battery_number,
+            r.charger_number, r.import_unit_id, r.current_unit_id,
+            r.import_time, r.export_time, r.status, r.goods_type,
+            r.source_type, r.po_no, r.price_base, r.note,
+        ])
+
+    filename = f"ton-kho-{datetime.now():%Y%m%d-%H%M%S}.csv"
+    return Response(
+        content=out.getvalue(),
+        media_type="text/csv; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
 
 
 @router.get("/models")

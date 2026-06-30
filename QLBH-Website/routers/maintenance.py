@@ -21,12 +21,13 @@ DB_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), "xe_dien_thu_
 
 TABLES = [
     "stores", "customers", "product_variants", "inventory_items", "inventory_logs",
+    "purchase_orders", "purchase_order_lines", "goods_receipts", "goods_receipt_items",
     "promotions", "accessories", "value_added_services", "orders", "order_details",
     "payments", "debts", "reconciliation_logs",
 ]
 
 # Các thao tác cần xác nhận (hành động khó hoàn tác)
-DESTRUCTIVE = {"wipe_transactions", "wipe_all", "reseed", "uat_stock"}
+DESTRUCTIVE = {"wipe_inventory", "wipe_transactions", "wipe_all", "reseed", "uat_stock"}
 
 
 class CleanRequest(BaseModel):
@@ -109,6 +110,28 @@ def clean(req: CleanRequest, db: Session = Depends(get_db)):
         n = ex("UPDATE inventory_items SET status='available' WHERE status='reserved'")
         db.commit()
         return _result(db, f"Đã giải phóng {n} xe đang giữ về trạng thái sẵn sàng.", {"released": n})
+
+    # ---- Làm trống dữ liệu kho (giữ master data, khách, đơn, thanh toán) ----
+    if action == "wipe_inventory":
+        updated_details = ex("UPDATE order_details SET vin_code=NULL WHERE vin_code IS NOT NULL")
+        updated_orders = ex("UPDATE orders SET vin_code=NULL, export_time=NULL WHERE vin_code IS NOT NULL")
+        removed_logs = ex("DELETE FROM inventory_logs")
+        removed_receipt_items = ex("DELETE FROM goods_receipt_items")
+        removed_receipts = ex("DELETE FROM goods_receipts")
+        removed_po_lines = ex("DELETE FROM purchase_order_lines")
+        removed_pos = ex("DELETE FROM purchase_orders")
+        removed_inventory = ex("DELETE FROM inventory_items")
+        db.commit()
+        return _result(db, "Đã làm trống dữ liệu kho; danh mục, khách hàng và đơn hàng được giữ lại.", {
+            "updated_order_details": updated_details,
+            "updated_orders": updated_orders,
+            "removed_logs": removed_logs,
+            "removed_receipt_items": removed_receipt_items,
+            "removed_receipts": removed_receipts,
+            "removed_po_lines": removed_po_lines,
+            "removed_purchase_orders": removed_pos,
+            "removed_inventory": removed_inventory,
+        })
 
     # ---- Xóa dữ liệu giao dịch (giữ kho + tham chiếu) ----
     if action == "wipe_transactions":

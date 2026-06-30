@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Search, Boxes, CheckCircle2, Clock, ArchiveX, Upload } from 'lucide-react'
+import { Search, Boxes, CheckCircle2, Clock, ArchiveX, Upload, Download } from 'lucide-react'
 import { api } from '../api'
 import { vnd, dateVN, num } from '../format'
 import { Card, Status, Pager, Loading } from '../ui'
@@ -22,6 +22,7 @@ export default function Inventory() {
   const [err, setErr] = useState(null)
   const [bump, setBump] = useState(0)
   const [importing, setImporting] = useState(false)
+  const [exporting, setExporting] = useState(false)
   const [importMsg, setImportMsg] = useState(null)
 
   useEffect(() => {
@@ -59,6 +60,32 @@ export default function Inventory() {
     }
   }
 
+  async function onExportCsv() {
+    setExporting(true); setImportMsg(null)
+    try {
+      const res = await api.inventoryExport({ status, store, model, color, q })
+      const contentType = res.headers?.['content-type'] || 'text/csv;charset=utf-8'
+      const blob = new Blob([res.data], { type: contentType })
+      const cd = res.headers?.['content-disposition'] || ''
+      const match = cd.match(/filename="?([^";]+)"?/i)
+      const filename = match?.[1] || `ton-kho-${new Date().toISOString().slice(0, 10)}.csv`
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = filename
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      URL.revokeObjectURL(url)
+      setImportMsg({ ok: true, text: `Đã export ${num(data?.total || 0)} xe theo bộ lọc hiện tại.` })
+    } catch (er) {
+      const detail = er?.response?.data?.detail || er.message
+      setImportMsg({ ok: false, text: `Lỗi export: ${detail}` })
+    } finally {
+      setExporting(false)
+    }
+  }
+
   if (err) return <ApiError msg={err} />
 
   const totalAvail = sum ? sum.by_store.reduce((a, s) => a + (s.available || 0), 0) : 0
@@ -68,7 +95,7 @@ export default function Inventory() {
   return (
     <div className="grid fade-in" style={{ gap: 20 }}>
       {/* Summary strip */}
-      <div className="kpis" style={{ gridTemplateColumns: 'repeat(4,1fr)' }}>
+      <div className="kpis" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
         <MiniStat icon={<Boxes size={19} />} accent="#0a64b4" label="Tổng số khung quản lý"
           value={sum ? num(totalAvail + totalReserved + totalSold) : '…'} />
         <MiniStat icon={<CheckCircle2 size={19} />} accent="#10b981" label="Sẵn sàng bán" value={num(totalAvail)} />
@@ -77,7 +104,7 @@ export default function Inventory() {
       </div>
 
       {/* By store + low stock */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: 20 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: 20 }}>
         <Card title="Tồn kho theo cơ sở" sub="Phân bổ số khung theo trạng thái">
           <div className="table-wrap">
             <table className="tbl">
@@ -121,13 +148,17 @@ export default function Inventory() {
       {/* VIN table */}
       <Card title="Sổ kho theo số khung (VIN)" sub={data ? `${num(data.total)} xe` : '…'}
         right={
-          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+            <button className="btn ghost" disabled={exporting || !data} onClick={onExportCsv}
+              title="Xuất CSV theo bộ lọc đang áp dụng: trạng thái, cơ sở, dòng xe, màu, từ khóa">
+              <Download size={15} />{exporting ? 'Đang export…' : 'Export CSV'}
+            </button>
             <label className="btn" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, cursor: importing ? 'wait' : 'pointer', opacity: importing ? 0.6 : 1 }}
               title="Nhập kho từ file CSV (cột: model, color, vin, [engine, code, store, status, date_in, note])">
               <Upload size={15} />{importing ? 'Đang nhập…' : 'Import CSV'}
               <input type="file" accept=".csv,text/csv" hidden disabled={importing} onChange={onImportCsv} />
             </label>
-            <div className="search" style={{ width: 240 }}>
+            <div className="search" style={{ width: 240, minWidth: 220 }}>
               <Search size={15} />
               <input placeholder="Tìm VIN, số máy, mã hãng…" value={q}
                 onChange={(e) => { setQ(e.target.value); setPage(1) }} />

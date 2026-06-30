@@ -11,6 +11,8 @@ import { ApiError } from './Overview'
 const TABLE_LABELS = {
   stores: 'Cửa hàng', customers: 'Khách hàng', product_variants: 'Biến thể SP',
   inventory_items: 'Kho (VIN)', inventory_logs: 'Nhật ký kho', promotions: 'Khuyến mại',
+  purchase_orders: 'Lệnh mua hàng', purchase_order_lines: 'Dòng lệnh mua',
+  goods_receipts: 'Phiếu nhập hàng', goods_receipt_items: 'Chi tiết phiếu nhập',
   accessories: 'Phụ kiện', value_added_services: 'Dịch vụ (VAS)', orders: 'Đơn hàng',
   order_details: 'Chi tiết đơn', payments: 'Thanh toán', debts: 'Công nợ',
   reconciliation_logs: 'Đối soát',
@@ -32,6 +34,8 @@ const ACTIONS = [
     desc: 'Đưa xe trạng thái "reserved" về "available".' },
   { key: 'vacuum', icon: Gauge, tone: '#10b981', title: 'Tối ưu & nén (VACUUM)',
     desc: 'Dọn khoảng trống, thu nhỏ kích thước file CSDL.' },
+  { key: 'wipe_inventory', icon: Eraser, tone: '#ef4444', title: 'Làm trống dữ liệu kho', destructive: true,
+    desc: 'Xóa VIN / log kho / PO / phiếu nhập; giữ danh mục, khách hàng, đơn và thanh toán.' },
   { key: 'wipe_transactions', icon: Eraser, tone: '#ef4444', title: 'Xóa dữ liệu giao dịch', destructive: true,
     desc: 'Xóa đơn / thanh toán / khách; GIỮ kho & dữ liệu tham chiếu.' },
   { key: 'reseed', icon: RefreshCw, tone: '#ef4444', title: 'Khôi phục dữ liệu gốc', destructive: true,
@@ -72,7 +76,7 @@ export default function Maintenance() {
   return (
     <div className="grid fade-in" style={{ gap: 20 }}>
       {/* Tổng quan CSDL */}
-      <div className="kpis" style={{ gridTemplateColumns: 'repeat(4,1fr)' }}>
+      <div className="kpis" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
         <Stat icon={<Database size={19} />} accent="#0a64b4" label="Tệp CSDL" value={stats.db_file} small />
         <Stat icon={<HardDrive size={19} />} accent="#6366f1" label="Dung lượng" value={`${num(Math.round(stats.db_size_kb))} KB`} />
         <Stat icon={<Layers3 size={19} />} accent="#10b981" label="Tổng số bản ghi" value={num(stats.total_rows)} />
@@ -86,7 +90,7 @@ export default function Maintenance() {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.15fr', gap: 20, alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', gap: 20, alignItems: 'start' }}>
         {/* Số lượng bản ghi + vấn đề */}
         <div className="grid" style={{ gap: 20 }}>
           <Card title="Số lượng bản ghi" sub="Theo từng bảng">

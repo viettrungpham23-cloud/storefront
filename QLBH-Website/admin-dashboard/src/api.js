@@ -52,6 +52,7 @@ export const api = {
   orders: (p) => get('/api/v1/orders', p),
   orderDetail: (no) => get(`/api/v1/orders/${no}`),
   inventory: (p) => get('/api/v1/inventory', p),
+  inventoryExport: (p) => http.get('/api/v1/inventory/export', { params: p, responseType: 'blob' }),
   inventoryModels: () => get('/api/v1/inventory/models'),
   inventoryColors: () => get('/api/v1/inventory/colors'),
   inventoryImportCsv: (file) =>
