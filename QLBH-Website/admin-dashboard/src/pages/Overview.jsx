@@ -315,12 +315,16 @@ export default function Overview() {
 }
 
 export function ApiError({ msg }) {
+  const text = String(msg || '')
+  const isAuth = /token|quyền|quản trị|xác thực|permission|unauthorized|forbidden|403|401/i.test(text)
   return (
     <div className="empty">
       <Package size={36} color="#cbd5e1" /><br />
-      Không kết nối được máy chủ API.<br />
-      <span style={{ fontSize: 12 }}>Hãy chạy backend: <code>uvicorn main:app --reload</code> (cổng 8000).</span>
-      <div style={{ marginTop: 8, fontSize: 11.5, color: '#cbd5e1' }}>{msg}</div>
+      {isAuth ? 'Không đủ quyền truy cập API.' : 'Không kết nối được máy chủ API.'}<br />
+      <span style={{ fontSize: 12 }}>
+        {isAuth ? 'Hãy đăng nhập lại bằng tài khoản admin được cấp quyền.' : <>Hãy chạy backend: <code>uvicorn main:app --reload</code> (cổng 8000).</>}
+      </span>
+      <div style={{ marginTop: 8, fontSize: 11.5, color: '#cbd5e1' }}>{text}</div>
     </div>
   )
 }

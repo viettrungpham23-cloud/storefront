@@ -1,29 +1,20 @@
 """
-Quản trị / Dọn dẹp CSDL (localhost).
+Quản trị / Dọn dẹp CSDL.
 Phân tích chất lượng dữ liệu và thực thi các thao tác làm sạch an toàn:
 gỡ bản ghi mồ côi, xóa đơn ngày tương lai (nhiễu), xóa dữ liệu giao dịch,
 làm trống toàn bộ, khôi phục dữ liệu gốc, và tối ưu (VACUUM).
 """
 import os
-from fastapi import APIRouter, Depends, HTTPException, Header
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from database import get_db, engine, Base, SessionLocal
 import stock_refresh
 
-ADMIN_API_KEY = os.getenv("ADMIN_API_KEY")
-
-def verify_admin(x_admin_key: str = Header(None)):
-    if not ADMIN_API_KEY:
-        raise HTTPException(status_code=403, detail="Chưa cấu hình ADMIN_API_KEY, thao tác bị khóa để bảo vệ an toàn.")
-    if x_admin_key != ADMIN_API_KEY:
-        raise HTTPException(status_code=401, detail="Xác thực Admin thất bại.")
-
 router = APIRouter(
     prefix="/api/v1/maintenance", 
     tags=["Quản trị CSDL"],
-    dependencies=[Depends(verify_admin)]
 )
 
 DB_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), "xe_dien_thu_anh.db")

@@ -14,6 +14,15 @@ http.interceptors.request.use((config) => {
   return config;
 });
 
+http.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const detail = error.response?.data?.detail;
+    if (detail) error.message = Array.isArray(detail) ? detail.map((d) => d.msg || d).join('; ') : detail;
+    return Promise.reject(error);
+  }
+);
+
 const get = (url, params) => http.get(url, { params }).then((r) => r.data)
 const post = (url, data) => http.post(url, data).then((r) => r.data)
 const patch = (url, data) => http.patch(url, data).then((r) => r.data)
