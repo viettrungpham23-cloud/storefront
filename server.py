@@ -140,7 +140,7 @@ def _sellable(r):
 
 
 def _stock_for(avail, r):
-    if not avail:
+    if avail is None:
         return r["stock"]
     names = [r["name"].upper()] + _loads(r.get("inventory_names"), [])
     return max([avail.get(str(n).upper(), 0) for n in names] or [0])
@@ -492,9 +492,10 @@ class Handler(BaseHTTPRequestHandler):
                 seg = qs.get("segment", ["all"])[0]
                 rows = [dict(r) for r in conn.execute("SELECT * FROM products ORDER BY sort").fetchall()]
                 counts = {k: 0 for k in ("doi_pin", "kem_pin", "hoc_sinh")}
-                avail = qlbh_sync.available()  # đồng bộ tồn kho từ Website
-                products_all = [to_public(r, _stock_for(avail, r) if avail else None) for r in rows]
-                if avail:
+                sync_on = qlbh_sync.available_db()
+                avail = qlbh_sync.available() if sync_on else None  # đồng bộ tồn kho từ Website
+                products_all = [to_public(r, _stock_for(avail, r) if sync_on else None) for r in rows]
+                if sync_on:
                     for p in products_all:
                         p["synced"] = True
                 for p in products_all:
@@ -510,7 +511,7 @@ class Handler(BaseHTTPRequestHandler):
                     "counts": counts,
                     "promo": catalog.PROMO,
                     "products": products,
-                    "synced": bool(avail),
+                    "synced": sync_on,
                 })
             m = re.match(r"^/api/products/([\w-]+)$", path)
             if m:
@@ -518,8 +519,9 @@ class Handler(BaseHTTPRequestHandler):
                 if not r:
                     return self._json({"error": "not_found"}, 404)
                 d = to_detail(r)
-                avail = qlbh_sync.available()
-                if avail:
+                sync_on = qlbh_sync.available_db()
+                avail = qlbh_sync.available() if sync_on else None
+                if sync_on:
                     d["stock"] = _stock_for(avail, r)
                     d["synced"] = True
                 return self._json(d)
