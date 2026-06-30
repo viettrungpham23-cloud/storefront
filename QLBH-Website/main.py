@@ -13,6 +13,7 @@ def _auto_seed():
     try:
         db = SessionLocal()
         empty = db.query(models.InventoryItem).first() is None
+        auto_seed_inventory = os.getenv("AUTO_SEED_INVENTORY", "0").lower() in {"1", "true", "yes"}
         
         # Seed users if empty
         if db.query(models.User).first() is None:
@@ -28,7 +29,7 @@ def _auto_seed():
             db.commit()
             
         db.close()
-        if empty:
+        if empty and auto_seed_inventory:
             import seed
             seed.main()
     except Exception as e:
