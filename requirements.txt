@@ -1,0 +1,4 @@
+# Backend App (server.py) — lõi chạy bằng thư viện chuẩn Python, hai gói dưới
+# chỉ cần khi bật đồng bộ Supabase (DATABASE_URL) và nạp .env tự động.
+psycopg2-binary>=2.9,<3
+python-dotenv>=1,<2

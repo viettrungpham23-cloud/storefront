@@ -1,6 +1,7 @@
 # ── Bí mật & dữ liệu cá nhân (KHÔNG commit) ───────────────────────
 .env
 .env.*
+!.env.example
 secrets/
 **/*.key
 *.keystore

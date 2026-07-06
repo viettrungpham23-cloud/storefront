@@ -9,6 +9,8 @@ Chạy:   python3 server.py            (mặc định cổng 8810)
 Mở:     http://localhost:8810
 
 API (JSON, localhost):
+  GET    /api/health                    health check (deploy/monitor)
+  POST   /api/auth/guest                {name,phone,email?}  → đăng nhập khách bên ngoài
   GET    /api/catalog?segment=all|doi_pin|kem_pin|hoc_sinh
   GET    /api/products/<slug>
   GET    /api/promo · /api/promos · /api/addons
@@ -35,6 +37,13 @@ import catalog
 import qlbh_sync  # cầu nối đồng bộ với DB Website (QLBH)
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
+
+# Nạp .env ở gốc repo (DATABASE_URL, HOST, PORT) — không bắt buộc có dotenv.
+try:
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(ROOT, ".env"))
+except ImportError:
+    pass
 WEB = os.path.join(ROOT, "web")
 DB_PATH = os.path.join(ROOT, "store.db")
 PORT = int(os.environ.get("PORT", "8810"))
@@ -110,6 +119,10 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             token TEXT, sku TEXT, qty INTEGER,
             UNIQUE(token, sku)
+        );
+        CREATE TABLE IF NOT EXISTS guest_users (
+            token TEXT PRIMARY KEY, name TEXT, phone TEXT UNIQUE, email TEXT,
+            created_at REAL, last_login REAL
         );
     """)
     # mã ưu đãi áp tay trên giỏ
@@ -373,6 +386,34 @@ class Handler(BaseHTTPRequestHandler):
             return self._json({"error": "invalid_json", "message": "Dữ liệu không hợp lệ"}, 400)
         conn = db()
         try:
+            if path == "/api/auth/guest":
+                # Đăng nhập dành cho khách bên ngoài: chỉ cần họ tên + SĐT,
+                # không qua Google Auth (luồng Google vẫn dành cho nhân viên).
+                name = str(body.get("name") or "").strip()
+                phone = re.sub(r"\D", "", str(body.get("phone") or ""))
+                if phone.startswith("84"):
+                    phone = "0" + phone[2:]
+                email = str(body.get("email") or "").strip()
+                if len(name) < 2:
+                    return self._json({"error": "invalid_name",
+                                       "message": "Vui lòng nhập họ tên"}, 400)
+                if not re.match(r"^0\d{9}$", phone):
+                    return self._json({"error": "invalid_phone",
+                                       "message": "Số điện thoại không hợp lệ (10 số, bắt đầu bằng 0)"}, 400)
+                now = time.time()
+                row = conn.execute("SELECT * FROM guest_users WHERE phone=?", (phone,)).fetchone()
+                if row:
+                    token = row["token"]
+                    conn.execute("UPDATE guest_users SET name=?, email=?, last_login=? WHERE phone=?",
+                                 (name, email or row["email"], now, phone))
+                else:
+                    token = "guest-" + uuid.uuid4().hex
+                    conn.execute("""INSERT INTO guest_users (token,name,phone,email,created_at,last_login)
+                        VALUES (?,?,?,?,?,?)""", (token, name, phone, email, now, now))
+                conn.commit()
+                return self._json({"access_token": token,
+                                   "user": {"name": name, "phone": phone,
+                                            "email": email, "role": "guest"}})
             if path == "/api/cart/items":
                 token = ensure_cart(conn, self._token(qs))
                 slug = body.get("slug"); color = body.get("color", "")
@@ -488,6 +529,9 @@ class Handler(BaseHTTPRequestHandler):
     def _api_get(self, path, qs):
         conn = db()
         try:
+            if path == "/api/health":
+                # Health check cho nền tảng deploy (Render/Railway/uptime monitor).
+                return self._json({"ok": True, "synced": qlbh_sync.available_db()})
             if path == "/api/catalog":
                 seg = qs.get("segment", ["all"])[0]
                 rows = [dict(r) for r in conn.execute("SELECT * FROM products ORDER BY sort").fetchall()]
@@ -536,7 +580,32 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(compute_cart(conn, token))
             if path == "/api/orders/mine":
                 phone = qs.get("phone", [""])[0]
-                return self._json({"orders": qlbh_sync.orders_for(phone)})
+                orders = qlbh_sync.orders_for(phone)
+                # Bổ sung đơn lưu cục bộ — khi đồng bộ Website tắt, khách
+                # (đặc biệt khách bên ngoài) vẫn thấy đơn của mình.
+                seen = {o.get("order_no") for o in orders}
+                phone_clean = re.sub(r"\D", "", phone or "")
+                if phone_clean:
+                    rows = conn.execute(
+                        "SELECT * FROM orders WHERE replace(replace(phone,' ',''),'.','')=? "
+                        "ORDER BY created_at DESC", (phone_clean,)).fetchall()
+                    for r in rows:
+                        if r["order_no"] in seen:
+                            continue
+                        first = conn.execute(
+                            "SELECT name FROM order_items WHERE order_no=? LIMIT 1",
+                            (r["order_no"],)).fetchone()
+                        date_label = time.strftime("%Y-%m-%d", time.localtime(r["created_at"]))
+                        orders.append({
+                            "order_no": r["order_no"], "date": date_label,
+                            "date_label": date_label, "total": r["total"],
+                            "status": "pending", "status_label": "Chờ duyệt",
+                            "payment_status": None, "store": "",
+                            "vin": "", "model": first["name"] if first else "Xe điện",
+                            "channel": "App",
+                        })
+                    orders.sort(key=lambda o: str(o.get("date") or ""), reverse=True)
+                return self._json({"orders": orders})
             if path == "/api/notifications":
                 sid = qs.get("sales_id", [""])[0]
                 return self._json({"items": qlbh_sync.notifications(sid)})
