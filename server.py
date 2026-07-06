@@ -580,7 +580,32 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(compute_cart(conn, token))
             if path == "/api/orders/mine":
                 phone = qs.get("phone", [""])[0]
-                return self._json({"orders": qlbh_sync.orders_for(phone)})
+                orders = qlbh_sync.orders_for(phone)
+                # Bổ sung đơn lưu cục bộ — khi đồng bộ Website tắt, khách
+                # (đặc biệt khách bên ngoài) vẫn thấy đơn của mình.
+                seen = {o.get("order_no") for o in orders}
+                phone_clean = re.sub(r"\D", "", phone or "")
+                if phone_clean:
+                    rows = conn.execute(
+                        "SELECT * FROM orders WHERE replace(replace(phone,' ',''),'.','')=? "
+                        "ORDER BY created_at DESC", (phone_clean,)).fetchall()
+                    for r in rows:
+                        if r["order_no"] in seen:
+                            continue
+                        first = conn.execute(
+                            "SELECT name FROM order_items WHERE order_no=? LIMIT 1",
+                            (r["order_no"],)).fetchone()
+                        date_label = time.strftime("%Y-%m-%d", time.localtime(r["created_at"]))
+                        orders.append({
+                            "order_no": r["order_no"], "date": date_label,
+                            "date_label": date_label, "total": r["total"],
+                            "status": "pending", "status_label": "Chờ duyệt",
+                            "payment_status": None, "store": "",
+                            "vin": "", "model": first["name"] if first else "Xe điện",
+                            "channel": "App",
+                        })
+                    orders.sort(key=lambda o: str(o.get("date") or ""), reverse=True)
+                return self._json({"orders": orders})
             if path == "/api/notifications":
                 sid = qs.get("sales_id", [""])[0]
                 return self._json({"items": qlbh_sync.notifications(sid)})
