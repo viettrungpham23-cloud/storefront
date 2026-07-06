@@ -9,6 +9,7 @@ Chạy:   python3 server.py            (mặc định cổng 8810)
 Mở:     http://localhost:8810
 
 API (JSON, localhost):
+  POST   /api/auth/guest                {name,phone,email?}  → đăng nhập khách bên ngoài
   GET    /api/catalog?segment=all|doi_pin|kem_pin|hoc_sinh
   GET    /api/products/<slug>
   GET    /api/promo · /api/promos · /api/addons
@@ -110,6 +111,10 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             token TEXT, sku TEXT, qty INTEGER,
             UNIQUE(token, sku)
+        );
+        CREATE TABLE IF NOT EXISTS guest_users (
+            token TEXT PRIMARY KEY, name TEXT, phone TEXT UNIQUE, email TEXT,
+            created_at REAL, last_login REAL
         );
     """)
     # mã ưu đãi áp tay trên giỏ
@@ -373,6 +378,34 @@ class Handler(BaseHTTPRequestHandler):
             return self._json({"error": "invalid_json", "message": "Dữ liệu không hợp lệ"}, 400)
         conn = db()
         try:
+            if path == "/api/auth/guest":
+                # Đăng nhập dành cho khách bên ngoài: chỉ cần họ tên + SĐT,
+                # không qua Google Auth (luồng Google vẫn dành cho nhân viên).
+                name = str(body.get("name") or "").strip()
+                phone = re.sub(r"\D", "", str(body.get("phone") or ""))
+                if phone.startswith("84"):
+                    phone = "0" + phone[2:]
+                email = str(body.get("email") or "").strip()
+                if len(name) < 2:
+                    return self._json({"error": "invalid_name",
+                                       "message": "Vui lòng nhập họ tên"}, 400)
+                if not re.match(r"^0\d{9}$", phone):
+                    return self._json({"error": "invalid_phone",
+                                       "message": "Số điện thoại không hợp lệ (10 số, bắt đầu bằng 0)"}, 400)
+                now = time.time()
+                row = conn.execute("SELECT * FROM guest_users WHERE phone=?", (phone,)).fetchone()
+                if row:
+                    token = row["token"]
+                    conn.execute("UPDATE guest_users SET name=?, email=?, last_login=? WHERE phone=?",
+                                 (name, email or row["email"], now, phone))
+                else:
+                    token = "guest-" + uuid.uuid4().hex
+                    conn.execute("""INSERT INTO guest_users (token,name,phone,email,created_at,last_login)
+                        VALUES (?,?,?,?,?,?)""", (token, name, phone, email, now, now))
+                conn.commit()
+                return self._json({"access_token": token,
+                                   "user": {"name": name, "phone": phone,
+                                            "email": email, "role": "guest"}})
             if path == "/api/cart/items":
                 token = ensure_cart(conn, self._token(qs))
                 slug = body.get("slug"); color = body.get("color", "")
