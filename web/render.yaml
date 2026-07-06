@@ -1,5 +1,0 @@
-services:
-  - type: web
-    name: ta-backend-api
-    env: docker
-    plan: free # Sử dụng gói miễn phí để kiểm thử

@@ -134,9 +134,13 @@ Backend là Python thuần nên chạy được mọi nơi:
 ```bash
 HOST=0.0.0.0 PORT=8810 python3 server.py    # nhận kết nối ngoài
 ```
-Gợi ý host (có HTTPS sẵn): **Render.com / Railway.app / Fly.io** (start command `python3 server.py`,
-đặt `HOST=0.0.0.0`, để nền tảng tự cấp `PORT`) — hoặc **VPS** sau nginx/Caddy.
+Gợi ý host (có HTTPS sẵn): **Render.com** (repo có sẵn `render.yaml` — New → Blueprint là xong),
+**Railway.app** (tự nhận `Procfile`) — hoặc **VPS** sau nginx/Caddy.
+Cài phụ thuộc đồng bộ Supabase: `pip install -r requirements.txt`; biến môi trường xem `.env.example`.
 CORS đã mở (`Access-Control-Allow-Origin: *`). Database đã được đưa lên **Supabase**.
+
+> **Kế hoạch triển khai chi tiết từng bước:** [`docs/DEPLOY.md`](docs/DEPLOY.md) — phương án
+> Render / Railway / VPS-systemd, health check `/api/health`, checklist nghiệm thu & rollback.
 
 Sau khi có URL (vd `https://api-tainnovation.onrender.com`), dùng cho các bước dưới.
 

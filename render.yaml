@@ -1,0 +1,22 @@
+# Blueprint Render.com — deploy backend App (server.py + SPA web/).
+# Dùng: Render → New → Blueprint → chọn repo này. Xem docs/DEPLOY.md.
+services:
+  - type: web
+    name: ta-storefront
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python3 server.py
+    healthCheckPath: /api/health
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: DATABASE_URL # chuỗi kết nối Supabase — điền khi tạo service
+        sync: false
+    # Gói free không có disk bền: store.db (giỏ tạm + guest_users) mất khi redeploy.
+    # Dữ liệu chính (đơn/khách/kho) nằm trên Supabase nên chấp nhận được.
+    # Muốn giữ store.db: nâng plan và bỏ comment khối dưới.
+    # disk:
+    #   name: store-data
+    #   mountPath: /opt/render/project/src/data
+    #   sizeGB: 1

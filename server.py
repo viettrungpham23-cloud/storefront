@@ -9,6 +9,7 @@ Chạy:   python3 server.py            (mặc định cổng 8810)
 Mở:     http://localhost:8810
 
 API (JSON, localhost):
+  GET    /api/health                    health check (deploy/monitor)
   POST   /api/auth/guest                {name,phone,email?}  → đăng nhập khách bên ngoài
   GET    /api/catalog?segment=all|doi_pin|kem_pin|hoc_sinh
   GET    /api/products/<slug>
@@ -36,6 +37,13 @@ import catalog
 import qlbh_sync  # cầu nối đồng bộ với DB Website (QLBH)
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
+
+# Nạp .env ở gốc repo (DATABASE_URL, HOST, PORT) — không bắt buộc có dotenv.
+try:
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(ROOT, ".env"))
+except ImportError:
+    pass
 WEB = os.path.join(ROOT, "web")
 DB_PATH = os.path.join(ROOT, "store.db")
 PORT = int(os.environ.get("PORT", "8810"))
@@ -521,6 +529,9 @@ class Handler(BaseHTTPRequestHandler):
     def _api_get(self, path, qs):
         conn = db()
         try:
+            if path == "/api/health":
+                # Health check cho nền tảng deploy (Render/Railway/uptime monitor).
+                return self._json({"ok": True, "synced": qlbh_sync.available_db()})
             if path == "/api/catalog":
                 seg = qs.get("segment", ["all"])[0]
                 rows = [dict(r) for r in conn.execute("SELECT * FROM products ORDER BY sort").fetchall()]
