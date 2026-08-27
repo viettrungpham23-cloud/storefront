@@ -8,8 +8,7 @@
  *
  * Khi build app di động: chỉ cần sửa apiBase ở đây thành URL backend public.
  */
-window.TA_CONFIG = {
-  // Local: để trống → App gọi chính server.py (đã đồng bộ DB với Website QLBH).
-  // Khi đóng gói mobile: đặt URL backend public (xem PACKAGING.md / sync.sh).
-  apiBase: ""
-};
+  window.TA_CONFIG = {
+    apiBase: "",
+    adminApiBase: "https://ta-admin-api.onrender.com"
+  };
