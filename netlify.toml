@@ -4,7 +4,7 @@
   publish = "dist"
 
 [build.environment]
-  ADMIN_API_ORIGIN = "http://34.21.152.227:8000"
+  ADMIN_API_ORIGIN = "https://ta-admin-api.onrender.com"
   VITE_GOOGLE_CLIENT_ID = "239161131679-80dq6dfq624m6hnjf2g2opkdbq4tvp3r.apps.googleusercontent.com"
 
 [[redirects]]
